@@ -1,4 +1,3 @@
 Seek'N'Resolve
 
-Bug tracking tool.
-
+The best bug tracking tool.
