@@ -1,3 +1,5 @@
+package pl.edu.pw.ii.pik01.seeknresolve;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
