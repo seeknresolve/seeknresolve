@@ -42,7 +42,10 @@ public class Bug {
     @OneToMany(mappedBy = "bug")
     private List<Comment> comments = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
     private State state;
+
+    @Enumerated(EnumType.STRING)
     private Priority priority;
 
     public enum State {

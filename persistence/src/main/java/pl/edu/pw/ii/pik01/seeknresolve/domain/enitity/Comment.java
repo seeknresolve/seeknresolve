@@ -1,5 +1,6 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class Comment {
     private String content;
 
     @Column(nullable = false)
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
     private DateTime dateCreated;
 
     @ManyToOne(optional = false)

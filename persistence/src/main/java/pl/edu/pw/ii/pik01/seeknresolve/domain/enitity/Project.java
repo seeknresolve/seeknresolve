@@ -1,5 +1,6 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class Project {
     private String description;
 
     @Column(nullable = false)
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
     private DateTime dateCreated;
 
     @OneToMany(mappedBy = "project")
