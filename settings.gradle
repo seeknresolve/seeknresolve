@@ -1,3 +1,4 @@
 rootProject.name = 'seeknresolve'
 include ':persistence'
+include ':service'
 include ':webapp'
