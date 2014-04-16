@@ -16,7 +16,7 @@ public class Comment {
     private String content;
 
     @Column(nullable = false)
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateCreated;
 
     @ManyToOne(optional = false)

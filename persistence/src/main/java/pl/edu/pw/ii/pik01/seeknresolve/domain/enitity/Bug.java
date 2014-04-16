@@ -20,11 +20,11 @@ public class Bug {
     private String description;
 
     @Column(nullable = false)
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateCreated;
 
     @Column(nullable = false)
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateModified;
 
     @ManyToOne(optional = false)

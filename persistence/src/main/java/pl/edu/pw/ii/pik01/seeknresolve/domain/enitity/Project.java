@@ -21,7 +21,7 @@ public class Project {
     private String description;
 
     @Column(nullable = false)
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateCreated;
 
     @OneToMany(mappedBy = "project")

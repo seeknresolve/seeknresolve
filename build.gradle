@@ -35,7 +35,7 @@ allprojects {
 project(":persistence") {
     dependencies {
         compile "org.springframework.boot:spring-boot-starter-data-jpa:1.0.1.RELEASE"
-        compile "joda-time:joda-time-hibernate:1.3"
+        compile 'org.jadira.usertype:usertype.core:3.1.0.GA'
 
         testCompile project(":webapp")
     }
@@ -49,7 +49,7 @@ project(":service") {
 
 project(":webapp") {
     apply plugin: "spring-boot"
-
+    MainClassName = "pl.edu.pw.ii.pik01.seeknresolve.SeekNResolve"
     dependencies {
         compile project(":persistence")
         compile project(":service")
