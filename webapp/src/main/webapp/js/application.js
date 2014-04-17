@@ -10,10 +10,20 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
         when('/index', {
             templateUrl: 'templates/hello.html'
         }).
+
         when('/project', {
             templateUrl: 'templates/project/list.html',
             controller: 'ProjectListController'
         }).
+        when('/project/:id', {
+            templateUrl: 'templates/project/details.html',
+            controller: 'ProjectDetailsController'
+        }).
+        when('/projectCreate', {
+            templateUrl: 'templates/project/create.html',
+            controller: 'ProjectCreateController'
+        }).
+
         when('/bug', {
             templateUrl: 'templates/bug/list.html',
             controller: 'BugListController'
@@ -26,13 +36,16 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'templates/bug/create.html',
             controller: 'BugCreateController'
         }).
+
         when('/user', {
             templateUrl: 'templates/user/list.html',
             controller: 'UserListController'
         }).
+
         when('/about', {
             templateUrl: 'templates/about.html'
         }).
+
         otherwise({
             redirectTo: '/index'
         });

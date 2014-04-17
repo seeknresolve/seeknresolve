@@ -25,3 +25,13 @@ projectControllers.controller('ProjectDetailsController', ['$scope', '$http', '$
         });
     }
 ]);
+bugControllers.controller('ProjectCreateController', ['$scope', '$http',
+    function($scope, $http) {
+        $http({
+            url:'/project/create',
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            data: {name: $scope.name, description: $scope.description}
+        });
+    }
+]);
