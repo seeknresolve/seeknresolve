@@ -1,0 +1,40 @@
+<div class="container" ng-controller="ProjectListController">
+
+    <div class="row col-md-12">
+        <div class="row" ng-if="errorMessage != null">
+            <div class="alert alert-danger">{{errorMessage}}</div>
+        </div>
+
+        <div class="page-header">
+            <h3>Lista projektów
+                <div class="btn-group btn-group-sm pull-right">
+                    <a href="#/projectCreate" role="button" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Utwórz nowy projekt
+                    </a>
+                </div>
+            </h3>
+        </div>
+    </div>
+
+    <div class="row col-md-12">
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+                <th>Nazwa</th>
+                <th>Opis</th>
+                <th>Data utworzenia</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="project in projects">
+                <td>
+                    <a href="#/project/{{project.id}}">
+                        {{project.name}}
+                    </a>
+                </td>
+                <td>{{project.description}}</td>
+                <td>{{project.dateCreated | date:'MM-dd-yyyy HH:mm:ss'}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

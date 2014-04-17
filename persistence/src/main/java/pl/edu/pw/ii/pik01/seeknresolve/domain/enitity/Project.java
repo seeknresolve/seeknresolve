@@ -28,6 +28,12 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<Bug> bugs = new ArrayList<>();
 
+    public void update(Project updatedProject) {
+        setName(updatedProject.getName());
+        setDescription(updatedProject.getDescription());
+        // TODO: data tworzenia czy update?
+        // setDateCreated(updatedProject.getDateCreated());
+    }
     public Long getId() {
         return id;
     }
