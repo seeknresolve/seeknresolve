@@ -1,5 +1,6 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 
+import com.google.common.collect.ImmutableList;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
@@ -60,7 +61,7 @@ public class Project {
     }
 
     public List<Bug> getBugs() {
-        return bugs;
+        return ImmutableList.copyOf(bugs);
     }
 
     public void addBug(Bug bug) {

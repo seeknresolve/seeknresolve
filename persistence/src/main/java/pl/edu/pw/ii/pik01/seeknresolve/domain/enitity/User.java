@@ -1,5 +1,7 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 
+import com.google.common.collect.ImmutableList;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +86,7 @@ public class User {
     }
 
     public List<Bug> getReportedBugs() {
-        return bugsReported;
+        return ImmutableList.copyOf(bugsReported);
     }
 
     public void addReportedBug(Bug bug) {
@@ -92,7 +94,7 @@ public class User {
     }
 
     public List<Bug> getAssignedBugs() {
-        return bugsAssigned;
+        return ImmutableList.copyOf(bugsAssigned);
     }
 
     public void addAssignedBug(Bug bug) {
@@ -100,7 +102,7 @@ public class User {
     }
 
     public List<Comment> getComments() {
-        return comments;
+        return ImmutableList.copyOf(comments);
     }
 
     public void addComment(Comment comment) {

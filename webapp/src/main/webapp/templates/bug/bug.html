@@ -1,0 +1,27 @@
+<div class="container" ng-controller="BugController">>
+    <div class="row col-md-12">
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+            <th>Tag</th>
+            <th>Name</th>
+            <th>Project</th>
+            <th>Date created</th>
+            <th>Date modified</th>
+            <th>State</th>
+            <th>Priority</th>
+            <th></th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="bug in bugs">
+                <td>{{bug.tag}}</td>
+                <td>{{bug.name}}</td>
+                <td>LINK TO PROJECT</td>
+                <td>{{bug.dateCreated}}<td>
+                <td>{{bug.dateModified}}<td>
+                <td>{{bug.state}}<td>
+                <td>{{bug.priority}}<td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
