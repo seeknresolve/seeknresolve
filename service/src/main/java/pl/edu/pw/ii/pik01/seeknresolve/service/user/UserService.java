@@ -1,0 +1,65 @@
+package pl.edu.pw.ii.pik01.seeknresolve.service.user;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+
+import javax.persistence.EntityNotFoundException;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+
+    public UserDTO createAndSaveNewUser(UserDTO userDTO){
+        User user = userRepository.save(crateUserFromUserDTO(userDTO));
+        return user == null ? null : buildDTOfromUser(user);
+    }
+
+    public UserDTO findOneById(Long id){
+        User user = userRepository.findOne(id);
+        if(user == null){
+            throw new EntityNotFoundException("User with id=" + id + " not found.");
+        }
+        return buildDTOfromUser(user);
+    }
+
+    public UserDTO findOneByLogin(String login){
+        User user = userRepository.findOneByLogin(login);
+        if(user == null){
+            throw new EntityNotFoundException("User with login=" + login + " not found.");
+        }
+        return buildDTOfromUser(user);
+    }
+
+    private User crateUserFromUserDTO(UserDTO userDTO) {
+        User user = new User();
+        user.setId(userDTO.getId());
+        user.setPassword(userDTO.getPassword());
+        user.setEmail(userDTO.getEmail());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setLogin(userDTO.getLogin());
+        //TODO: should initialize lists?
+        return user;
+    }
+
+    private UserDTO buildDTOfromUser(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setLogin(user.getLogin());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setPassword(user.getPassword());
+        return userDTO;
+
+    }
+}
