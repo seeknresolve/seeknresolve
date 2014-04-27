@@ -1,16 +1,20 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.bug;
 
+import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Bug;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
 import javax.persistence.PersistenceException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BugService {
@@ -25,12 +29,18 @@ public class BugService {
         this.userRepository = userRepository;
     }
 
+    //TODO: obsluzyc usera dobrze
+    public List<BugDTO> getAllBugsForCurrentUser(User loggedUser) {
+        return Lists.newArrayList(bugRepository.findAll()).stream().
+                map(bug -> createDTOFromBug(bug)).collect(Collectors.toList());
+    }
+
     public BugDTO createAndSaveNewBug(BugDTO bugDTO) {
         Bug bug = bugRepository.save(createBugFromDTO(bugDTO));
         if(bug == null) {
             throw new PersistenceException("Cannot save bug with tag: " + bugDTO.getTag());
         }
-        return buildDTOFromBug(bug);
+        return createDTOFromBug(bug);
     }
 
     private Bug createBugFromDTO(BugDTO bugDTO) {
@@ -53,10 +63,10 @@ public class BugService {
         if(bug == null) {
             throw buildNotFoundException(tag);
         }
-        return buildDTOFromBug(bug);
+        return createDTOFromBug(bug);
     }
 
-    private BugDTO buildDTOFromBug(Bug bug) {
+    private BugDTO createDTOFromBug(Bug bug) {
         BugDTO bugDTO = new BugDTO();
         bugDTO.setDateCreated(bug.getDateCreated());
         bugDTO.setDateModified(bug.getDateModified());

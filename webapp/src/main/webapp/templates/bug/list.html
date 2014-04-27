@@ -1,0 +1,39 @@
+<div class="container" ng-controller="BugListController">>
+
+    <div class="row col-md-12">
+        <div class="row" ng-if="errorMessage != null">
+            <div class="alert alert-danger">{{errorMessage}}</div>
+        </div>
+
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+                <th>Tag</th>
+                <th>Name</th>
+                <th>Project</th>
+                <th>Reporter</th>
+                <th>Assignee</th>
+                <th>Date created</th>
+                <th>Date modified</th>
+                <th>State</th>
+                <th>Priority</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="bug in bugs">
+                    <td>
+                        <a href="#/bug/{{bug.tag}}">
+                            {{bug.tag}}
+                        </a>
+                    </td>
+                    <td>{{bug.name}}</td>
+                    <td>{{bug.projectId}}</td>
+                    <td>{{bug.reporterId}}</td>
+                    <td>{{bug.assigneeId}}</td>
+                    <td>{{bug.dateCreated}}</td>
+                    <td>{{bug.dateModified}}</td>
+                    <td>{{bug.state}}</td>
+                    <td>{{bug.priority}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

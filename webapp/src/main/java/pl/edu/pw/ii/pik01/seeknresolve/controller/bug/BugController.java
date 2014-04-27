@@ -11,6 +11,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 
 import javax.persistence.PersistenceException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/bug")
@@ -32,6 +33,13 @@ public class BugController {
     public Response<BugDTO> get(@PathVariable("tag") String tag) {
         BugDTO bug = bugService.getBugWithTag(tag);
         return new Response<>(bug, Response.Status.RECEIVED);
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<BugDTO>> getAll() {
+        //TODO: get current user
+        List<BugDTO> bugs = bugService.getAllBugsForCurrentUser(null);
+        return new Response<>(bugs, Response.Status.RECEIVED);
     }
 
     @RequestMapping(value = "/{tag}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
