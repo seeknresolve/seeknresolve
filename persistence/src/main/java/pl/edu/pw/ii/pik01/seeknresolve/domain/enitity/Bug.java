@@ -31,7 +31,7 @@ public class Bug {
     private User reporter;
 
     @ManyToOne(optional = false)
-    private User assigned;
+    private User assignee;
 
     @ManyToOne(optional = false)
     private Project project;
@@ -113,12 +113,12 @@ public class Bug {
         this.reporter = reporter;
     }
 
-    public User getAssigned() {
-        return assigned;
+    public User getAssignee() {
+        return assignee;
     }
 
-    public void setAssigned(User assigned) {
-        this.assigned = assigned;
+    public void setAssignee(User assignee) {
+        this.assignee = assignee;
     }
 
     public Project getProject() {
