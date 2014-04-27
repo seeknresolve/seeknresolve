@@ -30,7 +30,7 @@ public class Bug {
     @ManyToOne(optional = false)
     private User reporter;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private User assignee;
 
     @ManyToOne(optional = false)
