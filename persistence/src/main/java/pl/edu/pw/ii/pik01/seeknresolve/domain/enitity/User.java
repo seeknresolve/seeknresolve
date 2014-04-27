@@ -29,7 +29,7 @@ public class User {
     @OneToMany(mappedBy = "reporter")
     private List<Bug> bugsReported = new ArrayList<>();
 
-    @OneToMany(mappedBy = "assigned")
+    @OneToMany(mappedBy = "assignee")
     private List<Bug> bugsAssigned = new ArrayList<>();
 
     @OneToMany(mappedBy = "author")
