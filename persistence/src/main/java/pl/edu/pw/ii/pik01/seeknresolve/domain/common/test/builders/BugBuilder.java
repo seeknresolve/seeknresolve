@@ -1,11 +1,11 @@
-package pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.factories;
+package pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders;
 
 import org.joda.time.DateTime;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
 
-public class BugFactory {
+public class BugBuilder {
     private String tag;
     private String name = "";
     private String description = "";
@@ -32,52 +32,52 @@ public class BugFactory {
         return bug;
     }
 
-    public BugFactory withTag(String tag) {
+    public BugBuilder withTag(String tag) {
         this.tag = tag;
         return this;
     }
 
-    public BugFactory withName(String name) {
+    public BugBuilder withName(String name) {
         this.name = name;
         return this;
     }
 
-    public BugFactory withDescription(String description) {
+    public BugBuilder withDescription(String description) {
         this.description = description;
         return this;
     }
 
-    public BugFactory withDateCreated(DateTime dateCreated) {
+    public BugBuilder withDateCreated(DateTime dateCreated) {
         this.dateCreated = dateCreated;
         return this;
     }
 
-    public BugFactory withDateModified(DateTime dateModified) {
+    public BugBuilder withDateModified(DateTime dateModified) {
         this.dateModified = dateModified;
         return this;
     }
 
-    public BugFactory withReporter(User reporter) {
+    public BugBuilder withReporter(User reporter) {
         this.reporter = reporter;
         return this;
     }
 
-    public BugFactory withAssignee(User assigne) {
+    public BugBuilder withAssignee(User assigne) {
         this.assignee = assigne;
         return this;
     }
 
-    public BugFactory withProject(Project project) {
+    public BugBuilder withProject(Project project) {
         this.project = project;
         return this;
     }
 
-    public BugFactory withState(Bug.State state) {
+    public BugBuilder withState(Bug.State state) {
         this.state = state;
         return this;
     }
 
-    public BugFactory withPriority(Bug.Priority priority) {
+    public BugBuilder withPriority(Bug.Priority priority) {
         this.priority = priority;
         return this;
     }

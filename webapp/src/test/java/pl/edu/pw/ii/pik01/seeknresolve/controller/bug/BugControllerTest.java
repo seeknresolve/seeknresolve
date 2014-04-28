@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.factories.BugFactory;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.BugBuilder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
@@ -73,7 +73,7 @@ public class BugControllerTest {
     }
 
     private void givenReturningTagData(String tag) {
-        Bug bug = new BugFactory().withTag(tag).build();
+        Bug bug = new BugBuilder().withTag(tag).build();
         when(bugRepository.findOne(tag)).thenReturn(bug);
     }
 
@@ -114,7 +114,7 @@ public class BugControllerTest {
     }
 
     private void givenBugWasCreated(String tag) {
-        when(bugRepository.save(any(Bug.class))).thenReturn(new BugFactory().withTag(tag).build());
+        when(bugRepository.save(any(Bug.class))).thenReturn(new BugBuilder().withTag(tag).build());
     }
 
     private String getBugDTOForSave(String tag) throws JsonProcessingException {

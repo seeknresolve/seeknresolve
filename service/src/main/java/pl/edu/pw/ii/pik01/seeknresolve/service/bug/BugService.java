@@ -35,6 +35,21 @@ public class BugService {
                 map(bug -> createDTOFromBug(bug)).collect(Collectors.toList());
     }
 
+    private BugDTO createDTOFromBug(Bug bug) {
+        BugDTO bugDTO = new BugDTO();
+        bugDTO.setDateCreated(bug.getDateCreated());
+        bugDTO.setDateModified(bug.getDateModified());
+        bugDTO.setTag(bug.getTag());
+        bugDTO.setName(bug.getName());
+        bugDTO.setDescription(bug.getDescription());
+        bugDTO.setState(bug.getState());
+        bugDTO.setPriority(bug.getPriority());
+        bugDTO.setProjectId(bug.getProject().getId());
+        bugDTO.setReporterId(bug.getReporter().getId());
+        bugDTO.setAssigneeId(bug.getAssignee().getId());
+        return bugDTO;
+    }
+
     public BugDTO createAndSaveNewBug(BugDTO bugDTO) {
         Bug bug = bugRepository.save(createBugFromDTO(bugDTO));
         if(bug == null) {
@@ -64,21 +79,6 @@ public class BugService {
             throw buildNotFoundException(tag);
         }
         return createDTOFromBug(bug);
-    }
-
-    private BugDTO createDTOFromBug(Bug bug) {
-        BugDTO bugDTO = new BugDTO();
-        bugDTO.setDateCreated(bug.getDateCreated());
-        bugDTO.setDateModified(bug.getDateModified());
-        bugDTO.setTag(bug.getTag());
-        bugDTO.setName(bug.getName());
-        bugDTO.setDescription(bug.getDescription());
-        bugDTO.setState(bug.getState());
-        bugDTO.setPriority(bug.getPriority());
-        bugDTO.setProjectId(bug.getProject().getId());
-        bugDTO.setReporterId(bug.getReporter().getId());
-        bugDTO.setAssigneeId(bug.getAssignee().getId());
-        return bugDTO;
     }
 
     public void deleteBugWithTag(String tag) {
