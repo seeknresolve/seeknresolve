@@ -19,6 +19,10 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'templates/bug/details.html',
             controller: 'BugDetailsController'
         }).
+        when('/bugCreate', {
+            templateUrl: 'templates/bug/create.html',
+            controller: 'BugCreateController'
+        }).
         when('/user', {
             templateUrl: 'templates/user/user.html'
         }).

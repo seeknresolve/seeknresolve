@@ -1,9 +1,20 @@
-<div class="container" ng-controller="BugListController">>
+<div class="container" ng-controller="BugListController">
 
     <div class="row col-md-12">
         <div class="row" ng-if="errorMessage != null">
             <div class="alert alert-danger">{{errorMessage}}</div>
         </div>
+
+        <div class="page-header">
+            <h3>Lista zgłoszonych błędów
+                <div class="btn-group btn-group-sm pull-right">
+                    <a href="#/bugCreate" role="button" class="btn btn-warning"><span class="glyphicon glyphicon-plus"></span> Zgłoś nowy błąd</a>
+                </div>
+            </h3>
+        </div>
+    </div>
+
+    <div class="row col-md-12">
 
         <table class="table table-hover table-striped table-condensed">
             <thead>
@@ -25,11 +36,23 @@
                         </a>
                     </td>
                     <td>{{bug.name}}</td>
-                    <td>{{bug.projectId}}</td>
-                    <td>{{bug.reporterId}}</td>
-                    <td>{{bug.assigneeId}}</td>
-                    <td>{{bug.dateCreated}}</td>
-                    <td>{{bug.dateModified}}</td>
+                    <td>
+                        <a href="#/project/{{bug.projectId}}">
+                            {{bug.projectId}} (TODO)
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#/user/{{bug.reporterId}}">
+                            {{bug.reporterId}} (TODO)
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#/user/{{bug.assigneeId}}">
+                            {{bug.assigneeId}} (TODO)
+                        </a>
+                    </td>
+                    <td>{{bug.dateCreated | date:'HH:mm:ss MM-dd-yyyy'}}</td>
+                    <td>{{bug.dateModified | date:'HH:mm:ss MM-dd-yyyy'}}</td>
                     <td>{{bug.state}}</td>
                     <td>{{bug.priority}}</td>
                 </tr>
