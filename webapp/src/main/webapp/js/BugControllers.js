@@ -7,20 +7,28 @@ bugControllers.controller('BugListController', ['$scope', '$http',
         $http.get('/bug/all').success(function(data) {
             $scope.bugs = data.object;
         }).error(function(data, status, headers, config) {
-            $scope.errorMessage = "Can't retrieve bug list!";
+            $scope.errorMessage = 'Can\'t fetch bugs list!';
         });
     }
 ]);
 
-bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routeParams',
-    function($scope, $http, $routeParams) {
+bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routeParams', '$location',
+    function($scope, $http, $routeParams, $location) {
         $scope.tag = null;
 
         $http.get('/bug/' + $routeParams.tag).success(function(data) {
             $scope.bug = data.object;
         }).error(function(data, status, headers, config) {
-            $scope.errorMessage = "Can't retrieve bug details!";
+            $scope.errorMessage = 'Can\'t fetch bug\'s details!';
         });
+
+        $scope.deleteBug = function(tag) {
+            $http.delete('/bug/' + tag).success(function (data, status, headers, config) {
+                $location.path('/bug');
+            }).error(function (data, status, headers, config) {
+                $scope.errorMessage = 'Can\'t delete bug!';
+            });
+        };
     }
 ]);
 
