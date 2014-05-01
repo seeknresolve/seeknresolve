@@ -1,10 +1,13 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -36,6 +39,15 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     private List<Comment> comments = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "roleName"))
+    private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany()
+    private Set<Permission> permissions = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -107,5 +119,21 @@ public class User {
 
     public void addComment(Comment comment) {
         comments.add(comment);
+    }
+
+    public Set<Role> getRoles() {
+        return ImmutableSet.copyOf(roles);
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
+
+    public Set<Permission> getPermissions() {
+        return ImmutableSet.copyOf(permissions);
+    }
+
+    public void addPermission(Permission permission) {
+        permissions.add(permission);
     }
 }
