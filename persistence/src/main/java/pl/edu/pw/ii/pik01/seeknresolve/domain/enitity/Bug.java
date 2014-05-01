@@ -1,7 +1,9 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 
+import com.google.common.collect.ImmutableList;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,8 +32,8 @@ public class Bug {
     @ManyToOne(optional = false)
     private User reporter;
 
-    @ManyToOne(optional = false)
-    private User assigned;
+    @ManyToOne(optional = true)
+    private User assignee;
 
     @ManyToOne(optional = false)
     private Project project;
@@ -113,12 +115,12 @@ public class Bug {
         this.reporter = reporter;
     }
 
-    public User getAssigned() {
-        return assigned;
+    public User getAssignee() {
+        return assignee;
     }
 
-    public void setAssigned(User assigned) {
-        this.assigned = assigned;
+    public void setAssignee(User assignee) {
+        this.assignee = assignee;
     }
 
     public Project getProject() {
@@ -130,7 +132,7 @@ public class Bug {
     }
 
     public List<Attachment> getAttachments() {
-        return attachments;
+        return ImmutableList.copyOf(attachments);
     }
 
     public void addAttachment(Attachment attachment) {
@@ -138,7 +140,7 @@ public class Bug {
     }
 
     public List<Comment> getComments() {
-        return comments;
+        return ImmutableList.copyOf(comments);
     }
 
     public void addComment(Comment comment) {

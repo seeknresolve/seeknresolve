@@ -1,4 +1,4 @@
-package pl.edu.pw.ii.pik01.seeknresolve.service;
+package pl.edu.pw.ii.pik01.seeknresolve.service.response;
 
 public class Response<T> {
     private T object;
