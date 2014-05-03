@@ -1,12 +1,16 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.user;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -37,6 +41,11 @@ public class UserService {
             throw new EntityNotFoundException("User with login=" + login + " not found.");
         }
         return buildDTOfromUser(user);
+    }
+
+    public List<UserDTO> getAllUsers() {
+        return Lists.newArrayList(userRepository.findAll()).stream().
+                map(user -> buildDTOfromUser(user)).collect(Collectors.toList());
     }
 
     private User crateUserFromUserDTO(UserDTO userDTO) {

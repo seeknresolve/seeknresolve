@@ -1,0 +1,32 @@
+<div class="container" ng-controller="UserListController">
+
+    <div class="row col-md-12">
+        <div class="row" ng-if="errorMessage != null">
+            <div class="alert alert-danger">{{errorMessage}}</div>
+        </div>
+
+        <div class="page-header">
+            <h3>Użytkownicy</h3>
+        </div>
+    </div>
+
+    <div class="row col-md-12">
+
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+            <th>Login</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>E-mail</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="user in users">
+                <td>{{user.login}} </td>
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
+                <td>{{user.email}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
