@@ -34,24 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                         "where u.login = ?");
     }
 
-    @Autowired
-    public void addAdminAccount(UserRepository userRepository, RoleRepository roleRepository){
-        Role role = new Role();
-        role.setRoleName("ADMIN");
-        role = roleRepository.save(role);
-
-
-        User user = new User();
-        user.setId(-1L);
-        user.setLogin("admin");
-        user.setPassword("admin");
-        user.setFirstName("admin");
-        user.setLastName("admin");
-        user.setEmail("admin@admin.admin");
-        user.addRole(role);
-        userRepository.save(user);
-    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
