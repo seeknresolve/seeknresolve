@@ -60,6 +60,5 @@ public class UserService {
         userDTO.setLastName(user.getLastName());
         userDTO.setPassword(user.getPassword());
         return userDTO;
-
     }
 }

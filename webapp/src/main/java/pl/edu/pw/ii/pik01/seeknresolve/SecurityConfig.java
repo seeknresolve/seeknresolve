@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Role;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 
 import javax.sql.DataSource;
@@ -26,17 +27,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .dataSource(dataSource)
                 .usersByUsernameQuery("select login, password, 1 from user where login = ?")
                 // TODO: to be replaced
-                .authoritiesByUsernameQuery("select u.login, r.roleName " +
+                .authoritiesByUsernameQuery("select u.login, r.role_name " +
                         "from user u " +
                         "join user_roles ur on ur.user_id = u.id " +
-                        "join role r on ur.role_id = r.roleName " +
+                        "join role r on ur.role_name = r.role_name " +
                         "where u.login = ?");
     }
 
     @Autowired
-    public void addAdminAccount(UserRepository userRepository){
+    public void addAdminAccount(UserRepository userRepository, RoleRepository roleRepository){
         Role role = new Role();
         role.setRoleName("ADMIN");
+        role = roleRepository.save(role);
+
 
         User user = new User();
         user.setId(-1L);

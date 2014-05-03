@@ -2,8 +2,11 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -40,10 +43,10 @@ public class User {
     @OneToMany(mappedBy = "author")
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany()
     @JoinTable(name = "user_roles",
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "roleName"))
+        inverseJoinColumns = @JoinColumn(name="role_name", referencedColumnName = "roleName"))
     private Set<Role> roles = new HashSet<>();
 
     @ManyToMany()
