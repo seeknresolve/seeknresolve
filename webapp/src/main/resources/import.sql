@@ -4,6 +4,12 @@ insert into user(id, login, password, first_name, last_name, email) values(2, 'm
 insert into user(id, login, password, first_name, last_name, email) values(3, 'ask', '', 'Alicja', 'Skóra', 'alicja@seeknresolve.pl');
 insert into user(id, login, password, first_name, last_name, email) values(4, 'sts', '', 'Stefan', 'Testowy', 'stefan@seeknresolve.pl');
 
+insert into user(id, login, password, first_name, last_name, email) values(5, 'admin', 'admin', 'ADMIN', 'ADMIN', 'admin@admin.admin');
+
+insert into role(role_name) values('ADMIN');
+
+insert into user_roles(user_id, role_name) values(5, 'ADMIN');
+
 insert into project(id, name, description, date_created) values(0, 'SeekNResolve', '', CURRENT_TIMESTAMP());
 insert into project(id, name, description, date_created) values(1, 'WebTeX', '', CURRENT_TIMESTAMP());
 insert into project(id, name, description, date_created) values(2, 'Test', '', CURRENT_TIMESTAMP());
