@@ -21,7 +21,7 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public ProjectDTO create(ProjectDTO projectDTO) {
+    public ProjectDTO createAndSaveNewProject(ProjectDTO projectDTO) {
         projectDTO.setDateCreated(DateTime.now());
         Project project = createProjectFromDTO(projectDTO);
         Project savedProject = projectRepository.save(project);
@@ -31,7 +31,7 @@ public class ProjectService {
         return createDTOFromProject(savedProject);
     }
 
-    public ProjectDTO get(Long id) {
+    public ProjectDTO getById(Long id) {
         Project project = projectRepository.findOne(id);
         if (project == null) {
             throw getEntityNotFoundException(id);

@@ -34,6 +34,7 @@ public class Project {
         // TODO: data tworzenia czy update?
         // setDateCreated(updatedProject.getDateCreated());
     }
+
     public Long getId() {
         return id;
     }

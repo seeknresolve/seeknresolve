@@ -24,7 +24,7 @@ public class ProjectController {
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<ProjectDTO> create(@RequestBody ProjectDTO projectDTO) {
         try {
-            ProjectDTO created = projectService.create(projectDTO);
+            ProjectDTO created = projectService.createAndSaveNewProject(projectDTO);
             return new Response<>(created, Response.Status.CREATED);
         } catch (PersistenceException e) {
             return new Response<>(null, Response.Status.NOT_CREATED);
@@ -39,7 +39,7 @@ public class ProjectController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<ProjectDTO> get(@PathVariable Long id) {
         try {
-            ProjectDTO found = projectService.get(id);
+            ProjectDTO found = projectService.getById(id);
             return new Response<>(found, Response.Status.RECEIVED);
         } catch (EntityNotFoundException e) {
             return new Response<>(null, Response.Status.NOT_RECEIVED);
