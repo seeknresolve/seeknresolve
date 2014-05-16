@@ -10,9 +10,9 @@ insert into role(role_name) values('ADMIN');
 
 insert into user_roles(user_id, role_name) values(5, 'ADMIN');
 
-insert into project(id, name, description, date_created) values(0, 'SeekNResolve', '', CURRENT_TIMESTAMP());
-insert into project(id, name, description, date_created) values(1, 'WebTeX', '', CURRENT_TIMESTAMP());
-insert into project(id, name, description, date_created) values(2, 'Test', '', CURRENT_TIMESTAMP());
+insert into project(id, name, description, date_created) values(0, 'SeekNResolve', 'Szajs robiony dla zaliczenia przedmiotu', CURRENT_TIMESTAMP());
+insert into project(id, name, description, date_created) values(1, 'WebTeX', 'Jedyny webowy edytor LaTeX w internetach', CURRENT_TIMESTAMP());
+insert into project(id, name, description, date_created) values(2, 'Test', 'Testowy opis testowego projetu', CURRENT_TIMESTAMP());
 
 insert into bug(tag, name, description, date_created, date_modified, reporter_id, assignee_id, project_id, state, priority) values('SNR-1', 'Bug 1', '', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 4, 1, 0, 'NEW', 'NORMAL');
 insert into bug(tag, name, description, date_created, date_modified, reporter_id, assignee_id, project_id, state, priority) values('SNR-2', 'Bug 2', '', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 4, 0, 0, 'NEW', 'NORMAL');
