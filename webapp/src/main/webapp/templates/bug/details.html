@@ -1,54 +1,102 @@
 <div class="container" ng-controller="BugDetailsController">
 
-    <div class="row col-lg-12">
-        <div class="row" ng-if="errorMessage != null">
+    <div class="row col-md-12">
+        <div ng-if="errorMessage != null">
             <div class="alert alert-danger">{{errorMessage}}</div>
         </div>
 
         <div class="page-header" ng-if="errorMessage == null">
-            <h3>{{bug.tag}} : {{bug.name}}
+            <h3>Bug {{bug.tag}} : {{bug.name}}
                 <div class="btn-group btn-group-sm pull-right">
-                    <a href="#/bug/" role="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Powrót do listy</a>
+                    <a href="#/bug/" role="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back to list</a>
+                    <a href="#/bug/edit/{{bug.tag}}" role="button" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                    <button role="button" class="btn btn-danger" ng-click="deleteBug(bug.tag)"><span class="glyphicon glyphicon-pencil"></span> Delete</button>
                 </div>
             </h3>
         </div>
     </div>
 
-    <div class="row col-lg-12" ng-if="errorMessage == null">
-        <div class="row col-lg-6">
+    <div class="row col-md-12" ng-if="errorMessage == null">
+        <div class="col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Szczegóły błędu:</div>
+                <div class="panel-heading">Description:</div>
+                <div class="panel-body">
+
+                    <p>{{bug.description}}</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Details:</div>
                 <div class="panel-body">
 
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label for="bugTag" class="col-sm-3 control-label">Tag:</label>
-                            <div class="col-sm-9">
+                            <label for="bugTag" class="col-md-4 control-label">Tag:</label>
+                            <div class="col-md-8">
                                 <input type="text" disabled class="form-control" id="bugTag"
                                        value="{{bug.tag}}"/>
                             </div>
                         </div>
-                    </form>
 
-                    <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label for="bugName" class="col-sm-3 control-label">Nazwa:</label>
-                            <div class="col-sm-9">
+                            <label for="bugName" class="col-md-4 control-label">Name:</label>
+                            <div class="col-md-8">
                                 <input type="text" disabled class="form-control" id="bugName"
                                        value="{{bug.name}}"/>
                             </div>
                         </div>
-                    </form>
 
-                    <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label for="bugDescription" class="col-sm-3 control-label">Opis:</label>
-                            <div class="col-sm-9">
-                                <input type="text" disabled class="form-control" id="bugDescription"
-                                       value="{{bug.description}}"/>
+                            <label for="bugDateCreated" class="col-md-4 control-label">Created:</label>
+                            <div class="col-md-8">
+                                <input type="text" disabled class="form-control" id="bugDateCreated"
+                                       value="{{bug.dateCreated | date:'HH:mm:ss MM-dd-yyyy'}}"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bugDateModified" class="col-md-4 control-label">Modified:</label>
+                            <div class="col-md-8">
+                                <input type="text" disabled class="form-control" id="bugDateModified"
+                                       value="{{bug.dateModified | date:'HH:mm:ss MM-dd-yyyy'}}"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bugProject" class="col-md-4 control-label">Project:</label>
+                            <div class="col-md-8">
+                                <a id="bugProject" href="#/project/{{bug.projectId}}" class="btn btn-primary btn-sm">{{bug.projectId}} (TODO)</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bugReporter" class="col-md-4 control-label">Reporter:</label>
+                            <div class="col-md-8">
+                                <a id="bugReporter" href="#/user/{{bug.reporterId}}" class="btn btn-primary btn-sm">{{bug.reporterId}} (TODO)</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bugAssignee" class="col-md-4 control-label">Assignee:</label>
+                            <div class="col-md-8">
+                                <a id="bugAssignee" href="#/user/{{bug.assigneeId}}" class="btn btn-primary btn-sm">{{bug.assigneeId}} (TODO)</a>
                             </div>
                         </div>
                     </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-md-12" ng-if="errorMessage == null">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Comments:</div>
+                <div class="panel-body">
                 </div>
             </div>
         </div>
