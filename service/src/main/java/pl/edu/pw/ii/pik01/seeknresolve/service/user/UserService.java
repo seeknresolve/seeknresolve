@@ -22,6 +22,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public User getLoggedUser() {
+        //TODO
+        return null;
+    }
+
     public UserDTO createAndSaveNewUser(UserDTO userDTO){
         User user = userRepository.save(crateUserFromUserDTO(userDTO));
         return user == null ? null : buildDTOfromUser(user);

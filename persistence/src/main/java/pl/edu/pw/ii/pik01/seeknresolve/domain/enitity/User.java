@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -51,6 +52,9 @@ public class User {
 
     @ManyToMany()
     private Set<Permission> permissions = new HashSet<>();
+
+    @ManyToOne(targetEntity = UserRole.class, optional = false)
+    private UserRole userRole;
 
     public Long getId() {
         return id;
@@ -138,5 +142,13 @@ public class User {
 
     public void addPermission(Permission permission) {
         permissions.add(permission);
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }
