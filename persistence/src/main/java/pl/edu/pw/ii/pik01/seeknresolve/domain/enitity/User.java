@@ -45,15 +45,10 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToMany()
-    @JoinTable(name = "user_roles",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name="role_name", referencedColumnName = "roleName"))
-    private Set<Role> roles = new HashSet<>();
-
-    @ManyToMany()
     private Set<Permission> permissions = new HashSet<>();
 
     @ManyToOne(targetEntity = UserRole.class, optional = false)
+    @JoinColumn(name = "user_role")
     private UserRole userRole;
 
     public Long getId() {
@@ -126,14 +121,6 @@ public class User {
 
     public void addComment(Comment comment) {
         comments.add(comment);
-    }
-
-    public Set<Role> getRoles() {
-        return ImmutableSet.copyOf(roles);
-    }
-
-    public void addRole(Role role) {
-        roles.add(role);
     }
 
     public Set<Permission> getPermissions() {

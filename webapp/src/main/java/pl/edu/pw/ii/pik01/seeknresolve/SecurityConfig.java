@@ -27,11 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .dataSource(dataSource)
                 .usersByUsernameQuery("select login, password, 1 from user where login = ?")
                 // TODO: to be replaced
-                .authoritiesByUsernameQuery("select u.login, r.role_name " +
-                        "from user u " +
-                        "join user_roles ur on ur.user_id = u.id " +
-                        "join role r on ur.role_name = r.role_name " +
-                        "where u.login = ?");
+                .authoritiesByUsernameQuery("select u.login, u.user_role from user u where u.login = ?");
     }
 
     @Override

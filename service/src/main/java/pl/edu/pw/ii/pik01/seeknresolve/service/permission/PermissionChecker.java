@@ -1,16 +1,52 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.permission;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.UserProjectRole;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
+
+import java.util.Set;
 
 public class PermissionChecker {
 
+    private final UserService userService;
+    private final UserProjectRoleRepository userProjectRoleRepository;
+
+    @Autowired
+    public PermissionChecker(UserService userService, UserProjectRoleRepository userProjectRoleRepository) {
+        this.userService = userService;
+        this.userProjectRoleRepository = userProjectRoleRepository;
+    }
+
     public boolean hasProjectPermission(Project project, String permission){
-        //TODO
-        return true;
+        //TODO: maybe JPQL would be better solution
+
+        User user = userService.getLoggedUser();
+        UserProjectRole userProjectRole = userProjectRoleRepository.findOneByUserAndProject(user, project);
+
+        if(userProjectRole != null){
+            return hasPermission(userProjectRole.getProjectRole().getPermissions(), permission);
+        }
+
+        return false;
     }
 
     public boolean hasPermission(String permission){
-        //TODO
-        return true;
+        //TODO: consider JPQL
+
+        User user = userService.getLoggedUser();
+        return hasPermission(user.getUserRole().getPermissions(), permission);
+    }
+
+    private boolean hasPermission(Set<Permission> permissions, String permission) {
+        for (Permission setPermission : permissions) {
+            if(permission.equals(setPermission.getPermission())){
+                return true;
+            }
+        }
+        return false;
     }
 }
