@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -44,13 +45,11 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToMany()
-    @JoinTable(name = "user_roles",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name="role_name", referencedColumnName = "roleName"))
-    private Set<Role> roles = new HashSet<>();
-
-    @ManyToMany()
     private Set<Permission> permissions = new HashSet<>();
+
+    @ManyToOne(targetEntity = UserRole.class, optional = false)
+    @JoinColumn(name = "user_role")
+    private UserRole userRole;
 
     public Long getId() {
         return id;
@@ -124,19 +123,19 @@ public class User {
         comments.add(comment);
     }
 
-    public Set<Role> getRoles() {
-        return ImmutableSet.copyOf(roles);
-    }
-
-    public void addRole(Role role) {
-        roles.add(role);
-    }
-
     public Set<Permission> getPermissions() {
         return ImmutableSet.copyOf(permissions);
     }
 
     public void addPermission(Permission permission) {
         permissions.add(permission);
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 }

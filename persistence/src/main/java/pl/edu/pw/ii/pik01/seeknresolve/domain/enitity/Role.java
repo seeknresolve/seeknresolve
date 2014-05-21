@@ -1,15 +1,20 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class Role {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Role {
 
     @Id
     private String roleName;
 
-
+    @ManyToMany()
+    @JoinTable(
+            name = "role_permissions"
+    )
+    private Set<Permission> permissions;
 
     public String getRoleName() {
         return roleName;
@@ -17,5 +22,13 @@ public class Role {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public Set<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
     }
 }
