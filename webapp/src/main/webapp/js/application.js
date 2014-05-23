@@ -5,7 +5,7 @@ var seekNResolve = angular.module('seekNResolve', [
     'userControllers'
 ]);
 
-seekNResolve.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+seekNResolve.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/index', {
             templateUrl: 'templates/hello.html'
@@ -49,6 +49,4 @@ seekNResolve.config(['$routeProvider', '$locationProvider', function($routeProvi
         otherwise({
             redirectTo: '/index'
         });
-
-    $locationProvider.html5Mode(true);
 }]);

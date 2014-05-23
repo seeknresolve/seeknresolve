@@ -45,8 +45,11 @@ public class BugService {
         bugDTO.setState(bug.getState());
         bugDTO.setPriority(bug.getPriority());
         bugDTO.setProjectId(bug.getProject().getId());
+        bugDTO.setProjectName(bug.getProject().getName());
         bugDTO.setReporterId(bug.getReporter().getId());
+        bugDTO.setReporterName(String.join(" ", bug.getReporter().getFirstName(), bug.getReporter().getLastName()));
         bugDTO.setAssigneeId(bug.getAssignee().getId());
+        bugDTO.setAssigneeName(String.join(" ", bug.getAssignee().getFirstName(), bug.getAssignee().getLastName()));
         return bugDTO;
     }
 
