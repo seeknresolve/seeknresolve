@@ -34,29 +34,31 @@ public class PermissionCheckerTest {
     @Test
     public void testCheckUserPermission() {
         UserRole userRole = new UserRole();
-        userRole.setPermissions(ImmutableSet.of(fromString("add_user")));
+        Permission addUserPermission = fromString("add_user");
+        userRole.setPermissions(ImmutableSet.of(addUserPermission));
 
         User user = new User();
         user.setUserRole(userRole);
 
         when(userService.getLoggedUser()).thenReturn(user);
 
-        assertTrue(permissionChecker.hasPermission("add_user"));
-        assertFalse(permissionChecker.hasPermission("remove_user"));
+        assertTrue(permissionChecker.hasPermission(addUserPermission));
+        assertFalse(permissionChecker.hasPermission(fromString("remove_user")));
     }
 
     @Test
     public void testCheckProjectPermission() {
         ProjectRole projectRole = new ProjectRole();
-        projectRole.setPermissions(ImmutableSet.of(fromString("create_bug")));
+        Permission createBugPermission = fromString("create_bug");
+        projectRole.setPermissions(ImmutableSet.of(createBugPermission));
 
         UserProjectRole userProjectRole = new UserProjectRole();
         userProjectRole.setProjectRole(projectRole);
 
         when(userProjectRoleRepository.findOneByUserAndProject(any(), any())).thenReturn(userProjectRole);
 
-        assertTrue(permissionChecker.hasProjectPermission(new Project(), "create_bug"));
-        assertFalse(permissionChecker.hasProjectPermission(new Project(), "remove_bug"));
+        assertTrue(permissionChecker.hasProjectPermission(new Project(), createBugPermission));
+        assertFalse(permissionChecker.hasProjectPermission(new Project(), fromString("remove_bug")));
     }
 
     private Permission fromString(String textualPermission) {

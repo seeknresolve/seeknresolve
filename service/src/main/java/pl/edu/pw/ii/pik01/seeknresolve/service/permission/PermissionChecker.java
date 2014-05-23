@@ -22,7 +22,7 @@ public class PermissionChecker {
         this.userProjectRoleRepository = userProjectRoleRepository;
     }
 
-    public boolean hasProjectPermission(Project project, String permission){
+    public boolean hasProjectPermission(Project project, Permission permission) {
         //TODO: maybe JPQL would be better solution
         User user = userService.getLoggedUser();
         UserProjectRole userProjectRole = userProjectRoleRepository.findOneByUserAndProject(user, project);
@@ -34,18 +34,18 @@ public class PermissionChecker {
         }
     }
 
-    public boolean hasPermission(String permission){
-        //TODO: consider JPQL
-        User user = userService.getLoggedUser();
-        return hasPermission(user.getUserRole().getPermissions(), permission);
-    }
-
-    private boolean hasPermission(Set<Permission> permissions, String permission) {
+    private boolean hasPermission(Set<Permission> permissions, Permission permission) {
         for (Permission setPermission : permissions) {
-            if(permission.equals(setPermission.getPermission())){
+            if(setPermission.equals(permission)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean hasPermission(Permission permission) {
+        //TODO: consider JPQL
+        User user = userService.getLoggedUser();
+        return hasPermission(user.getUserRole().getPermissions(), permission);
     }
 }
