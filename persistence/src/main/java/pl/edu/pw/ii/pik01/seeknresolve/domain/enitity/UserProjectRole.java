@@ -1,6 +1,9 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class UserProjectRole {

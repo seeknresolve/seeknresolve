@@ -2,12 +2,8 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

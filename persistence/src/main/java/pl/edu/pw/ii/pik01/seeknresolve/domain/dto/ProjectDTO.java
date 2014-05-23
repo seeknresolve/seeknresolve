@@ -2,11 +2,14 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 public class ProjectDTO {
     private Long id;
     private String name;
     private String description;
     private DateTime dateCreated;
+    private List<BugDTO> bugs;
 
     public Long getId() {
         return id;
@@ -38,5 +41,17 @@ public class ProjectDTO {
 
     public void setDateCreated(DateTime dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public List<BugDTO> getBugs() {
+        return bugs;
+    }
+
+    public void addBug(BugDTO bugDTO) {
+        bugs.add(bugDTO);
+    }
+
+    public void setBugs(List<BugDTO> bugs) {
+        this.bugs = bugs;
     }
 }
