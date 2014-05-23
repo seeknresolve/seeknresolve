@@ -6,6 +6,5 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
-
     User findOneByLogin(String login);
 }

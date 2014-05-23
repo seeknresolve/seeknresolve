@@ -44,7 +44,7 @@ public class User {
     @OneToMany(mappedBy = "author")
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToMany()
+    @ManyToMany
     private Set<Permission> permissions = new HashSet<>();
 
     @ManyToOne(targetEntity = UserRole.class, optional = false)

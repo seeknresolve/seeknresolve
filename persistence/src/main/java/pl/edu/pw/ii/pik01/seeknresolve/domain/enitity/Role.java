@@ -6,13 +6,12 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Role {
-
     @Id
     private String roleName;
 
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(
-            name = "role_permissions"
+        name = "role_permissions"
     )
     private Set<Permission> permissions;
 
