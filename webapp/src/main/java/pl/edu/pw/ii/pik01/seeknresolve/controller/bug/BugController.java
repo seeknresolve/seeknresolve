@@ -9,6 +9,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
+import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
 import javax.persistence.PersistenceException;
 import java.util.List;
@@ -17,10 +18,12 @@ import java.util.List;
 @RequestMapping("/bug")
 public class BugController {
     private BugService bugService;
+    private UserService userService;
 
     @Autowired
-    public BugController(BugService bugService) {
+    public BugController(BugService bugService, UserService userService) {
         this.bugService = bugService;
+        this.userService = userService;
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,8 +40,7 @@ public class BugController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<List<BugDTO>> getAll() {
-        //TODO: get current user
-        List<BugDTO> bugs = bugService.getAllBugsForCurrentUser(null);
+        List<BugDTO> bugs = bugService.getAllBugsForCurrentUser(userService.getLoggedUser());
         return new Response<>(bugs, Response.Status.RECEIVED);
     }
 

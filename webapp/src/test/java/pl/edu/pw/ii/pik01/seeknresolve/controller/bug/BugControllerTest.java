@@ -19,12 +19,11 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
+import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -40,12 +39,15 @@ public class BugControllerTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private UserService userService;
+
     private ObjectMapper objectMapper;
 
     @Before
     public void setup() {
         BugService bugService = new BugService(bugRepository, projectRepository, userRepository, new DtosFactory());
-        BugController bugController = new BugController(bugService);
+        BugController bugController = new BugController(bugService, userService);
         mockMvc = MockMvcBuilders.standaloneSetup(bugController).build();
         objectMapper = new ObjectMapper();
     }

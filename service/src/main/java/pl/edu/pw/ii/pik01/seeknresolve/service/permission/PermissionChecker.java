@@ -35,12 +35,7 @@ public class PermissionChecker {
     }
 
     private boolean hasPermission(Set<Permission> permissions, Permission permission) {
-        for (Permission setPermission : permissions) {
-            if(setPermission.equals(permission)) {
-                return true;
-            }
-        }
-        return false;
+        return permissions.contains(permission);
     }
 
     public boolean hasPermission(Permission permission) {

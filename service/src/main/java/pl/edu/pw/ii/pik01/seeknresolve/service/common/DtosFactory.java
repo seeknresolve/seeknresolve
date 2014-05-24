@@ -3,8 +3,10 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.common;
 import org.springframework.stereotype.Component;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 
 @Component
 public class DtosFactory {
@@ -34,5 +36,17 @@ public class DtosFactory {
         bugDTO.setAssigneeId(bug.getAssignee().getId());
         bugDTO.setAssigneeName(String.join(" ", bug.getAssignee().getFirstName(), bug.getAssignee().getLastName()));
         return bugDTO;
+    }
+
+    public UserDTO createUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setLogin(user.getLogin());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setUserRole(user.getUserRole().getRoleName());
+        return userDTO;
     }
 }
