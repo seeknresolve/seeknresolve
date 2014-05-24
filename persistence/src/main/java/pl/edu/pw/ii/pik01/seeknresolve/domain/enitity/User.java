@@ -48,10 +48,7 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name="role_name", referencedColumnName = "roleName"))
     private Set<Role> roles = new HashSet<>();
-
-    @ManyToMany()
-    private Set<Permission> permissions = new HashSet<>();
-
+    
     public Long getId() {
         return id;
     }
@@ -132,11 +129,4 @@ public class User {
         roles.add(role);
     }
 
-    public Set<Permission> getPermissions() {
-        return ImmutableSet.copyOf(permissions);
-    }
-
-    public void addPermission(Permission permission) {
-        permissions.add(permission);
-    }
 }
