@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.service.security.UserDetailServiceImpl;
 
 import javax.sql.DataSource;
 
@@ -14,16 +16,13 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
-    private DataSource dataSource;
+    private UserRepository userRepository;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+
         auth
-                .jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery("select login, password, 1 from user where login = ?")
-                // TODO: to be replaced
-                .authoritiesByUsernameQuery("select u.login, u.user_role from user u where u.login = ?");
+                .userDetailsService(new UserDetailServiceImpl(userRepository));
     }
 
     @Override

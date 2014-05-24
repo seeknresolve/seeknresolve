@@ -31,6 +31,12 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    private boolean enabled;
+
+    private boolean expired;
+
+    private boolean locked;
+
     @OneToMany(mappedBy = "reporter")
     private List<Bug> bugsReported = new ArrayList<>();
 
@@ -90,6 +96,30 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     public List<Bug> getReportedBugs() {
