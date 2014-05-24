@@ -2,7 +2,6 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.user;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
@@ -30,7 +29,11 @@ public class UserService {
         ContextUser principal = (ContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // we have to get user with refreshed information
-        return userRepository.findByLogin(principal.getUser().getLogin());
+        return userRepository.findOneByLogin(principal.getUser().getLogin());
+    }
+
+    public UserDTO getLoggedUserDTO() {
+        return dtosFactory.createUserDTO(getLoggedUser());
     }
 
     public UserDTO createAndSaveNewUser(UserDTO userDTO){
@@ -47,7 +50,7 @@ public class UserService {
     }
 
     public UserDTO findOneByLogin(String login){
-        User user = userRepository.findByLogin(login);
+        User user = userRepository.findOneByLogin(login);
         if(user == null){
             throw new EntityNotFoundException("User with login=" + login + " not found.");
         }

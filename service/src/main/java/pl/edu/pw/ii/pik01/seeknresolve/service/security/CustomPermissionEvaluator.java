@@ -6,9 +6,7 @@ import org.springframework.security.core.Authentication;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionChecker;
-import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
 import java.io.Serializable;
 

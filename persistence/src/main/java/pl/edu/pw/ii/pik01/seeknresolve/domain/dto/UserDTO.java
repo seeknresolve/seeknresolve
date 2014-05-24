@@ -1,7 +1,6 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
 public class UserDTO {
-
     private Long id;
     private String login;
     private String password;
@@ -64,5 +63,18 @@ public class UserDTO {
 
     public String getUserRole() {
         return userRole;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", userRole='" + userRole + '\'' +
+                '}';
     }
 }

@@ -55,4 +55,14 @@ public class ProjectDTO {
     public void setBugs(List<BugDTO> bugs) {
         this.bugs = bugs;
     }
+
+    @Override
+    public String toString() {
+        return "ProjectDTO{" +
+                "description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                ", id=" + id +
+                ", dateCreated=" + dateCreated +
+                '}';
+    }
 }

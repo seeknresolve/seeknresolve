@@ -45,7 +45,6 @@ project(':persistence') {
 project(':service') {
     dependencies {
         compile project(':persistence')
-        testCompile 'org.easytesting:fest-assert-core:2.0M10'
     }
 }
 

@@ -1,11 +1,8 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.security;
 
 import com.google.common.collect.ImmutableSet;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
-
-import java.util.Collection;
 
 public class ContextUser extends org.springframework.security.core.userdetails.User {
 

@@ -1,7 +1,5 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.security;
 
-import junit.framework.TestCase;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
