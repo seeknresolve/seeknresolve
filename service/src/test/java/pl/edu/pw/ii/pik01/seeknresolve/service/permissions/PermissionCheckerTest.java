@@ -11,9 +11,10 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleReposito
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionChecker;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PermissionCheckerTest {

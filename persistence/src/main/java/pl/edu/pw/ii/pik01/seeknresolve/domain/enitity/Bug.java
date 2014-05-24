@@ -3,7 +3,6 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
 import com.google.common.collect.ImmutableList;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 
 import javax.persistence.*;
 import java.util.ArrayList;
