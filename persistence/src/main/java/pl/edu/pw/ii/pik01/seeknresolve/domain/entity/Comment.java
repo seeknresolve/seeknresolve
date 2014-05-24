@@ -1,4 +1,4 @@
-package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
+package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;

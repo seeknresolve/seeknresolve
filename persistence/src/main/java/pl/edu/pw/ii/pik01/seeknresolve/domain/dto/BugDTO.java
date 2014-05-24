@@ -1,7 +1,7 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
 import org.joda.time.DateTime;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Bug;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 
 public class BugDTO {
     private String tag;

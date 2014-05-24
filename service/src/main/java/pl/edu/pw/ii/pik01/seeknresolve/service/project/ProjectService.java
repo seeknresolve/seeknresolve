@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;

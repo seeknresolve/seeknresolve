@@ -6,10 +6,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Role;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 
 import javax.sql.DataSource;
 

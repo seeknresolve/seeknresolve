@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.*;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionChecker;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;

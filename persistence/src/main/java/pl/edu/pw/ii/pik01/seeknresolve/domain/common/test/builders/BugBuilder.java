@@ -1,9 +1,9 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders;
 
 import org.joda.time.DateTime;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Bug;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Project;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 
 public class BugBuilder {
     private String tag;

@@ -3,8 +3,8 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.common;
 import org.springframework.stereotype.Component;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Bug;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 
 @Component
 public class DtosFactory {

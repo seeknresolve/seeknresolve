@@ -2,10 +2,10 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.permission;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Permission;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Project;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.UserProjectRole;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
