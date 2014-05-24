@@ -8,11 +8,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BugServiceTest {
@@ -29,7 +28,7 @@ public class BugServiceTest {
 
     @Before
     public void setup() {
-        bugService = new BugService(bugRepository, projectRepository, userRepository);
+        bugService = new BugService(bugRepository, projectRepository, userRepository, new DtosFactory());
     }
 
     @Test(expected = EntityNotFoundException.class)

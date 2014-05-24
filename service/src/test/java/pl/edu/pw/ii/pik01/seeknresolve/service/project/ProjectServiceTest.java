@@ -5,13 +5,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
+import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
-import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.mockito.Mockito.*;
 
@@ -24,7 +21,7 @@ public class ProjectServiceTest {
 
     @Before
     public void setUp() {
-        projectService = new ProjectService(projectRepository);
+        projectService = new ProjectService(projectRepository, new DtosFactory());
     }
 
     @Test

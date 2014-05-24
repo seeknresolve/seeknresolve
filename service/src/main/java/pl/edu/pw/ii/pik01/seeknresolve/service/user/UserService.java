@@ -2,10 +2,10 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.user;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -20,6 +20,13 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
+    }
+
+    public User getLoggedUser() {
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return userRepository.findOneByLogin(principal.getUsername());
     }
 
     public UserDTO createAndSaveNewUser(UserDTO userDTO){
@@ -56,7 +63,7 @@ public class UserService {
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setLogin(userDTO.getLogin());
-        //TODO: should initialize lists?
+        //TODO: should initialize lists and other?
         return user;
     }
 
@@ -68,6 +75,7 @@ public class UserService {
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
         userDTO.setPassword(user.getPassword());
+        userDTO.setUserRole(user.getUserRole().getRoleName());
         return userDTO;
     }
 }

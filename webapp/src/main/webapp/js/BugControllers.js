@@ -25,6 +25,7 @@ bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routePar
         $scope.deleteBug = function(tag) {
             $http.delete('/bug/' + tag).success(function (data, status, headers, config) {
                 $location.path('/bug');
+                $scope.message = 'Bug ' + tag + ' was deleted';
             }).error(function (data, status, headers, config) {
                 $scope.errorMessage = 'Can\'t delete bug!';
             });

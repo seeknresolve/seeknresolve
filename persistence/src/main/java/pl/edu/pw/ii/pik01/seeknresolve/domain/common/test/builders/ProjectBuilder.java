@@ -1,7 +1,7 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders;
 
 import org.joda.time.DateTime;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 
 public class ProjectBuilder {
     private Long id = 0L;

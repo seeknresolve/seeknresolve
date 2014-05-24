@@ -5,6 +5,10 @@
             <div class="alert alert-danger">{{errorMessage}}</div>
         </div>
 
+        <div class="row" ng-if="message = null">
+            <div class="alert alert-success">{{message}}</div>
+        </div>
+
         <div class="page-header">
             <h3>List of reported bugs:
                 <div class="btn-group btn-group-sm pull-right">
@@ -37,17 +41,17 @@
                     <td>{{bug.name}}</td>
                     <td>
                         <a href="#/project/{{bug.projectId}}">
-                            {{bug.projectId}} (TODO)
+                            {{bug.projectName}}
                         </a>
                     </td>
                     <td>
                         <a href="#/user/{{bug.reporterId}}">
-                            {{bug.reporterId}} (TODO)
+                            {{bug.reporterName}}
                         </a>
                     </td>
                     <td>
                         <a href="#/user/{{bug.assigneeId}}">
-                            {{bug.assigneeId}} (TODO)
+                            {{bug.assigneeName}}
                         </a>
                     </td>
                     <td>{{bug.dateCreated | date:'HH:mm:ss MM-dd-yyyy'}}</td>

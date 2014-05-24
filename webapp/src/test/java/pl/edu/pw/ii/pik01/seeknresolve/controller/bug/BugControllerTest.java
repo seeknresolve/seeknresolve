@@ -13,11 +13,12 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.BugBuilder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Bug;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
+import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -43,7 +44,7 @@ public class BugControllerTest {
 
     @Before
     public void setup() {
-        BugService bugService = new BugService(bugRepository, projectRepository, userRepository);
+        BugService bugService = new BugService(bugRepository, projectRepository, userRepository, new DtosFactory());
         BugController bugController = new BugController(bugService);
         mockMvc = MockMvcBuilders.standaloneSetup(bugController).build();
         objectMapper = new ObjectMapper();

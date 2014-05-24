@@ -4,8 +4,9 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
 import javax.persistence.PersistenceException;
@@ -15,10 +16,12 @@ import java.util.List;
 @Service
 public class ProjectService {
     private ProjectRepository projectRepository;
+    private DtosFactory dtosFactory;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, DtosFactory dtosFactory) {
         this.projectRepository = projectRepository;
+        this.dtosFactory = dtosFactory;
     }
 
     public ProjectDTO createAndSaveNewProject(ProjectDTO projectDTO) {
@@ -28,7 +31,7 @@ public class ProjectService {
         if (savedProject == null) {
             throw new PersistenceException("Cannot save project with id: " + projectDTO.getId());
         }
-        return createDTOFromProject(savedProject);
+        return dtosFactory.createProjectDTO(savedProject);
     }
 
     public ProjectDTO getById(Long id) {
@@ -36,13 +39,13 @@ public class ProjectService {
         if (project == null) {
             throw getEntityNotFoundException(id);
         }
-        return createDTOFromProject(project);
+        return dtosFactory.createProjectDTO(project);
     }
 
     public List<ProjectDTO> getAll() {
         List<ProjectDTO> result = new ArrayList<>();
         for (Project project: projectRepository.findAll()) {
-            result.add(createDTOFromProject(project));
+            result.add(dtosFactory.createProjectDTO(project));
         }
         return result;
     }
@@ -54,7 +57,7 @@ public class ProjectService {
         }
         //TODO: nie aktualizuje
         project.update(createProjectFromDTO(projectDTO));
-        return createDTOFromProject(project);
+        return dtosFactory.createProjectDTO(project);
     }
 
     public void delete(Long id) {
@@ -75,14 +78,5 @@ public class ProjectService {
         project.setDescription(projectDTO.getDescription());
         project.setDateCreated(projectDTO.getDateCreated());
         return project;
-    }
-
-    private ProjectDTO createDTOFromProject(Project project) {
-        ProjectDTO projectDTO = new ProjectDTO();
-        projectDTO.setId(project.getId());
-        projectDTO.setName(project.getName());
-        projectDTO.setDescription(project.getDescription());
-        projectDTO.setDateCreated(project.getDateCreated());
-        return projectDTO;
     }
 }

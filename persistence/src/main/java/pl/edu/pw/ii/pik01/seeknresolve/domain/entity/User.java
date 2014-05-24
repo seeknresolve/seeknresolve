@@ -1,12 +1,9 @@
-package pl.edu.pw.ii.pik01.seeknresolve.domain.enitity;
+package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -42,13 +39,11 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     private List<Comment> comments = new ArrayList<>();
-
-    @ManyToMany()
-    @JoinTable(name = "user_roles",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name="role_name", referencedColumnName = "roleName"))
-    private Set<Role> roles = new HashSet<>();
     
+    @ManyToOne(targetEntity = UserRole.class, optional = false)
+    @JoinColumn(name = "user_role")
+    private UserRole userRole;
+
     public Long getId() {
         return id;
     }
@@ -121,12 +116,12 @@ public class User {
         comments.add(comment);
     }
 
-    public Set<Role> getRoles() {
-        return ImmutableSet.copyOf(roles);
+    public UserRole getUserRole() {
+        return userRole;
     }
 
-    public void addRole(Role role) {
-        roles.add(role);
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
 }

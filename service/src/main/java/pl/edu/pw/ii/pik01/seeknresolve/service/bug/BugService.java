@@ -5,11 +5,12 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.Bug;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.enitity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
 import javax.persistence.PersistenceException;
@@ -21,33 +22,20 @@ public class BugService {
     private BugRepository bugRepository;
     private ProjectRepository projectRepository;
     private UserRepository userRepository;
+    private DtosFactory dtosFactory;
 
     @Autowired
-    public BugService(BugRepository bugRepository, ProjectRepository projectRepository, UserRepository userRepository) {
+    public BugService(BugRepository bugRepository, ProjectRepository projectRepository, UserRepository userRepository, DtosFactory dtosFactory) {
         this.bugRepository = bugRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.dtosFactory = dtosFactory;
     }
 
     //TODO: obsluzyc usera dobrze
     public List<BugDTO> getAllBugsForCurrentUser(User loggedUser) {
         return Lists.newArrayList(bugRepository.findAll()).stream().
-                map(bug -> createDTOFromBug(bug)).collect(Collectors.toList());
-    }
-
-    private BugDTO createDTOFromBug(Bug bug) {
-        BugDTO bugDTO = new BugDTO();
-        bugDTO.setDateCreated(bug.getDateCreated());
-        bugDTO.setDateModified(bug.getDateModified());
-        bugDTO.setTag(bug.getTag());
-        bugDTO.setName(bug.getName());
-        bugDTO.setDescription(bug.getDescription());
-        bugDTO.setState(bug.getState());
-        bugDTO.setPriority(bug.getPriority());
-        bugDTO.setProjectId(bug.getProject().getId());
-        bugDTO.setReporterId(bug.getReporter().getId());
-        bugDTO.setAssigneeId(bug.getAssignee().getId());
-        return bugDTO;
+                map(bug -> dtosFactory.createBugDTO(bug)).collect(Collectors.toList());
     }
 
     public BugDTO createAndSaveNewBug(BugDTO bugDTO) {
@@ -55,7 +43,7 @@ public class BugService {
         if(bug == null) {
             throw new PersistenceException("Cannot save bug with tag: " + bugDTO.getTag());
         }
-        return createDTOFromBug(bug);
+        return dtosFactory.createBugDTO(bug);
     }
 
     private Bug createBugFromDTO(BugDTO bugDTO) {
@@ -76,20 +64,20 @@ public class BugService {
     public BugDTO getBugWithTag(String tag) {
         Bug bug = bugRepository.findOne(tag);
         if(bug == null) {
-            throw buildNotFoundException(tag);
+            throw bugNotFoundException(tag);
         }
-        return createDTOFromBug(bug);
+        return dtosFactory.createBugDTO(bug);
     }
 
     public void deleteBugWithTag(String tag) {
         if(bugRepository.exists(tag)) {
             bugRepository.delete(tag);
         } else {
-            throw buildNotFoundException(tag);
+            throw bugNotFoundException(tag);
         }
     }
 
-    private EntityNotFoundException buildNotFoundException(String tag) {
+    private EntityNotFoundException bugNotFoundException(String tag) {
         return new EntityNotFoundException("Bug with tag: " + tag + " not found.");
     }
 }
