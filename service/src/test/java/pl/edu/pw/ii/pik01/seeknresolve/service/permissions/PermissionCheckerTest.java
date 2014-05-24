@@ -56,7 +56,7 @@ public class PermissionCheckerTest {
         UserProjectRole userProjectRole = new UserProjectRole();
         userProjectRole.setProjectRole(projectRole);
 
-        when(userProjectRoleRepository.findOneByUserAndProject(any(), any())).thenReturn(userProjectRole);
+        when(userProjectRoleRepository.findByUserAndProject(any(), any())).thenReturn(userProjectRole);
 
         assertTrue(permissionChecker.hasProjectPermission(new Project(), createBugPermission));
         assertFalse(permissionChecker.hasProjectPermission(new Project(), fromString("remove_bug")));

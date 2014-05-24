@@ -2,6 +2,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectDTO {
@@ -9,7 +10,7 @@ public class ProjectDTO {
     private String name;
     private String description;
     private DateTime dateCreated;
-    private List<BugDTO> bugs;
+    private List<BugDTO> bugs = new ArrayList<>();
 
     public Long getId() {
         return id;

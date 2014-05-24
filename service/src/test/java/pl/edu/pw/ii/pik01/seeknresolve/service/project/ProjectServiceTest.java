@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
@@ -17,11 +18,14 @@ public class ProjectServiceTest {
     @Mock
     private ProjectRepository projectRepository;
 
+    @Mock
+    private UserProjectRoleRepository userProjectRoleRepository;
+
     private ProjectService projectService;
 
     @Before
     public void setUp() {
-        projectService = new ProjectService(projectRepository, new DtosFactory());
+        projectService = new ProjectService(projectRepository, userProjectRoleRepository, new DtosFactory());
     }
 
     @Test
@@ -44,5 +48,10 @@ public class ProjectServiceTest {
         projectService.delete(simpleId);
 
         verify(projectRepository, times(1)).delete(simpleId);
+    }
+
+    @Test
+    public void shouldReturnListOfProjectForWhichUserHasAnyRole() {
+
     }
 }

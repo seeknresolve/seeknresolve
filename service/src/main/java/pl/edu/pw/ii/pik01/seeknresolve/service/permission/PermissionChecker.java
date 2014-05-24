@@ -25,7 +25,7 @@ public class PermissionChecker {
     public boolean hasProjectPermission(Project project, Permission permission) {
         //TODO: maybe JPQL would be better solution
         User user = userService.getLoggedUser();
-        UserProjectRole userProjectRole = userProjectRoleRepository.findOneByUserAndProject(user, project);
+        UserProjectRole userProjectRole = userProjectRoleRepository.findByUserAndProject(user, project);
 
         if(userProjectRole != null) {
             return hasPermission(userProjectRole.getProjectRole().getPermissions(), permission);
