@@ -2,7 +2,8 @@ var seekNResolve = angular.module('seekNResolve', [
     'ngRoute',
     'bugControllers',
     'projectControllers',
-    'userControllers'
+    'userControllers',
+    'roleControllers'
 ]);
 
 seekNResolve.config(['$routeProvider', function($routeProvider) {
@@ -40,6 +41,11 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
         when('/user', {
             templateUrl: 'templates/user/list.html',
             controller: 'UserListController'
+        }).
+
+        when('/role/all_user', {
+            templateUrl: 'templates/role/user_list.html',
+            controller: 'UserRoleListController'
         }).
 
         when('/about', {
