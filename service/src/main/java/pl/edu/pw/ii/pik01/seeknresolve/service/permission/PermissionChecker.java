@@ -41,8 +41,9 @@ public class PermissionChecker {
     }
 
     private boolean hasPermission(Set<Permission> permissions, Permission permission) {
-        return permissions
+        return !permissions
                 .stream()
-                .filter(setPermission -> setPermission.getPermission().equals(permission.getPermission())) != null;
+                .filter(setPermission -> setPermission.getPermission().equals(permission.getPermission()))
+                .findFirst().isPresent();
     }
 }
