@@ -1,12 +1,10 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.common;
 
 import org.springframework.stereotype.Component;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.*;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.*;
+
+import java.util.stream.Collectors;
 
 @Component
 public class DtosFactory {
@@ -48,5 +46,24 @@ public class DtosFactory {
         userDTO.setPassword(user.getPassword());
         userDTO.setUserRole(user.getUserRole().getRoleName());
         return userDTO;
+    }
+
+    public static RoleDTO createRoleDTO(Role role) {
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setRoleName(role.getRoleName());
+        if(role.getPermissions() != null) {
+            roleDTO.setPermissions(role
+                    .getPermissions()
+                    .stream()
+                    .map(permission -> createPermissionDTO(permission))
+                    .collect(Collectors.toSet()));
+        }
+        return roleDTO;
+    }
+
+    public static PermissionDTO createPermissionDTO(Permission permission) {
+        PermissionDTO permissionDTO = new PermissionDTO();
+        permissionDTO.setPermission(permission.getPermission());
+        return permissionDTO;
     }
 }
