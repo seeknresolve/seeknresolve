@@ -2,11 +2,13 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.user;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.service.security.ContextUser;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -23,10 +25,10 @@ public class UserService {
     }
 
     public User getLoggedUser() {
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ContextUser principal = (ContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return userRepository.findOneByLogin(principal.getUsername());
+        // we have to get user with refreshed information
+        return userRepository.findOneByLogin(principal.getUser().getLogin());
     }
 
     public UserDTO createAndSaveNewUser(UserDTO userDTO){
