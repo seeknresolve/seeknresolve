@@ -1,7 +1,6 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Permission {
@@ -11,6 +10,14 @@ public class Permission {
 
     @Column(nullable = false)
     private String permission;
+
+    public Permission() {
+
+    }
+
+    public Permission(String permission) {
+        this.permission = permission;
+    }
 
     public long getId() {
         return id;

@@ -19,7 +19,11 @@ bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routePar
         $http.get('/bug/' + $routeParams.tag).success(function(data) {
             $scope.bug = data.object;
         }).error(function(data, status, headers, config) {
-            $scope.errorMessage = 'Can\'t fetch bug\'s details!';
+            if(data.error) {
+                $scope.errorMessage = data.error;
+            } else {
+                $scope.errorMessage = 'Can\'t fetch bug\'s details!';
+            }
         });
 
         $scope.deleteBug = function(tag) {
