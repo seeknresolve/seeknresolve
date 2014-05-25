@@ -34,13 +34,15 @@ public class PermissionChecker {
         }
     }
 
-    private boolean hasPermission(Set<Permission> permissions, Permission permission) {
-        return permissions.contains(permission);
-    }
-
     public boolean hasPermission(Permission permission) {
         //TODO: consider JPQL
         User user = userService.getLoggedUser();
         return hasPermission(user.getUserRole().getPermissions(), permission);
+    }
+
+    private boolean hasPermission(Set<Permission> permissions, Permission permission) {
+        return permissions
+                .stream()
+                .filter(setPermission -> setPermission.getPermission().equals(permission.getPermission())) != null;
     }
 }
