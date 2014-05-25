@@ -6,9 +6,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.security.UserDetailServiceImpl;
-
 
 @Configuration
 @EnableWebSecurity
@@ -19,7 +19,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .userDetailsService(new UserDetailServiceImpl(userRepository));
+            .userDetailsService(new UserDetailServiceImpl(userRepository))
+            .passwordEncoder(new BCryptPasswordEncoder(16));
     }
 
     @Override

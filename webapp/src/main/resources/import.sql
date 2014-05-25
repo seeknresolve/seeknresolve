@@ -1,12 +1,12 @@
 insert into user_role(role_name) values('ADMIN');
 insert into user_role(role_name) values('USER');
 
-insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(0, 'rnw', 'rnw', 'Rafał', 'Nowak', 'rafal@seeknresolve.pl', 'USER', 1, 0, 0);
-insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(1, 'wkr', 'wkr', 'Wojciech', 'Korzeniowski', 'wojtek@seeknresolve.pl', 'USER', 1, 0, 0);
-insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(2, 'mdz', 'mdz', 'Mateusz', 'Dziurdziak', 'mateusz@seeknresolve.pl', 'USER', 1, 0, 0);
-insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(3, 'ask', 'ask', 'Alicja', 'Skóra', 'alicja@seeknresolve.pl', 'USER', 1, 0, 0);
-insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(4, 'sts', 'sts', 'Stefan', 'Testowy', 'stefan@seeknresolve.pl', 'USER', 1, 0, 0);
-insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(5, 'admin', 'admin', 'ADMIN', 'ADMIN', 'admin@admin.admin', 'ADMIN', 1, 0, 0);
+insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(0, 'rnw', '$2a$10$tZvYwoK2yFJ4imYwXm4k4uACDOJQkxRr6ZBmd4BA3YeMN21ztGzfS', 'Rafał', 'Nowak', 'rafal@seeknresolve.pl', 'USER', 1, 0, 0);
+insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(1, 'wkr', '$2a$10$9zHPKMMuUPFj4OZjQfP1f.o/dz4BT2Iw3ETtE.e7MW6reVm2w/niW', 'Wojciech', 'Korzeniowski', 'wojtek@seeknresolve.pl', 'USER', 1, 0, 0);
+insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(2, 'mdz', '$2a$10$18TM60zpmava01M6qUWAHeG3o2BF1yrhzx/PadDuMBDS1Fw6ZIqSW', 'Mateusz', 'Dziurdziak', 'mateusz@seeknresolve.pl', 'USER', 1, 0, 0);
+insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(3, 'ask', '$2a$10$W2f8p9oyUJQJkIYHT6qcPucIIBaKORpVEOhtkxRk/1w1Q1pB900VO', 'Alicja', 'Skóra', 'alicja@seeknresolve.pl', 'USER', 1, 0, 0);
+insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(4, 'sts', '$2a$10$KFkNHRaBO4WFt.LBcvjQQej9mBINY00YyD1u4puXdq60HFlyb0T/q', 'Stefan', 'Testowy', 'stefan@seeknresolve.pl', 'USER', 1, 0, 0);
+insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(5, 'admin', '$2a$10$IgBPm78WT/pympYhHcXayuf17KHhmr.COHRHYJaXfto3tAzlBp4pi', 'ADMIN', 'ADMIN', 'admin@admin.admin', 'ADMIN', 1, 0, 0);
 
 insert into project(id, name, description, date_created) values(0, 'SeekNResolve', 'Szajs robiony dla zaliczenia przedmiotu', CURRENT_TIMESTAMP());
 insert into project(id, name, description, date_created) values(1, 'WebTeX', 'Jedyny webowy edytor LaTeX w internetach', CURRENT_TIMESTAMP());

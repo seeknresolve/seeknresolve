@@ -13,7 +13,6 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 @Component
 public class UserDetailServiceImpl implements UserDetailsService {
-
     private final UserRepository userRepository;
 
     @Autowired
