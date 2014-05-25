@@ -20,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .userDetailsService(new UserDetailServiceImpl(userRepository))
-            .passwordEncoder(new BCryptPasswordEncoder(16));
+            .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
