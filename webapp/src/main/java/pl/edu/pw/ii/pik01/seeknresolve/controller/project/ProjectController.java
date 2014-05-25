@@ -2,6 +2,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.controller.project;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
@@ -39,6 +40,7 @@ public class ProjectController {
         return new Response<>(projectService.getAll(userService.getLoggedUser()), Response.Status.RECEIVED);
     }
 
+    @PreAuthorize("hasPermission(#id, 'Project', 'project:view') || hasPermission(#id, 'Project', 'project:everything')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<ProjectDTO> get(@PathVariable Long id) {
         try {
@@ -49,6 +51,7 @@ public class ProjectController {
         }
     }
 
+    @PreAuthorize("hasPermission(#id, 'Project', 'project:update') || hasPermission(#id, 'Project', 'project:everything')")
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<ProjectDTO> update(@RequestBody ProjectDTO projectDTO) {
         try {
@@ -59,6 +62,7 @@ public class ProjectController {
         }
     }
 
+    @PreAuthorize("hasPermission(#id, 'Project', 'project:delete') || hasPermission(#id, 'Project', 'project:everything')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<Long> delete(@PathVariable("id") Long id) {
         try {

@@ -14,7 +14,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class CustomPermissionEvaluator implements PermissionEvaluator {
-
     public static final String PROJECT_PERMISSION_TYPE = "Project";
 
     private final ProjectRepository projectRepository;

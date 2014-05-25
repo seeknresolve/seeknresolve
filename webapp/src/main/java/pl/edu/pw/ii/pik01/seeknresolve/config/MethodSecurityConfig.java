@@ -12,8 +12,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.security.CustomPermissionEvaluato
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration{
-
+public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
     @Autowired
     private ProjectRepository projectRepository;
 
