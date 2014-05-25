@@ -25,8 +25,14 @@ public class RoleController {
     }
 
     @RequestMapping(value = "/all_user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<RoleDTO>> getAll() {
+    public Response<List<RoleDTO>> getAllUserRoles() {
         List<RoleDTO> userRoles = roleService.getAllUserRoles();
+        return new Response<>(userRoles, Response.Status.RECEIVED);
+    }
+
+    @RequestMapping(value = "/all_project", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<RoleDTO>> getAllProjectRoles() {
+        List<RoleDTO> userRoles = roleService.getAllProjectRoles();
         return new Response<>(userRoles, Response.Status.RECEIVED);
     }
 }

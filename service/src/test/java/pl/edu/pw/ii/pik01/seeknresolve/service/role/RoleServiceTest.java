@@ -2,6 +2,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.role;
 
 import com.google.common.collect.ImmutableSet;
 import org.assertj.core.api.Condition;
+import org.assertj.core.data.Index;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +43,21 @@ public class RoleServiceTest {
                         return value.getRoleName().equals("pr_role");
                     }
                 });
+    }
+
+    @Test
+    public void testGetOnlyProjectRoles() {
+        when(roleRepository.findAll()).thenReturn(ImmutableSet.of(userRole("user_role_1"),
+                userRole("user_role_2"), projectRole("pr_role")));
+
+        assertThat(roleService.getAllProjectRoles())
+                .hasSize(1)
+                .has(new Condition<RoleDTO>() {
+                    @Override
+                    public boolean matches(RoleDTO value) {
+                        return value.getRoleName().equals("pr_role");
+                    }
+                }, Index.atIndex(0));
     }
 
     private Role userRole(String roleName) {

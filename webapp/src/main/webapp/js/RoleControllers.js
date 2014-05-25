@@ -11,3 +11,15 @@ roleControllers.controller('UserRoleListController', ['$scope', '$http',
         });
     }
 ]);
+
+roleControllers.controller('ProjectRoleListController', ['$scope', '$http',
+    function($scope, $http) {
+        $scope.projectRoles = [ ];
+
+        $http.get('/role/all_project').success(function(data) {
+            $scope.projectRoles = data.object;
+        }).error(function(data, status, headers, config) {
+            $scope.errorMessage = "Can't retrieve project role list!";
+        });
+    }
+]);
