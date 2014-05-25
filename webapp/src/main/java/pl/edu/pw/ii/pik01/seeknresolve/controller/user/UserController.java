@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
@@ -16,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
     private final UserService userService;
 
     @Autowired
@@ -34,5 +32,10 @@ public class UserController {
     public Response<List<UserDTO>> getAll() {
         List<UserDTO> users = userService.getAllUsers();
         return new Response<>(users, Response.Status.RECEIVED);
+    }
+
+    @RequestMapping(value = "/logged", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<UserDTO> getLoggedUser() {
+        return new Response<>(userService.getLoggedUserDTO(), Response.Status.RECEIVED);
     }
 }

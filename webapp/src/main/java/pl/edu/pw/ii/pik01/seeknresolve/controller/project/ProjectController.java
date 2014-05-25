@@ -7,6 +7,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.project.ProjectService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
+import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
 import javax.persistence.PersistenceException;
 import java.util.List;
@@ -15,10 +16,12 @@ import java.util.List;
 @RequestMapping("/project")
 public class ProjectController {
     private ProjectService projectService;
+    private UserService userService;
 
     @Autowired
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, UserService userService) {
         this.projectService = projectService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,8 +35,8 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<ProjectDTO>> get() {
-        return new Response<>(projectService.getAll(), Response.Status.RECEIVED);
+    public Response<List<ProjectDTO>> getAll() {
+        return new Response<>(projectService.getAll(userService.getLoggedUser()), Response.Status.RECEIVED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

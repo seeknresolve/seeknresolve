@@ -2,12 +2,12 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.user;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.security.ContextUser;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,12 +16,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
+    private final DtosFactory dtosFactory;
 
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, DtosFactory dtosFactory) {
         this.userRepository = userRepository;
+        this.dtosFactory = dtosFactory;
     }
 
     public User getLoggedUser() {
@@ -31,9 +32,13 @@ public class UserService {
         return userRepository.findOneByLogin(principal.getUser().getLogin());
     }
 
+    public UserDTO getLoggedUserDTO() {
+        return dtosFactory.createUserDTO(getLoggedUser());
+    }
+
     public UserDTO createAndSaveNewUser(UserDTO userDTO){
         User user = userRepository.save(crateUserFromUserDTO(userDTO));
-        return user == null ? null : buildDTOfromUser(user);
+        return user == null ? null : dtosFactory.createUserDTO(user);
     }
 
     public UserDTO findOneById(Long id){
@@ -41,7 +46,7 @@ public class UserService {
         if(user == null){
             throw new EntityNotFoundException("User with id=" + id + " not found.");
         }
-        return buildDTOfromUser(user);
+        return dtosFactory.createUserDTO(user);
     }
 
     public UserDTO findOneByLogin(String login){
@@ -49,12 +54,12 @@ public class UserService {
         if(user == null){
             throw new EntityNotFoundException("User with login=" + login + " not found.");
         }
-        return buildDTOfromUser(user);
+        return dtosFactory.createUserDTO(user);
     }
 
     public List<UserDTO> getAllUsers() {
         return Lists.newArrayList(userRepository.findAll()).stream().
-                map(user -> buildDTOfromUser(user)).collect(Collectors.toList());
+                map(user -> dtosFactory.createUserDTO(user)).collect(Collectors.toList());
     }
 
     private User crateUserFromUserDTO(UserDTO userDTO) {
@@ -67,17 +72,5 @@ public class UserService {
         user.setLogin(userDTO.getLogin());
         //TODO: should initialize lists and other?
         return user;
-    }
-
-    private UserDTO buildDTOfromUser(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setLogin(user.getLogin());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setFirstName(user.getFirstName());
-        userDTO.setLastName(user.getLastName());
-        userDTO.setPassword(user.getPassword());
-        userDTO.setUserRole(user.getUserRole().getRoleName());
-        return userDTO;
     }
 }

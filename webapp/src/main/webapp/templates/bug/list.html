@@ -19,7 +19,7 @@
     </div>
 
     <div class="row col-md-12">
-        <table class="table table-hover table-striped table-condensed">
+        <table class="table table-hover table-striped table-condensed" ng-show="bugs.length">
             <thead>
                 <th>Tag</th>
                 <th>Name</th>
@@ -61,5 +61,8 @@
                 </tr>
             </tbody>
         </table>
+        <div ng-show="!bugs.length">
+            No bugs to show.
+        </div>
     </div>
 </div>

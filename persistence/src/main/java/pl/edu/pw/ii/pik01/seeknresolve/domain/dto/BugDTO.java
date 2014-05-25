@@ -121,4 +121,23 @@ public class BugDTO {
     public void setPriority(Bug.Priority priority) {
         this.priority = priority;
     }
+
+    @Override
+    public String toString() {
+        return "BugDTO{" +
+                "tag='" + tag + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", dateModified=" + dateModified +
+                ", reporterId=" + reporterId +
+                ", reporterName='" + reporterName + '\'' +
+                ", assigneeId=" + assigneeId +
+                ", assigneeName='" + assigneeName + '\'' +
+                ", projectId=" + projectId +
+                ", projectName='" + projectName + '\'' +
+                ", state=" + state +
+                ", priority=" + priority +
+                '}';
+    }
 }

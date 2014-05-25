@@ -5,22 +5,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
 import javax.persistence.PersistenceException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
     private ProjectRepository projectRepository;
+    private UserProjectRoleRepository userProjectRoleRepository;
     private DtosFactory dtosFactory;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, DtosFactory dtosFactory) {
+    public ProjectService(ProjectRepository projectRepository, UserProjectRoleRepository userProjectRoleRepository, DtosFactory dtosFactory) {
         this.projectRepository = projectRepository;
+        this.userProjectRoleRepository = userProjectRoleRepository;
         this.dtosFactory = dtosFactory;
     }
 
@@ -42,12 +47,12 @@ public class ProjectService {
         return dtosFactory.createProjectDTO(project);
     }
 
-    public List<ProjectDTO> getAll() {
-        List<ProjectDTO> result = new ArrayList<>();
-        for (Project project: projectRepository.findAll()) {
-            result.add(dtosFactory.createProjectDTO(project));
-        }
-        return result;
+    public List<ProjectDTO> getAll(User user) {
+        List<UserProjectRole> rolesOnProjects = userProjectRoleRepository.findByUser(user);
+        return rolesOnProjects.stream()
+                .map(userProjectRole -> userProjectRole.getProject())
+                .map(project -> dtosFactory.createProjectDTO(project))
+                .collect(Collectors.toList());
     }
 
     public ProjectDTO update(ProjectDTO projectDTO) {
