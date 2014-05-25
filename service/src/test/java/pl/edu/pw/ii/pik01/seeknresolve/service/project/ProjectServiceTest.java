@@ -1,6 +1,5 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.project;
 
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,15 +8,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.ProjectBuilder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.ProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
+import pl.edu.pw.ii.pik01.seeknresolve.service.common.TestWithSecurity;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -28,14 +24,13 @@ public class ProjectServiceTest {
     @Mock
     private ProjectRepository projectRepository;
 
-    @Mock
-    private UserProjectRoleRepository userProjectRoleRepository;
+    private TestWithSecurity testWithSecurity = new TestWithSecurity();
 
     private ProjectService projectService;
 
     @Before
     public void setUp() {
-        projectService = new ProjectService(projectRepository, userProjectRoleRepository, new DtosFactory());
+        projectService = new ProjectService(projectRepository, testWithSecurity.userProjectRoleRepository, new DtosFactory());
     }
 
     @Test
@@ -52,7 +47,7 @@ public class ProjectServiceTest {
     public void shouldReturnEmptyListOfProjectsForUserWithNoRoles() {
         //given:
         User user = givenUser("rnw");
-        givenNoRolesReturnedForUser(user);
+        testWithSecurity.givenNoRolesReturnedForUser(user);
         //when:
         List<ProjectDTO> projects = projectService.getAll(user);
         //then:
@@ -65,10 +60,6 @@ public class ProjectServiceTest {
         return user;
     }
 
-    private void givenNoRolesReturnedForUser(User user) {
-        when(userProjectRoleRepository.findByUser(user)).thenReturn(Lists.newArrayList());
-    }
-
     @Test
     public void shouldReturnProjectForUserWithRoles() {
         //given:
@@ -76,7 +67,7 @@ public class ProjectServiceTest {
         Project project = givenProject(11L, "testowy");
         Project project2 = givenProject(12L, "testowy 2");
         Project project3 = givenProject(13L, "testowy 3");
-        givenRolesReturnedForUser(user, project, project2);
+        testWithSecurity.givenRolesReturnedForUser(user, project, project2);
         //when:
         List<ProjectDTO> projects = projectService.getAll(user);
         //then:
@@ -87,22 +78,5 @@ public class ProjectServiceTest {
 
     private Project givenProject(Long id, String name) {
         return new ProjectBuilder().withId(id).withName(name).build();
-    }
-
-    private void givenRolesReturnedForUser(User user, Project... projects) {
-        when(userProjectRoleRepository.findByUser(user)).thenReturn(Lists.newArrayList(
-                Lists.newArrayList(projects).stream()
-                        .map(project -> createUserProjectRole(user, project))
-                        .collect(Collectors.toList())
-        ));
-    }
-
-    private UserProjectRole createUserProjectRole(User user, Project project) {
-        UserProjectRole userProjectRole = new UserProjectRole();
-        userProjectRole.setProject(project);
-        userProjectRole.setUser(user);
-        ProjectRole projectRole = new ProjectRole();
-        userProjectRole.setProjectRole(projectRole);
-        return userProjectRole;
     }
 }

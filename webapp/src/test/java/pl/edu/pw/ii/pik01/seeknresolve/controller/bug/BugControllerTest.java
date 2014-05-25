@@ -16,6 +16,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
@@ -42,11 +43,15 @@ public class BugControllerTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private UserProjectRoleRepository userProjectRoleRepository;
+
     private ObjectMapper objectMapper;
 
     @Before
     public void setup() {
-        BugService bugService = new BugService(bugRepository, projectRepository, userRepository, new DtosFactory());
+        BugService bugService = new BugService(bugRepository, projectRepository,
+                userRepository, userProjectRoleRepository, new DtosFactory());
         BugController bugController = new BugController(bugService, userService);
         mockMvc = MockMvcBuilders.standaloneSetup(bugController).build();
         objectMapper = new ObjectMapper();

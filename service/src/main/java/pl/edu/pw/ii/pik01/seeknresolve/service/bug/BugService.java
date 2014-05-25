@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
@@ -22,20 +24,26 @@ public class BugService {
     private BugRepository bugRepository;
     private ProjectRepository projectRepository;
     private UserRepository userRepository;
+    private UserProjectRoleRepository userProjectRoleRepository;
     private DtosFactory dtosFactory;
 
     @Autowired
-    public BugService(BugRepository bugRepository, ProjectRepository projectRepository, UserRepository userRepository, DtosFactory dtosFactory) {
+    public BugService(BugRepository bugRepository, ProjectRepository projectRepository,
+                      UserRepository userRepository, UserProjectRoleRepository userProjectRoleRepository, DtosFactory dtosFactory) {
         this.bugRepository = bugRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.userProjectRoleRepository = userProjectRoleRepository;
         this.dtosFactory = dtosFactory;
     }
 
-    //TODO: obsluzyc usera dobrze
-    public List<BugDTO> getAllBugsForCurrentUser(User loggedUser) {
-        return Lists.newArrayList(bugRepository.findAll()).stream().
-                map(bug -> dtosFactory.createBugDTO(bug)).collect(Collectors.toList());
+    public List<BugDTO> getAll(User user) {
+        List<UserProjectRole> projectRoles = userProjectRoleRepository.findByUser(user);
+        return projectRoles.stream().parallel()
+                .map(projectRole -> projectRole.getProject().getBugs())
+                .flatMap(bugList -> bugList.stream())
+                .map(bug -> dtosFactory.createBugDTO(bug))
+                .collect(Collectors.toList());
     }
 
     public BugDTO createAndSaveNewBug(BugDTO bugDTO) {
