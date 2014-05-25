@@ -34,7 +34,7 @@ public class RoleService {
     private List<RoleDTO> getAllRolesOfType(Class<? extends Role> clazz) {
         return Lists.newArrayList(roleRepository.findAll())
                 .stream()
-                .filter(role -> role.getClass() == clazz)
+                .filter(role -> role.getClass().equals(clazz))
                 .map(userRole -> DtosFactory.createRoleDTO(userRole))
                 .collect(Collectors.toList());
     }
