@@ -1,0 +1,26 @@
+<div class="container" ng-controller="PermissionListController">
+
+    <div class="row col-md-12">
+        <div class="row" ng-if="errorMessage != null">
+            <div class="alert alert-danger">{{errorMessage}}</div>
+        </div>
+
+        <div class="page-header">
+            <h3>Uprawnienia</h3>
+        </div>
+    </div>
+
+    <div class="row col-md-12">
+
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+                <th>Nazwa uprawnienia</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="perm in permissions">
+                    <td>{{perm.permission}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

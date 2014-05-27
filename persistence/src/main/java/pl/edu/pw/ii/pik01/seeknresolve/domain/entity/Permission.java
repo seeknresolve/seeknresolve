@@ -12,9 +12,6 @@ public class Permission {
     @Column(nullable = false)
     private String permission;
 
-    @ManyToMany(mappedBy = "permissions")
-    private Set<Role> roles;
-
     public long getId() {
         return id;
     }
@@ -29,14 +26,6 @@ public class Permission {
 
     public void setPermission(String permission) {
         this.permission = permission;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     @Override
