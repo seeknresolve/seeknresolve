@@ -15,6 +15,13 @@ public abstract class Role {
     )
     private Set<Permission> permissions;
 
+    public Role() {
+    }
+
+    public Role(String roleName) {
+        this.roleName = roleName;
+    }
+
     public String getRoleName() {
         return roleName;
     }
