@@ -4,7 +4,8 @@ var seekNResolve = angular.module('seekNResolve', [
     'projectControllers',
     'userControllers',
     'roleControllers',
-    'permissionControllers'
+    'permissionControllers',
+    'ui.bootstrap'
 ]);
 
 seekNResolve.config(['$routeProvider', function($routeProvider) {

@@ -1,9 +1,29 @@
 var projectControllers = angular.module('projectControllers', []);
 
-projectControllers.controller('ProjectListController', ['$scope', '$http', '$rootScope',
-    function(scope, http, rootScope) {
+projectControllers.service('alertsService', function() {
+    var alerts = [ ];
+    return {
+        addAlert: function(type, message) {
+            alerts.push({type:type, msg: message});
+        },
+
+        getAlerts: function() {
+            return alerts;
+        }
+    }
+});
+
+var ProjectAlertController = ['$scope', 'alertsService', function(scope, alertsService) {
+    scope.alerts = alertsService.getAlerts();
+
+    scope.closeAlert = function(index) {
+        scope.alerts.splice(index, 1);
+    };
+}];
+
+projectControllers.controller('ProjectListController', ['$scope', '$http',
+    function(scope, http) {
         scope.projects = [];
-        scope.message = rootScope.message;
 
         http.get('/project/all').success(function(data) {
             scope.projects = data.object;
@@ -29,8 +49,8 @@ projectControllers.controller('ProjectDetailsController', ['$scope', '$http', '$
     }
 ]);
 
-projectControllers.controller('ProjectCreateController', ['$scope', '$http', '$location', '$rootScope',
-    function(scope, http, location, rootScope) {
+projectControllers.controller('ProjectCreateController', ['$scope', '$http', '$location', 'alertsService',
+    function(scope, http, location, alertsService) {
         scope.createProject = function() {
             var project = scope.project;
             var params = JSON.stringify(project);
@@ -40,10 +60,11 @@ projectControllers.controller('ProjectCreateController', ['$scope', '$http', '$l
                     'Content-Type': 'application/json; charset=UTF-8'
                 }
             }).success(function (data, status, headers, config) {
-                rootScope.message = 'Project created sucessfully';
+                alertsService.addAlert('success', 'Project created successfully');
                 location.path('/project');
             }).error(function (data, status, headers, config) {
-                scope.errorMessage = "Creating project failed! " + data.error;
+                alertsService.addAlert('error', 'Creating project failed! ' + data.error);
+                location.path('/project');
             });
         }
     }
