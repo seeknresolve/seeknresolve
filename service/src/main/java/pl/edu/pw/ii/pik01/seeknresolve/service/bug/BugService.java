@@ -1,6 +1,5 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.bug;
 
-import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

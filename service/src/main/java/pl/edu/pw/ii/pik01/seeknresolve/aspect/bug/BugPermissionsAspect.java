@@ -30,7 +30,7 @@ public class BugPermissionsAspect {
     }
 
     private void checkPermissionsOnBug(Bug bug, String... permissionsNames) {
-        List<Permission> permissions = createPermissions(permissionsNames);
+        List<Permission> permissions = getPermissionsWithNames(permissionsNames);
         boolean hasPermission = permissions.stream()
                 .filter(permission -> permissionChecker.hasProjectPermission(bug.getProject(), permission))
                 .findAny().isPresent();
@@ -39,8 +39,14 @@ public class BugPermissionsAspect {
         }
     }
 
-    private List<Permission> createPermissions(String... permissionsNames) {
+    private List<Permission> getPermissionsWithNames(String... permissionsNames) {
         return Lists.newArrayList(permissionsNames).stream()
                 .map(permissionName -> new Permission(permissionName)).collect(Collectors.toList());
+    }
+
+    @Before("execution(* pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService.deleteBugWithTag(..)) && args(tag, ..)")
+    public void checkBugDeletePermission(JoinPoint joinPoint, String tag) {
+        Bug bugToDelete = bugRepository.findOne(tag);
+        checkPermissionsOnBug(bugToDelete, "project:view", "project:everything", "project:delete");
     }
 }
