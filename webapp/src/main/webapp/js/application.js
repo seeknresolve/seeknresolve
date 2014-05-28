@@ -53,6 +53,10 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'templates/role/project_list.html',
             controller: 'ProjectRoleListController'
         }).
+        when('/role/:roleName', {
+            templateUrl: 'templates/role/details.html',
+            controller: 'RoleDetailsController'
+        }).
 
         when('/permission/all', {
             templateUrl: 'templates/permission/list.html',
