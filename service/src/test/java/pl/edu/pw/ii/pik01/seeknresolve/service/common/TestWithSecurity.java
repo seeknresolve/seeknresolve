@@ -9,18 +9,18 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleReposito
 
 import java.util.stream.Collectors;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class TestWithSecurity {
     public UserProjectRoleRepository userProjectRoleRepository = mock(UserProjectRoleRepository.class);
 
     public void givenNoRolesReturnedForUser(User user) {
-        when(userProjectRoleRepository.findByUser(user)).thenReturn(Lists.newArrayList());
+        given(userProjectRoleRepository.findByUser(user)).willReturn(Lists.newArrayList());
     }
 
     public void givenRolesReturnedForUser(User user, Project... projects) {
-        when(userProjectRoleRepository.findByUser(user)).thenReturn(Lists.newArrayList(
+        given(userProjectRoleRepository.findByUser(user)).willReturn(Lists.newArrayList(
                 Lists.newArrayList(projects).stream()
                         .map(project -> createUserProjectRole(user, project))
                         .collect(Collectors.toList())
