@@ -6,11 +6,11 @@
         </div>
 
         <div class="page-header">
-            <h3>Utwórz nowe uprawnienie
+            <h3>Create new permission
                 <div class="btn-group btn-group-sm pull-right">
                     <a href="#/permission/all" role="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-arrow-left"></span>
-                        Powrót do listy
+                        Back to list
                     </a>
                 </div>
             </h3>
@@ -20,12 +20,12 @@
     <div class="row col-lg-12" ng-if="errorMessage == null">
         <div class="row col-lg-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Szczegóły uprawnienia:</div>
+                <div class="panel-heading">Permission details:</div>
                 <div class="panel-body">
 
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label for="permissionNameL" class="col-sm-3 control-label">Nazwa:</label>
+                            <label for="permissionNameL" class="col-sm-3 control-label">Name:</label>
                             <div class="col-sm-9">
                                 <input ng-model="$parent.permission.permissionName" type="text" class="form-control" id="permissionNameL" />
                             </div>
@@ -34,7 +34,7 @@
                         <div class="pull-right">
                             <a role="button" class="btn btn-success" ng-click="createPermission()">
                                 <span class="glyphicon glyphicon-plus"></span>
-                                Utwórz
+                                Create
                             </a>
                         </div>
                     </form>

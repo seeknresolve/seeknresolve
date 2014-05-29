@@ -1,11 +1,14 @@
 package pl.edu.pw.ii.pik01.seeknresolve.controller.permission;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.PermissionDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionService;
+import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 
 import javax.persistence.PersistenceException;
@@ -39,8 +42,7 @@ public class PermissionController {
 
     @RequestMapping(value = "/{permissionName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<PermissionDTO> get(@PathVariable("permissionName") String permissionName) {
-        PermissionDTO permissionDTO = permissionService.get(permissionName);
-        return new Response<>(permissionDTO, Response.Status.RECEIVED);
+        return new Response<>(permissionService.get(permissionName), Response.Status.RECEIVED);
     }
 
     @RequestMapping(value = "/{permissionName}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,4 +51,9 @@ public class PermissionController {
         return new Response<>(permissionName, Response.Status.DELETED);
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotFound(Exception exception) {
+        return new ErrorResponse(exception.getMessage());
+    }
 }

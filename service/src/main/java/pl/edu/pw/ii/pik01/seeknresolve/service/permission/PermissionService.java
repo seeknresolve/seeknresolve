@@ -47,10 +47,11 @@ public class PermissionService {
     }
 
     public PermissionDTO get(String permissionName) {
-        if(!permissionRepository.exists(permissionName)) {
+        Permission permission = permissionRepository.findOne(permissionName);
+        if(permission == null) {
             throw new EntityNotFoundException("Permission with name " + permissionName + " doesn't exist");
         }
-        return DtosFactory.createPermissionDTO(permissionRepository.findOne(permissionName));
+        return DtosFactory.createPermissionDTO(permission);
     }
 
     private Permission createPermissionFromDTO(PermissionDTO permissionDTO) {

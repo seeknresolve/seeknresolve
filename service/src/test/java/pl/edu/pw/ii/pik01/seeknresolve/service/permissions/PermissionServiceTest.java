@@ -9,10 +9,12 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.PermissionDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.PermissionRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
+import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,6 +42,22 @@ public class PermissionServiceTest {
         assertThat(saved).isNotNull();
         assertThat(saved.getPermissionName()).isEqualTo(arg.getPermissionName());
         verify(permissionRepository, times(1)).save(any(Permission.class));
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void deleteFailWhenNoPermission() {
+        when(permissionRepository.exists(anyString())).thenReturn(false);
+
+        permissionService.delete("perm_name");
+    }
+
+    @Test
+    public void delete() {
+        when(permissionRepository.exists(anyString())).thenReturn(true);
+
+        permissionService.delete("perm_name");
+
+        verify(permissionRepository, times(1)).delete("perm_name");
     }
 
 
