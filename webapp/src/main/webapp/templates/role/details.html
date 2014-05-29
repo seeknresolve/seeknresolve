@@ -5,15 +5,15 @@
             <div class="alert alert-danger">{{errorMessage}}</div>
         </div>
 
-        <div class="page-header" ng-if="errorMessage == null">
-            <h3>Rola {{role.roleName}}</h3>
+        <div class="page-header">
+            <h3>Role {{role.roleName}} </h3>
         </div>
     </div>
 
     <div class="row col-md-12" ng-if="errorMessage == null">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Uprawnienia:</div>
+                <div class="panel-heading">Permissions:</div>
                 <div class="panel-body">
                     <table class="table table-hover table-striped table-condensed">
                         <tbody>
