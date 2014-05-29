@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
@@ -23,6 +24,12 @@ public class BugPermissionsAspect {
     @Autowired
     private PermissionChecker permissionChecker;
 
+    @Before("execution(* pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService.createAndSaveNewBug(..)) && args(bugDTO, ..)")
+    public void checkBugCreatePermission(JoinPoint joinPoint, BugDTO bugDTO) {
+        Bug bug = bugRepository.findOne(bugDTO.getTag());
+        checkPermissionsOnBug(bug, "project:everything", "project:add_bug");
+    }
+
     @Before("execution(* pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService.getBugWithTag(..)) && args(tag, ..)")
     public void checkBugViewPermission(JoinPoint joinPoint, String tag) {
         Bug bug = bugRepository.findOne(tag);
@@ -35,7 +42,7 @@ public class BugPermissionsAspect {
                 .filter(permission -> permissionChecker.hasProjectPermission(bug.getProject(), permission))
                 .findAny().isPresent();
         if(!hasPermission) {
-            throw new SecurityException("No permission to see this bug.");
+            throw new SecurityException("No permission to perform operation on bug.");
         }
     }
 

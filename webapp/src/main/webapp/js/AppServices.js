@@ -16,3 +16,16 @@ appServices.service('notificationsService', ['postman', function(postman) {
         }
     }
 }]);
+
+//TODO: ten callback działa bardzo kulawo, warto to dopracować @rnw
+appServices.service('userService', ['$http', function(http) {
+    return {
+        getLoggedUser: function (callback) {
+            http({method: 'GET', url: '/user/logged'}).then(function (result) {
+                if(callback) {
+                    callback(result.data.object);
+                }
+            });
+        }
+    };
+}]);

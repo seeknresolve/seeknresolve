@@ -71,7 +71,7 @@ public class BugServiceTest {
         User user = givenUser("rnw");
         testWithSecurity.givenNoRolesReturnedForUser(user);
         //when:
-        List<BugDTO> bugs = bugService.getAll(user);
+        List<BugDTO> bugs = bugService.getAllPermittedBugs(user);
         //then;
         assertThat(bugs).isNotNull();
         assertThat(bugs).isEmpty();
@@ -100,7 +100,7 @@ public class BugServiceTest {
 
         testWithSecurity.givenRolesReturnedForUser(user, project, project2);
         //when:
-        List<BugDTO> bugs = bugService.getAll(user);
+        List<BugDTO> bugs = bugService.getAllPermittedBugs(user);
         //then:
         assertThat(bugs).isNotNull();
         assertThat(bugs).isNotEmpty();

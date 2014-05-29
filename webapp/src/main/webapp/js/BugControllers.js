@@ -1,5 +1,37 @@
 var bugControllers = angular.module('bugControllers', ['app.services']);
 
+bugControllers.directive('bugPriority', function() {
+    return {
+        restrict: 'E',
+        scope: true,
+        template: '<span class="label {{class}}">{{priority}}</span>',
+        link: function (scope, element, attrs) {
+            scope.priority = attrs.priority;
+            switch (scope.priority) {
+                case "LOW":
+                    scope.class = 'label-default';
+                    break;
+
+                case "NORMAL":
+                    scope.class = 'label-info';
+                    break;
+
+                case "HIGH":
+                    scope.class = 'label-warning';
+                    break;
+
+                case "CRITICAL":
+                    scope.class = 'label-critical';
+                    break;
+
+                default:
+                    scope.class = 'label-primary';
+                    break;
+            }
+        }
+    }
+});
+
 bugControllers.controller('BugListController', ['$scope', '$http', 'notificationsService',
     function(scope, http, notificationsService) {
         scope.bugs = [ ];
@@ -37,8 +69,28 @@ bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routePar
     }
 ]);
 
-bugControllers.controller('BugCreateController', ['$scope', '$http',
-    function(scope, http) {
+bugControllers.controller('BugCreateController', ['$scope', '$http', '$location', 'notificationsService', 'userService',
+    function(scope, http, location, notificationsService, userService) {
+        scope.loggedUser = null;
+        userService.getLoggedUser(function(user) {
+            scope.loggedUser = user;
+        });
 
+        scope.createBug = function() {
+            var bug = scope.bug;
+            var params = JSON.stringify(bug);
+
+            http.post('/bug/create', params, {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            }).success(function (data, status, headers, config) {
+                notificationsService.success('Success', 'Bug ' + data.object.tag + ' reported successfully');
+                location.path('/bug');
+            }).error(function (data, status, headers, config) {
+                notificationsService.error('Error', 'Creating bug failed! ' + data.error);
+                location.path('/bug');
+            });
+        }
     }
 ]);
