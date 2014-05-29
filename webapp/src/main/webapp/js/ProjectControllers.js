@@ -1,4 +1,4 @@
-var projectControllers = angular.module('projectControllers', ['Postman', 'ngAnimate', 'app.services']);
+var projectControllers = angular.module('projectControllers', ['app.services']);
 
 projectControllers.controller('ProjectListController', ['$scope', '$http',
     function(scope, http) {

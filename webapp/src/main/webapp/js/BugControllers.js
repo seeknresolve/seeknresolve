@@ -1,19 +1,19 @@
-var bugControllers = angular.module('bugControllers', []);
+var bugControllers = angular.module('bugControllers', ['app.services']);
 
-bugControllers.controller('BugListController', ['$scope', '$http',
-    function(scope, http) {
+bugControllers.controller('BugListController', ['$scope', '$http', 'notificationsService',
+    function(scope, http, notificationsService) {
         scope.bugs = [ ];
 
         http.get('/bug/all').success(function(data) {
             scope.bugs = data.object;
         }).error(function(data, status, headers, config) {
-            scope.errorMessage = 'Can\'t fetch bugs list!';
+            notificationsService.error('Error', 'Can\'t fetch bugs list!');
         });
     }
 ]);
 
-bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routeParams', '$location',
-    function(scope, http, routeParams, location) {
+bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
+    function(scope, http, routeParams, location, notificationsService) {
         scope.tag = null;
 
         http.get('/bug/' + routeParams.tag).success(function(data) {
@@ -22,14 +22,14 @@ bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routePar
             if(data.error) {
                 scope.errorMessage = data.error;
             } else {
-                scope.errorMessage = 'Can\'t fetch bug\'s details!';
+                notificationsService.error('Error', 'Can\'t fetch bug\'s details!');
             }
         });
 
         scope.deleteBug = function(tag) {
             http.delete('/bug/' + tag).success(function (data, status, headers, config) {
+                notificationsService.warning('Delete', 'Bug ' + tag + ' was deleted');
                 location.path('/bug');
-                scope.message = 'Bug ' + tag + ' was deleted';
             }).error(function (data, status, headers, config) {
                 scope.errorMessage = 'Can\'t delete bug!';
             });

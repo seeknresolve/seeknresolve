@@ -1,6 +1,6 @@
-var notificationsModule = angular.module('app.services', ['Postman', 'ngAnimate']);
+var appServices = angular.module('app.services', ['Postman', 'ngAnimate']);
 
-notificationsModule.service('notificationsService', ['postman', function(postman) {
+appServices.service('notificationsService', ['postman', function(postman) {
     return {
         error: function(title, warning) {
             postman.error(title, warning)
