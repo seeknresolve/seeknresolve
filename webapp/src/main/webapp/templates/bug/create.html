@@ -1,10 +1,6 @@
 <div class="container" ng-controller="BugCreateController">
 
     <div class="row col-md-12">
-        <div class="row" ng-if="errorMessage != null">
-            <div class="alert alert-danger">{{errorMessage}}</div>
-        </div>
-
         <div class="page-header">
             <h3>Report new bug:
                 <div class="btn-group btn-group-sm pull-right">
@@ -15,5 +11,41 @@
     </div>
 
     <div class="row col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Enter details of new bug:</div>
+            <div class="panel-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="bugTag" class="col-md-4 control-label">Tag:</label>
+                        <div class="col-md-8">
+                            <input ng-model="$parent.bug.tag" type="text" required class="form-control" id="bugTag" placeholder="Tag"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bugName" class="col-md-4 control-label">Name:</label>
+                        <div class="col-md-8">
+                            <input ng-model="$parent.bug.name" type="text" required class="form-control" id="bugName" placeholder="Name"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bugDescription" class="col-md-4 control-label">Description:</label>
+                        <div class="col-md-8">
+                            <textarea ng-model="$parent.bug.description" type="text" required class="form-control"
+                                      id="bugDescription" placeholder="Description" style="resize: none" rows="15">
+                            </textarea>
+                        </div>
+                    </div>
+
+                    <div class="pull-right">
+                        <a role="button" class="btn btn-success" ng-click="createBug()">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            Report
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

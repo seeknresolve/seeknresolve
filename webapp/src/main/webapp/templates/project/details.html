@@ -1,24 +1,20 @@
 <div class="container" ng-controller="ProjectDetailsController">
 
     <div class="row col-lg-12">
-        <div class="row" ng-if="errorMessage != null">
-            <div class="alert alert-danger">{{errorMessage}}</div>
-        </div>
-
         <div class="page-header" ng-if="errorMessage == null">
             <h3>
                 {{project.name}} : {{project.description}}
                 <div class="btn-group btn-group-sm pull-right">
-                    <a href="#/project/" role="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Powrót do listy</a>
+                    <a href="#/project/" role="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back to list</a>
                 </div>
             </h3>
         </div>
     </div>
 
-    <div class="row col-lg-12" ng-if="errorMessage == null">
+    <div class="row col-lg-12">
         <div class="row col-lg-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Szczegóły projektu:</div>
+                <div class="panel-heading">Project details:</div>
                 <div class="panel-body">
                     <p>Data utworzenia: {{project.dateCreated | date:'MM-dd-yyyy HH:mm:ss'}}</p>
                 </div>
