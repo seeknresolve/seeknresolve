@@ -12,13 +12,23 @@ permissionControllers.controller('PermissionListController', ['$scope', '$http',
     }
 ]);
 
-permissionControllers.controller('PermissionCreateController', ['$scope', '$http',
-    function($scope, $http) {
-        $http({
-            url:'/permission/create',
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            data: {permissionName: $scope.permissionName}
-        });
+permissionControllers.controller('PermissionCreateController', ['$scope', '$http', '$location', 'notificationsService',
+    function(scope, http, location, notificationsService) {
+        scope.createPermission = function() {
+            var permission = scope.permission;
+            var params = JSON.stringify(permission);
+
+            http.post('/permission/create', params, {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            }).success(function (data, status, headers, config) {
+                notificationsService.success('Success', 'Permission ' + data.object.permissionName + ' created successfully');
+                location.path('/permission/all');
+            }).error(function (data, status, headers, config) {
+                notificationsService.error('Error', 'Creating permission failed! ' + data.error);
+                location.path('/permission/all');
+            });
+        }
     }
 ]);
