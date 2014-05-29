@@ -5,11 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.ProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
+import pl.edu.pw.ii.pik01.seeknresolve.service.common.RolesConstants;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
 import javax.persistence.PersistenceException;
@@ -21,22 +24,35 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     private UserProjectRoleRepository userProjectRoleRepository;
     private DtosFactory dtosFactory;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, UserProjectRoleRepository userProjectRoleRepository, DtosFactory dtosFactory) {
+    public ProjectService(ProjectRepository projectRepository, UserProjectRoleRepository userProjectRoleRepository, RoleRepository roleRepository, DtosFactory dtosFactory) {
         this.projectRepository = projectRepository;
         this.userProjectRoleRepository = userProjectRoleRepository;
+        this.roleRepository = roleRepository;
         this.dtosFactory = dtosFactory;
     }
 
-    public ProjectDTO createAndSaveNewProject(ProjectDTO projectDTO) {
+    public ProjectDTO createAndSaveNewProject(ProjectDTO projectDTO, User user) {
         projectDTO.setDateCreated(DateTime.now());
         Project project = createProjectFromDTO(projectDTO);
         Project savedProject = projectRepository.save(project);
         if (savedProject == null) {
             throw new PersistenceException("Cannot save project with id: " + projectDTO.getId());
         }
+        grantAndSaveRoleForProject(user, savedProject);
         return dtosFactory.createProjectDTO(savedProject);
+    }
+
+    private void grantAndSaveRoleForProject(User user, Project project) {
+        ProjectRole projectRole = getProjectRole(RolesConstants.PROJECT_MANAGER_ROLE_NAME);
+        UserProjectRole userProjectRole = new UserProjectRole(user, project, projectRole);
+        userProjectRoleRepository.save(userProjectRole);
+    }
+
+    private ProjectRole getProjectRole(String roleName) {
+        return (ProjectRole)roleRepository.findOne(roleName);
     }
 
     public ProjectDTO getById(Long id) {
