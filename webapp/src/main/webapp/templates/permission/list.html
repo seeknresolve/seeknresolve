@@ -25,7 +25,11 @@
             </thead>
             <tbody>
                 <tr ng-repeat="permission in permissions">
-                    <td>{{permission.permissionName}}</td>
+                    <td>
+                        <a href="#/permission/{{permission.permissionName}}">
+                            {{permission.permissionName}}
+                        </a>
+                    </td>
                 </tr>
             </tbody>
         </table>

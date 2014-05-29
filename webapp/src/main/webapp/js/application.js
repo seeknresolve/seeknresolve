@@ -69,6 +69,11 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
             controller: 'PermissionCreateController'
         }).
 
+        when('/permission/:permissionName', {
+            templateUrl: 'templates/permission/details.html',
+            controller: 'PermissionDetailsController'
+        }).
+
         when('/about', {
             templateUrl: 'templates/about.html'
         }).

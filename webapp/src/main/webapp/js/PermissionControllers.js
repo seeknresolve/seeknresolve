@@ -32,3 +32,26 @@ permissionControllers.controller('PermissionCreateController', ['$scope', '$http
         }
     }
 ]);
+
+permissionControllers.controller('PermissionDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
+    function(scope, http, routeParams, location, notificationsService) {
+        scope.permissionName = null;
+
+        http.get('/permission/' + routeParams.permissionName).success(function(data) {
+            scope.permission = data.object;
+        }).error(function(data, status, headers, config) {
+            notificationsService.error('Error', 'Obtaining permission details failed!');
+            location.path('/permission/all');
+        });
+
+        scope.deletePermission = function(permissionName) {
+            http.delete('/permission/' + permissionName).success(function (data, status, headers, config) {
+                notificationsService.success('Success', 'Permission ' + permissionName + ' deleted successfully');
+                location.path('/permission/all');
+            }).error(function (data, status, headers, config) {
+                notificationsService.error('Error', 'Deleting permission failed!');
+                location.path('/permission/all');
+            });
+        };
+    }
+]);

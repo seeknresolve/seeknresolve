@@ -2,10 +2,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.controller.permission;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.PermissionDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionService;
@@ -39,4 +36,17 @@ public class PermissionController {
             return new Response<>(null, Response.Status.NOT_CREATED);
         }
     }
+
+    @RequestMapping(value = "/{permissionName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<PermissionDTO> get(@PathVariable("permissionName") String permissionName) {
+        PermissionDTO permissionDTO = permissionService.get(permissionName);
+        return new Response<>(permissionDTO, Response.Status.RECEIVED);
+    }
+
+    @RequestMapping(value = "/{permissionName}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> delete(@PathVariable("permissionName") String permissionName) {
+        permissionService.delete(permissionName);
+        return new Response<>(permissionName, Response.Status.DELETED);
+    }
+
 }
