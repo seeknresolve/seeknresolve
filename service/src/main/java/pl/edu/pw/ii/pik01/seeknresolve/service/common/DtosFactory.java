@@ -42,7 +42,6 @@ public class DtosFactory {
         userDTO.setEmail(user.getEmail());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
-        userDTO.setPassword(user.getPassword());
         userDTO.setUserRole(user.getUserRole().getRoleName());
         return userDTO;
     }

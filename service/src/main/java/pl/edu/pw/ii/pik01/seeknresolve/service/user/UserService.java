@@ -65,7 +65,6 @@ public class UserService {
     private User crateUserFromUserDTO(UserDTO userDTO) {
         User user = new User();
         user.setId(userDTO.getId());
-        user.setPassword(userDTO.getPassword());
         user.setEmail(userDTO.getEmail());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());

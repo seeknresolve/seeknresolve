@@ -3,7 +3,6 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 public class UserDTO {
     private Long id;
     private String login;
-    private String password;
     private String firstName;
     private String lastName;
     private String email;
@@ -23,14 +22,6 @@ public class UserDTO {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -70,7 +61,6 @@ public class UserDTO {
         return "UserDTO{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
