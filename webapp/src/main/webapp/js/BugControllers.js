@@ -52,10 +52,11 @@ bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routePar
             scope.bug = data.object;
         }).error(function(data, status, headers, config) {
             if(data.error) {
-                scope.errorMessage = data.error;
+                notificationsService.error('Error', 'Can\'t fetch bug\'s details! ' + data.error);
             } else {
                 notificationsService.error('Error', 'Can\'t fetch bug\'s details!');
             }
+            location.path('/bug');
         });
 
         scope.deleteBug = function(tag) {
