@@ -28,7 +28,7 @@ public class ProjectController {
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<ProjectDTO> create(@RequestBody ProjectDTO projectDTO) {
         try {
-            ProjectDTO created = projectService.createAndSaveNewProject(projectDTO);
+            ProjectDTO created = projectService.createAndSaveNewProject(projectDTO, userService.getLoggedUser());
             return new Response<>(created, Response.Status.CREATED);
         } catch (PersistenceException e) {
             return new Response<>(null, Response.Status.NOT_CREATED);

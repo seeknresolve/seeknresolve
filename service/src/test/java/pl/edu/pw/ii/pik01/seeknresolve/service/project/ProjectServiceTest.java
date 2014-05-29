@@ -9,7 +9,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.ProjectBuilder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.ProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.TestWithSecurity;
@@ -32,7 +34,9 @@ public class ProjectServiceTest {
 
     @Before
     public void setup() {
-        projectService = new ProjectService(projectRepository, testWithSecurity.userProjectRoleRepository, new DtosFactory());
+        projectService = new ProjectService(projectRepository,
+                testWithSecurity.userProjectRoleRepository, testWithSecurity.roleRepository,
+                new DtosFactory());
     }
 
     @Test
@@ -40,8 +44,9 @@ public class ProjectServiceTest {
         //given:
         given(projectRepository.save(any(Project.class))).willReturn(createProjectForSave(0L, "Test1"));
         ProjectDTO projectToSave = createProjectDTOToSave(0L, "Test1");
+        User user = givenUser("rnw");
         //when:
-        ProjectDTO savedProject = projectService.createAndSaveNewProject(projectToSave);
+        ProjectDTO savedProject = projectService.createAndSaveNewProject(projectToSave, user);
         //then:
         assertThat(savedProject).isNotNull();
         assertThat(savedProject.getId()).isEqualTo(0L);
@@ -65,6 +70,31 @@ public class ProjectServiceTest {
         verify(projectRepository, times(1)).save(projectArgument.capture());
         assertThat(projectArgument.getValue().getId()).isEqualTo(id);
         assertThat(projectArgument.getValue().getName()).isEqualTo(name);
+    }
+
+    @Test
+    public void shouldGrantUserPMRoleWhenHeCreatesNewProject() {
+        //given:
+        Project projectToSave = createProjectForSave(0L, "Test1");
+        ProjectRole projectRole = createProjectRoleForTest("PM");
+        given(projectRepository.save(any(Project.class))).willReturn(projectToSave);
+        given(testWithSecurity.roleRepository.findOne(any(String.class))).willReturn(projectRole);
+        ProjectDTO projectDTOToSave = createProjectDTOToSave(0L, "Test1");
+        User user = givenUser("rnw");
+        //when:
+        ProjectDTO savedProject = projectService.createAndSaveNewProject(projectDTOToSave, user);
+        //then:
+        assertThat(savedProject).isNotNull();
+        verifyRoleWasGranted(user, projectToSave, projectRole);
+    }
+
+    private ProjectRole createProjectRoleForTest(String roleName) {
+        return new ProjectRole(roleName);
+    }
+
+    private void verifyRoleWasGranted(User user, Project project, ProjectRole projectRole) {
+        UserProjectRole userProjectRole = new UserProjectRole(user, project, projectRole);
+        verify(testWithSecurity.userProjectRoleRepository, times(1)).save(userProjectRole);
     }
 
     @Test
