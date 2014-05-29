@@ -61,7 +61,7 @@ public class DtosFactory {
 
     public static PermissionDTO createPermissionDTO(Permission permission) {
         PermissionDTO permissionDTO = new PermissionDTO();
-        permissionDTO.setPermission(permission.getPermission());
+        permissionDTO.setPermissionName(permission.getPermissionName());
         return permissionDTO;
     }
 }

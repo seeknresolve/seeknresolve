@@ -7,7 +7,9 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.PermissionDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.PermissionRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
+import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,5 +28,33 @@ public class PermissionService {
                 .stream()
                 .map(permission -> DtosFactory.createPermissionDTO(permission))
                 .collect(Collectors.toList());
+    }
+
+    public PermissionDTO createAndSaveNewPermission(PermissionDTO permissionDTO) {
+        Permission permission = createPermissionFromDTO(permissionDTO);
+        Permission savedPermission = permissionRepository.save(permission);
+        if(savedPermission == null) {
+            throw new PersistenceException("Cannot save permission " + permission.getPermissionName());
+        }
+        return DtosFactory.createPermissionDTO(permission);
+    }
+
+    public void delete(String permissionName) {
+        if(!permissionRepository.exists(permissionName)) {
+            throw new EntityNotFoundException("Permission with name " + permissionName + " doesn't exist");
+        }
+        permissionRepository.delete(permissionName);
+    }
+
+    public PermissionDTO get(String permissionName) {
+        Permission permission = permissionRepository.findOne(permissionName);
+        if(permission == null) {
+            throw new EntityNotFoundException("Permission with name " + permissionName + " doesn't exist");
+        }
+        return DtosFactory.createPermissionDTO(permission);
+    }
+
+    private Permission createPermissionFromDTO(PermissionDTO permissionDTO) {
+        return new Permission(permissionDTO.getPermissionName());
     }
 }

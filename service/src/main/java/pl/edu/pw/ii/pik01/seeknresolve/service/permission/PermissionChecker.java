@@ -43,7 +43,7 @@ public class PermissionChecker {
     private boolean hasPermission(Set<Permission> permissions, Permission permission) {
         return permissions
                 .stream()
-                .filter(setPermission -> setPermission.getPermission().equals(permission.getPermission()))
+                .filter(setPermission -> setPermission.equals(permission))
                 .findFirst().isPresent();
     }
 }

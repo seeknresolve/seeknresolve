@@ -1,13 +1,20 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
 public class PermissionDTO {
-    private String permission;
+    private String permissionName;
 
-    public String getPermission() {
-        return permission;
+    public String getPermissionName() {
+        return permissionName;
     }
 
-    public void setPermission(String permission) {
-        this.permission = permission;
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
+    }
+
+    @Override
+    public String toString() {
+        return "PermissionDTO{" +
+                "permissionName='" + permissionName + '\'' +
+                "}";
     }
 }

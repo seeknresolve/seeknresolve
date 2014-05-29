@@ -1,12 +1,15 @@
 <div class="container" ng-controller="PermissionListController">
 
     <div class="row col-md-12">
-        <div class="row" ng-if="errorMessage != null">
-            <div class="alert alert-danger">{{errorMessage}}</div>
-        </div>
-
         <div class="page-header">
-            <h3>Permissions</h3>
+            <h3>Permissions list
+                <div class="btn-group btn-group-sm pull-right">
+                    <a href="#/permissionCreate" role="button" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Create new permission
+                    </a>
+                </div>
+            </h3>
         </div>
     </div>
 
@@ -17,8 +20,12 @@
                 <th>Permission name</th>
             </thead>
             <tbody>
-                <tr ng-repeat="perm in permissions">
-                    <td>{{perm.permission}}</td>
+                <tr ng-repeat="permission in permissions">
+                    <td>
+                        <a href="#/permission/{{permission.permissionName}}">
+                            {{permission.permissionName}}
+                        </a>
+                    </td>
                 </tr>
             </tbody>
         </table>
