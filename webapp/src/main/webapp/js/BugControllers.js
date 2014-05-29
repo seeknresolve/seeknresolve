@@ -1,5 +1,37 @@
 var bugControllers = angular.module('bugControllers', ['app.services']);
 
+bugControllers.directive('bugPriority', function() {
+    return {
+        restrict: 'E',
+        scope: true,
+        template: '<span class="label {{class}}">{{priority}}</span>',
+        link: function (scope, element, attrs) {
+            scope.priority = attrs.priority;
+            switch (scope.priority) {
+                case "LOW":
+                    scope.class = 'label-default';
+                    break;
+
+                case "NORMAL":
+                    scope.class = 'label-info';
+                    break;
+
+                case "HIGH":
+                    scope.class = 'label-warning';
+                    break;
+
+                case "CRITICAL":
+                    scope.class = 'label-critical';
+                    break;
+
+                default:
+                    scope.class = 'label-primary';
+                    break;
+            }
+        }
+    }
+});
+
 bugControllers.controller('BugListController', ['$scope', '$http', 'notificationsService',
     function(scope, http, notificationsService) {
         scope.bugs = [ ];

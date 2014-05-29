@@ -49,7 +49,7 @@
                     <td>{{bug.dateCreated | date:'HH:mm:ss MM-dd-yyyy'}}</td>
                     <td>{{bug.dateModified | date:'HH:mm:ss MM-dd-yyyy'}}</td>
                     <td>{{bug.state}}</td>
-                    <td>{{bug.priority}}</td>
+                    <td><bug-priority priority="{{bug.priority}}"></bug-priority></td>
                 </tr>
             </tbody>
         </table>
