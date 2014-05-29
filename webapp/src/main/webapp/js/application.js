@@ -5,8 +5,22 @@ var seekNResolve = angular.module('seekNResolve', [
     'userControllers',
     'roleControllers',
     'permissionControllers',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'app.services'
 ]);
+
+seekNResolve.directive('loggedUser', ['userService', function(userService) {
+    return {
+        restrict: 'E',
+        template: "{{user.firstName + ' ' + user.lastName}}",
+        link: function(scope, element, attrs) {
+            scope.user = null;
+            userService.getLoggedUser(function(user) {
+                scope.user = user;
+            });
+        }
+    };
+}]);
 
 seekNResolve.config(['$routeProvider', function($routeProvider) {
     $routeProvider.

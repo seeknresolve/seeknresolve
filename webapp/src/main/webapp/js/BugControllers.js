@@ -37,8 +37,13 @@ bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routePar
     }
 ]);
 
-bugControllers.controller('BugCreateController', ['$scope', '$http', '$location', 'notificationsService',
-    function(scope, http, location, notificationsService) {
+bugControllers.controller('BugCreateController', ['$scope', '$http', '$location', 'notificationsService', 'userService',
+    function(scope, http, location, notificationsService, userService) {
+        scope.loggedUser = null;
+        userService.getLoggedUser(function(user) {
+            scope.loggedUser = user;
+        });
+
         scope.createBug = function() {
             var bug = scope.bug;
             var params = JSON.stringify(bug);

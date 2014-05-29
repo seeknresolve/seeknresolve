@@ -32,8 +32,8 @@
                     <div class="form-group">
                         <label for="bugReporterId" class="col-md-2 control-label">Reporter:</label>
                         <div class="col-md-8">
-                            <input ng-model="$parent.bug.reporterId" disabled type="text" required class="form-control"
-                                   id="bugReporterId" value=""/>
+                            <input type="text" required disabled class="form-control"
+                                   id="bugReporterId" value="{{loggedUser.firstName + ' ' + loggedUser.lastName}}">
                         </div>
                     </div>
 
