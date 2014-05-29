@@ -36,7 +36,7 @@ public class BugService {
         this.dtosFactory = dtosFactory;
     }
 
-    public List<BugDTO> getAll(User user) {
+    public List<BugDTO> getAllPermittedBugs(User user) {
         List<UserProjectRole> projectRoles = userProjectRoleRepository.findByUser(user);
         return projectRoles.stream().parallel()
                 .map(projectRole -> projectRole.getProject().getBugs())

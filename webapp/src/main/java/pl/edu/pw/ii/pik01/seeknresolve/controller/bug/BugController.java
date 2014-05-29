@@ -40,7 +40,7 @@ public class BugController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<List<BugDTO>> getAll() {
-        List<BugDTO> bugs = bugService.getAll(userService.getLoggedUser());
+        List<BugDTO> bugs = bugService.getAllPermittedBugs(userService.getLoggedUser());
         return new Response<>(bugs, Response.Status.RECEIVED);
     }
 

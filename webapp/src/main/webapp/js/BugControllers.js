@@ -37,8 +37,23 @@ bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routePar
     }
 ]);
 
-bugControllers.controller('BugCreateController', ['$scope', '$http',
-    function(scope, http) {
+bugControllers.controller('BugCreateController', ['$scope', '$http', '$location', 'notificationsService',
+    function(scope, http, location, notificationsService) {
+        scope.createBug = function() {
+            var bug = scope.bug;
+            var params = JSON.stringify(bug);
 
+            http.post('/bug/create', params, {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            }).success(function (data, status, headers, config) {
+                notificationsService.success('Success', 'Bug ' + data.object.tag + ' reported successfully');
+                location.path('/bug');
+            }).error(function (data, status, headers, config) {
+                notificationsService.error('Error', 'Creating bug failed! ' + data.error);
+                location.path('/bug');
+            });
+        }
     }
 ]);
