@@ -61,4 +61,10 @@ public class BugController {
     public ErrorResponse handlePersistenceErrors(Exception exception) {
         return new ErrorResponse(exception.getMessage());
     }
+
+    @ExceptionHandler(SecurityException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleSecurityException(Exception exception) {
+        return new ErrorResponse(exception.getMessage());
+    }
 }

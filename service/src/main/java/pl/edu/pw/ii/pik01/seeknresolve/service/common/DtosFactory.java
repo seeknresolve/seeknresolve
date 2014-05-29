@@ -14,7 +14,6 @@ public class DtosFactory {
         projectDTO.setName(project.getName());
         projectDTO.setDescription(project.getDescription());
         projectDTO.setDateCreated(project.getDateCreated());
-        project.getBugs().stream().forEach(bug -> projectDTO.addBug(createBugDTO(bug)));
         return projectDTO;
     }
 

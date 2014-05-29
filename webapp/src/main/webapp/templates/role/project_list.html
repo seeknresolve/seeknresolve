@@ -18,7 +18,11 @@
             </thead>
             <tbody>
             <tr ng-repeat="role in projectRoles">
-                <td>{{role.roleName}} </td>
+                <td>
+                    <a href="#/role/{{role.roleName}}">
+                        {{role.roleName}}
+                    </a>
+                </td>
             </tr>
             </tbody>
         </table>

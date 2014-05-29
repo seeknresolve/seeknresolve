@@ -10,7 +10,6 @@ public class ProjectDTO {
     private String name;
     private String description;
     private DateTime dateCreated;
-    private List<BugDTO> bugs = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -42,18 +41,6 @@ public class ProjectDTO {
 
     public void setDateCreated(DateTime dateCreated) {
         this.dateCreated = dateCreated;
-    }
-
-    public List<BugDTO> getBugs() {
-        return bugs;
-    }
-
-    public void addBug(BugDTO bugDTO) {
-        bugs.add(bugDTO);
-    }
-
-    public void setBugs(List<BugDTO> bugs) {
-        this.bugs = bugs;
     }
 
     @Override

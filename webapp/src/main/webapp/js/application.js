@@ -4,7 +4,8 @@ var seekNResolve = angular.module('seekNResolve', [
     'projectControllers',
     'userControllers',
     'roleControllers',
-    'permissionControllers'
+    'permissionControllers',
+    'ui.bootstrap'
 ]);
 
 seekNResolve.config(['$routeProvider', function($routeProvider) {
@@ -52,6 +53,10 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
         when('/role/projects', {
             templateUrl: 'templates/role/project_list.html',
             controller: 'ProjectRoleListController'
+        }).
+        when('/role/:roleName', {
+            templateUrl: 'templates/role/details.html',
+            controller: 'RoleDetailsController'
         }).
 
         when('/permission/all', {

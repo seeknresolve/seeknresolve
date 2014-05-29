@@ -23,3 +23,15 @@ roleControllers.controller('ProjectRoleListController', ['$scope', '$http',
         });
     }
 ]);
+
+bugControllers.controller('RoleDetailsController', ['$scope', '$http', '$routeParams',
+    function($scope, $http, $routeParams) {
+        $scope.roleName = null;
+
+        $http.get('/role/' + $routeParams.roleName).success(function(data) {
+            $scope.role = data.object;
+        }).error(function(data, status, headers, config) {
+            $scope.errorMessage = 'Can\'t fetch role\'s details!';
+        });
+    }
+]);

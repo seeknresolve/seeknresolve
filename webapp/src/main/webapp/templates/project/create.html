@@ -20,24 +20,29 @@
     <div class="row col-lg-12" ng-if="errorMessage == null">
         <div class="row col-lg-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Szczegóły projektu:</div>
+                <div class="panel-heading">Dane projektu:</div>
                 <div class="panel-body">
 
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
-                            <label for="projectName" class="col-sm-3 control-label">Name:</label>
+                            <label for="projectName" class="col-sm-3 control-label">Nazwa:</label>
                             <div class="col-sm-9">
-                                <input ng-model="name" type="text" class="form-control" id="projectName" />
+                                <input ng-model="$parent.project.name" type="text" required class="form-control" id="projectName" />
                             </div>
                         </div>
-                    </form>
 
-                    <form class="form-horizontal" role="form">
                         <div class="form-group">
                             <label for="projectDescription" class="col-sm-3 control-label">Opis:</label>
                             <div class="col-sm-9">
-                                <input ng-model="description" type="text" class="form-control" id="projectDescription" />
+                                <input ng-model="$parent.project.description" type="text" required class="form-control" id="projectDescription" />
                             </div>
+                        </div>
+
+                        <div class="pull-right">
+                            <a role="button" class="btn btn-success" ng-click="createProject()">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                Utwórz
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -46,14 +51,4 @@
         </div>
     </div>
 
-    <div class="row col-lg-12" ng-if="errorMessage == null">
-        <div class="row col-lg-6">
-            <div class="btn-group btn-group-sm pull-right">
-                <a href="#/project/create" role="button" class="btn btn-success">
-                    <span class="glyphicon glyphicon-plus"></span>
-                    Utwórz
-                </a>
-            </div>
-        </div>
-    </div>
 </div>
