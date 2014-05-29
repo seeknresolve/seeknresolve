@@ -5,10 +5,6 @@
             <div class="alert alert-danger">{{errorMessage}}</div>
         </div>
 
-        <div ng-controller="ProjectAlertController">
-            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-        </div>
-
         <div class="page-header">
             <h3>Lista projektów
                 <div class="btn-group btn-group-sm pull-right">

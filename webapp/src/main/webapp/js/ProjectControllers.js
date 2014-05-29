@@ -1,25 +1,4 @@
-var projectControllers = angular.module('projectControllers', []);
-
-projectControllers.service('alertsService', function() {
-    var alerts = [ ];
-    return {
-        addAlert: function(type, message) {
-            alerts.push({type:type, msg: message});
-        },
-
-        getAlerts: function() {
-            return alerts;
-        }
-    }
-});
-
-var ProjectAlertController = ['$scope', 'alertsService', function(scope, alertsService) {
-    scope.alerts = alertsService.getAlerts();
-
-    scope.closeAlert = function(index) {
-        scope.alerts.splice(index, 1);
-    };
-}];
+var projectControllers = angular.module('projectControllers', ['Postman', 'ngAnimate', 'app.services']);
 
 projectControllers.controller('ProjectListController', ['$scope', '$http',
     function(scope, http) {
@@ -49,8 +28,8 @@ projectControllers.controller('ProjectDetailsController', ['$scope', '$http', '$
     }
 ]);
 
-projectControllers.controller('ProjectCreateController', ['$scope', '$http', '$location', 'alertsService',
-    function(scope, http, location, alertsService) {
+projectControllers.controller('ProjectCreateController', ['$scope', '$http', '$location', 'notificationsService',
+    function(scope, http, location, notificationsService) {
         scope.createProject = function() {
             var project = scope.project;
             var params = JSON.stringify(project);
@@ -60,10 +39,10 @@ projectControllers.controller('ProjectCreateController', ['$scope', '$http', '$l
                     'Content-Type': 'application/json; charset=UTF-8'
                 }
             }).success(function (data, status, headers, config) {
-                alertsService.addAlert('success', 'Project created successfully');
+                notificationsService.success('Success', 'Project ' + data.object.name + ' created successfully');
                 location.path('/project');
             }).error(function (data, status, headers, config) {
-                alertsService.addAlert('error', 'Creating project failed! ' + data.error);
+                notificationsService.error('Error', 'Creating project failed! ' + data.error);
                 location.path('/project');
             });
         }
