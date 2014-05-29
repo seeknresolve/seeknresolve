@@ -1,31 +1,25 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Permission {
+
     @Id
-    @GeneratedValue
-    private long id;
+    private String permissionName;
 
-    @Column(nullable = false)
-    private String permission;
+    public Permission() {}
 
-    public long getId() {
-        return id;
+    public Permission(String permissionName) {
+        this.permissionName = permissionName;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getPermissionName() {
+        return permissionName;
     }
 
-    public String getPermission() {
-        return permission;
-    }
-
-    public void setPermission(String permission) {
-        this.permission = permission;
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
     }
 
     @Override
@@ -35,16 +29,13 @@ public class Permission {
 
         Permission that = (Permission) o;
 
-        if (id != that.id) return false;
-        if (!permission.equals(that.permission)) return false;
+        if (!permissionName.equals(that.permissionName)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + permission.hashCode();
-        return result;
+        return 31 * permissionName.hashCode();
     }
 }

@@ -11,3 +11,14 @@ permissionControllers.controller('PermissionListController', ['$scope', '$http',
         });
     }
 ]);
+
+permissionControllers.controller('PermissionCreateController', ['$scope', '$http',
+    function($scope, $http) {
+        $http({
+            url:'/permission/create',
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            data: {permissionName: $scope.permissionName}
+        });
+    }
+]);

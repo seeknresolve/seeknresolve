@@ -1,0 +1,52 @@
+<div class="container" ng-controller="PermissionCreateController">
+
+    <div class="row col-md-12">
+        <div class="row" ng-if="errorMessage != null">
+            <div class="alert alert-danger">{{errorMessage}}</div>
+        </div>
+
+        <div class="page-header">
+            <h3>Utwórz nowe uprawnienie
+                <div class="btn-group btn-group-sm pull-right">
+                    <a href="#/permission/all" role="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                        Powrót do listy
+                    </a>
+                </div>
+            </h3>
+        </div>
+    </div>
+
+    <div class="row col-lg-12" ng-if="errorMessage == null">
+        <div class="row col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Szczegóły uprawnienia:</div>
+                <div class="panel-body">
+
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="permissionNameL" class="col-sm-3 control-label">Nazwa:</label>
+                            <div class="col-sm-9">
+                                <input ng-model="permissionName" type="text" class="form-control" id="permissionNameL" />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-lg-12" ng-if="errorMessage == null">
+        <div class="row col-lg-6">
+            <div class="btn-group btn-group-sm pull-right">
+                <a href="#/permissionCreate" role="button" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Utwórz
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>

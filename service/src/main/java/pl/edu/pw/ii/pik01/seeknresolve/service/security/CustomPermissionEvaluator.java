@@ -29,8 +29,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permissionText) {
         checkNotNull(permissionText);
 
-        Permission permission = new Permission();
-        permission.setPermission(permissionText.toString());
+        Permission permission = new Permission(permissionText.toString());
 
         if(targetDomainObject != null) {
             checkArgument(targetDomainObject instanceof Project, "Permissions are allowed only for Project objects");
@@ -50,7 +49,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         checkNotNull(project);
 
         Permission permission = new Permission();
-        permission.setPermission(permissionText.toString());
+        permission.setPermissionName(permissionText.toString());
 
         return permissionChecker.hasProjectPermission(project, permission);
     }

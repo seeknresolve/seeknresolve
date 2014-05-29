@@ -8,6 +8,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.PermissionRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,5 +27,18 @@ public class PermissionService {
                 .stream()
                 .map(permission -> DtosFactory.createPermissionDTO(permission))
                 .collect(Collectors.toList());
+    }
+
+    public PermissionDTO createAndSaveNewPermission(PermissionDTO permissionDTO) {
+        Permission permission = createPermissionFromDTO(permissionDTO);
+        Permission savedPermission = permissionRepository.save(permission);
+        if(savedPermission == null) {
+            throw new PersistenceException("Cannot save permission " + permission.getPermissionName());
+        }
+        return DtosFactory.createPermissionDTO(permission);
+    }
+
+    private Permission createPermissionFromDTO(PermissionDTO permissionDTO) {
+        return new Permission(permissionDTO.getPermissionName());
     }
 }
