@@ -38,7 +38,7 @@ public class ProjectController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<List<ProjectDTO>> getAll() {
-        return new Response<>(projectService.getAll(userService.getLoggedUser()), Response.Status.RECEIVED);
+        return new Response<>(projectService.getAllPermittedProjects(userService.getLoggedUser()), Response.Status.RECEIVED);
     }
 
     @PreAuthorize("hasPermission(#id, 'Project', 'project:view') || hasPermission(#id, 'Project', 'project:everything')")

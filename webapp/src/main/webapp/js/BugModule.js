@@ -92,11 +92,26 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$rou
     }
 ]);
 
-bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'notificationsService', 'userService',
-    function(scope, http, location, notificationsService, userService) {
+bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'notificationsService', 'userService', 'projectService',
+    function(scope, http, location, notificationsService, userService, projectService) {
         scope.loggedUser = null;
-        userService.getLoggedUser(function(user) {
+        userService.getLoggedUser(function (user) {
             scope.loggedUser = user;
+        });
+
+        scope.projectUsers = [];
+        scope.projects = [];
+        scope.project = null;
+        projectService.getAllPermittedProjects(function (projects) {
+            scope.projects = projects;
+            scope.project = projects[0];
+        });
+        scope.$watch('project', function() {
+            if (scope.project) {
+                projectService.getUsersInProject(scope.project.id, function (users) {
+                    scope.projectUsers = users;
+                });
+            }
         });
 
         scope.createBug = function() {

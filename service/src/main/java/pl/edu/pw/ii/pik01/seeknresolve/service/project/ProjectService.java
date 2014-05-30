@@ -61,7 +61,7 @@ public class ProjectService {
         return DtosFactory.createProjectDTO(project);
     }
 
-    public List<ProjectDTO> getAll(User user) {
+    public List<ProjectDTO> getAllPermittedProjects(User user) {
         List<UserProjectRole> rolesOnProjects = userProjectRoleRepository.findByUser(user);
         return rolesOnProjects.stream()
                 .map(userProjectRole -> userProjectRole.getProject())
