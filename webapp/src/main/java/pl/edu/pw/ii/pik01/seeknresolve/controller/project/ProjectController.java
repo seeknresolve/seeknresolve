@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.project.ProjectService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
@@ -71,5 +72,11 @@ public class ProjectController {
         } catch (EntityNotFoundException e) {
             return new Response<>(null, Response.Status.NOT_DELETED);
         }
+    }
+
+    @PreAuthorize("hasPermission(#id, 'Project', 'project:view') || hasPermission(#id, 'Project', 'project:everything')")
+    @RequestMapping(value = "/{id}/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<UserDTO>> getUsersWithRolesOnProject(@PathVariable("id") Long id) {
+        return new Response<>(userService.getAllUserWithRolesOnProject(id), Response.Status.RECEIVED);
     }
 }

@@ -1,6 +1,6 @@
-var projectControllers = angular.module('projectControllers', ['app.services']);
+var projectModule = angular.module('projectModule', ['app.services']);
 
-projectControllers.controller('ProjectListController', ['$scope', '$http',
+projectModule.controller('ProjectListController', ['$scope', '$http',
     function(scope, http) {
         scope.projects = [];
 
@@ -12,7 +12,7 @@ projectControllers.controller('ProjectListController', ['$scope', '$http',
     }
 ]);
 
-projectControllers.controller('ProjectDetailsController', ['$scope', '$http', '$routeParams',
+projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$routeParams',
     function(scope, http, routeParams) {
         scope.id = null;
 
@@ -28,7 +28,7 @@ projectControllers.controller('ProjectDetailsController', ['$scope', '$http', '$
     }
 ]);
 
-projectControllers.controller('ProjectCreateController', ['$scope', '$http', '$location', 'notificationsService',
+projectModule.controller('ProjectCreateController', ['$scope', '$http', '$location', 'notificationsService',
     function(scope, http, location, notificationsService) {
         scope.createProject = function() {
             var project = scope.project;

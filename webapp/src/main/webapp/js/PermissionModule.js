@@ -1,6 +1,6 @@
-var permissionControllers = angular.module('permissionControllers', []);
+var permissionModule = angular.module('permissionModule', []);
 
-permissionControllers.controller('PermissionListController', ['$scope', '$http',
+permissionModule.controller('PermissionListController', ['$scope', '$http',
     function($scope, $http) {
         $scope.permissions = [ ];
 
@@ -12,7 +12,7 @@ permissionControllers.controller('PermissionListController', ['$scope', '$http',
     }
 ]);
 
-permissionControllers.controller('PermissionCreateController', ['$scope', '$http', '$location', 'notificationsService',
+permissionModule.controller('PermissionCreateController', ['$scope', '$http', '$location', 'notificationsService',
     function(scope, http, location, notificationsService) {
         scope.createPermission = function() {
             var permission = scope.permission;
@@ -33,7 +33,7 @@ permissionControllers.controller('PermissionCreateController', ['$scope', '$http
     }
 ]);
 
-permissionControllers.controller('PermissionDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
+permissionModule.controller('PermissionDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
     function(scope, http, routeParams, location, notificationsService) {
         scope.permissionName = null;
 

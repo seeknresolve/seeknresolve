@@ -11,15 +11,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.UserBuilder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserRole;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
@@ -28,9 +27,12 @@ public class UserControllerTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private UserProjectRoleRepository userProjectRoleRepository;
+
     @Before
     public void setUp() {
-        UserService userService = new UserService(userRepository);
+        UserService userService = new UserService(userRepository, userProjectRoleRepository);
         UserController userController = new UserController(userService);
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
