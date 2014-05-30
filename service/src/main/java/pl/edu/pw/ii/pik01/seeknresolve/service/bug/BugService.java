@@ -24,16 +24,14 @@ public class BugService {
     private ProjectRepository projectRepository;
     private UserRepository userRepository;
     private UserProjectRoleRepository userProjectRoleRepository;
-    private DtosFactory dtosFactory;
 
     @Autowired
     public BugService(BugRepository bugRepository, ProjectRepository projectRepository,
-                      UserRepository userRepository, UserProjectRoleRepository userProjectRoleRepository, DtosFactory dtosFactory) {
+                      UserRepository userRepository, UserProjectRoleRepository userProjectRoleRepository) {
         this.bugRepository = bugRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.userProjectRoleRepository = userProjectRoleRepository;
-        this.dtosFactory = dtosFactory;
     }
 
     public List<BugDTO> getAllPermittedBugs(User user) {
@@ -41,7 +39,7 @@ public class BugService {
         return projectRoles.stream().parallel()
                 .map(projectRole -> projectRole.getProject().getBugs())
                 .flatMap(bugList -> bugList.stream())
-                .map(bug -> dtosFactory.createBugDTO(bug))
+                .map(bug -> DtosFactory.createBugDTO(bug))
                 .collect(Collectors.toList());
     }
 
@@ -50,7 +48,7 @@ public class BugService {
         if(bug == null) {
             throw new PersistenceException("Cannot save bug with tag: " + bugDTO.getTag());
         }
-        return dtosFactory.createBugDTO(bug);
+        return DtosFactory.createBugDTO(bug);
     }
 
     private Bug createBugFromDTO(BugDTO bugDTO) {
@@ -73,7 +71,7 @@ public class BugService {
         if(bug == null) {
             throw bugNotFoundException(tag);
         }
-        return dtosFactory.createBugDTO(bug);
+        return DtosFactory.createBugDTO(bug);
     }
 
     public void deleteBugWithTag(String tag) {

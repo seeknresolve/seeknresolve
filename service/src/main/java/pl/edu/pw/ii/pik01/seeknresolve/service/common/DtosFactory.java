@@ -8,7 +8,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class DtosFactory {
-    public ProjectDTO createProjectDTO(Project project) {
+
+    private DtosFactory() {
+    }
+
+    public static ProjectDTO createProjectDTO(Project project) {
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setId(project.getId());
         projectDTO.setName(project.getName());
@@ -17,7 +21,7 @@ public class DtosFactory {
         return projectDTO;
     }
 
-    public BugDTO createBugDTO(Bug bug) {
+    public static BugDTO createBugDTO(Bug bug) {
         BugDTO bugDTO = new BugDTO();
         bugDTO.setDateCreated(bug.getDateCreated());
         bugDTO.setDateModified(bug.getDateModified());

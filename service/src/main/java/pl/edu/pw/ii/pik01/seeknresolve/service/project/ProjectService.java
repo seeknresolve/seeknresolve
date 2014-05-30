@@ -23,15 +23,13 @@ import java.util.stream.Collectors;
 public class ProjectService {
     private ProjectRepository projectRepository;
     private UserProjectRoleRepository userProjectRoleRepository;
-    private DtosFactory dtosFactory;
     private RoleRepository roleRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, UserProjectRoleRepository userProjectRoleRepository, RoleRepository roleRepository, DtosFactory dtosFactory) {
+    public ProjectService(ProjectRepository projectRepository, UserProjectRoleRepository userProjectRoleRepository, RoleRepository roleRepository) {
         this.projectRepository = projectRepository;
         this.userProjectRoleRepository = userProjectRoleRepository;
         this.roleRepository = roleRepository;
-        this.dtosFactory = dtosFactory;
     }
 
     public ProjectDTO createAndSaveNewProject(ProjectDTO projectDTO, User user) {
@@ -42,7 +40,7 @@ public class ProjectService {
             throw new PersistenceException("Cannot save project with id: " + projectDTO.getId());
         }
         grantAndSaveRoleForProject(user, savedProject);
-        return dtosFactory.createProjectDTO(savedProject);
+        return DtosFactory.createProjectDTO(savedProject);
     }
 
     private void grantAndSaveRoleForProject(User user, Project project) {
@@ -60,14 +58,14 @@ public class ProjectService {
         if (project == null) {
             throw getEntityNotFoundException(id);
         }
-        return dtosFactory.createProjectDTO(project);
+        return DtosFactory.createProjectDTO(project);
     }
 
     public List<ProjectDTO> getAll(User user) {
         List<UserProjectRole> rolesOnProjects = userProjectRoleRepository.findByUser(user);
         return rolesOnProjects.stream()
                 .map(userProjectRole -> userProjectRole.getProject())
-                .map(project -> dtosFactory.createProjectDTO(project))
+                .map(project -> DtosFactory.createProjectDTO(project))
                 .collect(Collectors.toList());
     }
 
@@ -78,7 +76,7 @@ public class ProjectService {
         }
         //TODO: nie aktualizuje
         project.update(createProjectFromDTO(projectDTO));
-        return dtosFactory.createProjectDTO(project);
+        return DtosFactory.createProjectDTO(project);
     }
 
     public void delete(Long id) {
