@@ -1,10 +1,10 @@
 var seekNResolve = angular.module('seekNResolve', [
     'ngRoute',
-    'bugControllers',
-    'projectControllers',
-    'userControllers',
-    'roleControllers',
-    'permissionControllers',
+    'bugModule',
+    'projectModule',
+    'userModule',
+    'roleModule',
+    'permissionModule',
     'ui.bootstrap',
     'app.services'
 ]);

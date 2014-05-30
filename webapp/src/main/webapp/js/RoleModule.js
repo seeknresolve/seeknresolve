@@ -1,6 +1,6 @@
-var roleControllers = angular.module('roleControllers', []);
+var roleModule = angular.module('roleModule', []);
 
-roleControllers.controller('UserRoleListController', ['$scope', '$http',
+roleModule.controller('UserRoleListController', ['$scope', '$http',
     function($scope, $http) {
         $scope.userRoles = [ ];
 
@@ -12,7 +12,7 @@ roleControllers.controller('UserRoleListController', ['$scope', '$http',
     }
 ]);
 
-roleControllers.controller('ProjectRoleListController', ['$scope', '$http',
+roleModule.controller('ProjectRoleListController', ['$scope', '$http',
     function($scope, $http) {
         $scope.projectRoles = [ ];
 
@@ -24,7 +24,7 @@ roleControllers.controller('ProjectRoleListController', ['$scope', '$http',
     }
 ]);
 
-bugControllers.controller('RoleDetailsController', ['$scope', '$http', '$routeParams',
+roleModule.controller('RoleDetailsController', ['$scope', '$http', '$routeParams',
     function($scope, $http, $routeParams) {
         $scope.roleName = null;
 

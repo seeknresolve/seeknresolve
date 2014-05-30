@@ -1,6 +1,6 @@
-var userControllers = angular.module('userControllers', []);
+var userModule = angular.module('userModule', []);
 
-userControllers.controller('UserListController', ['$scope', '$http',
+userModule.controller('UserListController', ['$scope', '$http',
     function($scope, $http) {
         $scope.users = [ ];
 
@@ -12,7 +12,7 @@ userControllers.controller('UserListController', ['$scope', '$http',
     }
 ]);
 
-userControllers.controller('UserDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
+userModule.controller('UserDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
     function(scope, http, routeParams, location, notificationsService) {
         scope.login = null;
 

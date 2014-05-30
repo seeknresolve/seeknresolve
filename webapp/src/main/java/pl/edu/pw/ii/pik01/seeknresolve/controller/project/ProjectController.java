@@ -74,8 +74,9 @@ public class ProjectController {
         }
     }
 
+    @PreAuthorize("hasPermission(#id, 'Project', 'project:view') || hasPermission(#id, 'Project', 'project:everything')")
     @RequestMapping(value = "/{id}/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<UserDTO>> getUsersWithRolesOnProject(@PathVariable("id") Long projectId) {
-        return new Response<>(userService.getAllUserWithRolesOnProject(projectId), Response.Status.RECEIVED);
+    public Response<List<UserDTO>> getUsersWithRolesOnProject(@PathVariable("id") Long id) {
+        return new Response<>(userService.getAllUserWithRolesOnProject(id), Response.Status.RECEIVED);
     }
 }

@@ -1,6 +1,6 @@
-var bugControllers = angular.module('bugControllers', ['app.services']);
+var bugModule = angular.module('bugModule', ['app.services']);
 
-bugControllers.directive('bugPriority', function() {
+bugModule.directive('bugPriority', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -32,7 +32,11 @@ bugControllers.directive('bugPriority', function() {
     }
 });
 
-bugControllers.controller('BugListController', ['$scope', '$http', 'notificationsService',
+bugModule.filter('priorityFilter', function(item) {
+
+});
+
+bugModule.controller('BugListController', ['$scope', '$http', 'notificationsService',
     function(scope, http, notificationsService) {
         scope.bugs = [ ];
 
@@ -44,7 +48,7 @@ bugControllers.controller('BugListController', ['$scope', '$http', 'notification
     }
 ]);
 
-bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
+bugModule.controller('BugDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
     function(scope, http, routeParams, location, notificationsService) {
         scope.tag = null;
 
@@ -70,7 +74,7 @@ bugControllers.controller('BugDetailsController', ['$scope', '$http', '$routePar
     }
 ]);
 
-bugControllers.controller('BugCreateController', ['$scope', '$http', '$location', 'notificationsService', 'userService',
+bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'notificationsService', 'userService',
     function(scope, http, location, notificationsService, userService) {
         scope.loggedUser = null;
         userService.getLoggedUser(function(user) {
