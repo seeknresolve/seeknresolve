@@ -6,6 +6,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
@@ -17,10 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final UserProjectRoleRepository userProjectRoleRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserProjectRoleRepository userProjectRoleRepository) {
         this.userRepository = userRepository;
+        this.userProjectRoleRepository = userProjectRoleRepository;
     }
 
     public User getLoggedUser() {
@@ -69,5 +73,13 @@ public class UserService {
         user.setLogin(userDTO.getLogin());
         //TODO: should initialize lists and other?
         return user;
+    }
+
+    public List<UserDTO> getAllUserWithRolesOnProject(Long projectId) {
+        List<UserProjectRole> projectRoles = userProjectRoleRepository.findByProjectId(projectId);
+        return projectRoles.stream()
+                .map(userProjectRole -> userProjectRole.getUser())
+                .map(user -> DtosFactory.createUserDTO(user))
+                .collect(Collectors.toList());
     }
 }

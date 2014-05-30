@@ -1,6 +1,8 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
@@ -12,4 +14,6 @@ import java.util.List;
 public interface UserProjectRoleRepository extends CrudRepository<UserProjectRole, Long> {
     UserProjectRole findByUserAndProject(User user, Project project);
     List<UserProjectRole> findByUser(User user);
+    @Query("select upr from UserProjectRole upr where upr.project.id = :projectId")
+    List<UserProjectRole> findByProjectId(@Param("projectId") Long projectId);
 }
