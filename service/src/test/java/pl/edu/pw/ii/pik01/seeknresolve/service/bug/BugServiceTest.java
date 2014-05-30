@@ -14,7 +14,6 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.TestWithSecurity;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
@@ -42,7 +41,7 @@ public class BugServiceTest {
     @Before
     public void setup() {
         bugService = new BugService(bugRepository, projectRepository,
-                userRepository, testWithSecurity.userProjectRoleRepository, new DtosFactory());
+                userRepository, testWithSecurity.userProjectRoleRepository);
     }
 
     @Test(expected = EntityNotFoundException.class)

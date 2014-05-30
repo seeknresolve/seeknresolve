@@ -13,7 +13,6 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.ProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.TestWithSecurity;
 
 import java.util.List;
@@ -35,8 +34,7 @@ public class ProjectServiceTest {
     @Before
     public void setup() {
         projectService = new ProjectService(projectRepository,
-                testWithSecurity.userProjectRoleRepository, testWithSecurity.roleRepository,
-                new DtosFactory());
+                testWithSecurity.userProjectRoleRepository, testWithSecurity.roleRepository);
     }
 
     @Test
