@@ -35,7 +35,7 @@ public class DtosFactory {
         return bugDTO;
     }
 
-    public UserDTO createUserDTO(User user) {
+    public static UserDTO createUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setLogin(user.getLogin());

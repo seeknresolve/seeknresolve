@@ -11,3 +11,16 @@ userControllers.controller('UserListController', ['$scope', '$http',
         });
     }
 ]);
+
+userControllers.controller('UserDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
+    function(scope, http, routeParams, location, notificationsService) {
+        scope.login = null;
+
+        http.get('/user/' + routeParams.login).success(function(data) {
+            scope.user = data.object;
+        }).error(function(data, status, headers, config) {
+            notificationsService.error('Error', 'Can\'t fetch user\'s details!');
+            location.path('/user');
+        });
+    }
+]);
