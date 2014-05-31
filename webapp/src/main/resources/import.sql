@@ -20,6 +20,11 @@ insert into bug(tag, name, description, date_created, date_modified, reporter_id
 insert into bug(tag, name, description, date_created, date_modified, reporter_id, assignee_id, project_id, state, priority) values('TTT-1', 'Bug 1', 'Opis buga', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 2, 0, 2, 'NEW', 'NORMAL');
 insert into bug(tag, name, description, date_created, date_modified, reporter_id, assignee_id, project_id, state, priority) values('TTT-2', 'Bug 2', 'Opis buga', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 1, 1, 2, 'NEW', 'NORMAL');
 
+insert into comment(id, content, date_created, author_id, bug_tag) values(0, 'Bardzo ladny bug. Daje okeje.', CURRENT_TIMESTAMP(), 1, 'SNR-1');
+insert into comment(id, content, date_created, author_id, bug_tag) values(1, 'Ooo, faktycznie, ale ladny.', CURRENT_TIMESTAMP(), 0, 'SNR-1');
+insert into comment(id, content, date_created, author_id, bug_tag) values(2, 'Kto to takie bugi robi ja sie pytam?!', CURRENT_TIMESTAMP(), 1, 'SNR-2');
+insert into comment(id, content, date_created, author_id, bug_tag) values(3, 'Polecam, Jan Zamoyski.', CURRENT_TIMESTAMP(), 2, 'WBT-1');
+
 insert into project_role(role_name) values('PM');
 insert into project_role(role_name) values('DEVELOPER');
 insert into project_role(role_name) values('EXTERNAL');
