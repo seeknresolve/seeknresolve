@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -39,6 +40,10 @@ public class DtosFactory {
         return bugDTO;
     }
 
+    public static BugDetailsDTO createBugDetailsDTO(BugDTO bug, List<CommentDTO> comments) {
+        return new BugDetailsDTO(bug, comments);
+    }
+
     public static UserDTO createUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
@@ -67,5 +72,15 @@ public class DtosFactory {
         PermissionDTO permissionDTO = new PermissionDTO();
         permissionDTO.setPermissionName(permission.getPermissionName());
         return permissionDTO;
+    }
+
+    public static CommentDTO createCommentDTO(Comment comment, String authorLogin) {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setId(comment.getId());
+        commentDTO.setDateCreated(comment.getDateCreated());
+        commentDTO.setContent(comment.getContent());
+        commentDTO.setAuthorLogin(authorLogin);
+        commentDTO.setBugTag(comment.getBug().getTag());
+        return commentDTO;
     }
 }

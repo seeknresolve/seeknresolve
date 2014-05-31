@@ -4,10 +4,14 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDetailsDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CommentDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Comment;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.CommentRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
@@ -23,14 +27,17 @@ public class BugService {
     private BugRepository bugRepository;
     private ProjectRepository projectRepository;
     private UserRepository userRepository;
+    private CommentRepository commentRepository;
     private UserProjectRoleRepository userProjectRoleRepository;
 
     @Autowired
     public BugService(BugRepository bugRepository, ProjectRepository projectRepository,
-                      UserRepository userRepository, UserProjectRoleRepository userProjectRoleRepository) {
+                      UserRepository userRepository, CommentRepository commentRepository,
+                      UserProjectRoleRepository userProjectRoleRepository) {
         this.bugRepository = bugRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
         this.userProjectRoleRepository = userProjectRoleRepository;
     }
 
@@ -66,12 +73,15 @@ public class BugService {
         return bug;
     }
 
-    public BugDTO getBugWithTag(String tag) {
+    public BugDetailsDTO getBugWithTag(String tag) {
         Bug bug = bugRepository.findOne(tag);
         if(bug == null) {
             throw bugNotFoundException(tag);
         }
-        return DtosFactory.createBugDTO(bug);
+
+        BugDTO bugDTO = DtosFactory.createBugDTO(bug);
+        List<CommentDTO> comments = createCommentDTOList(commentRepository.findByBug(bug));
+        return DtosFactory.createBugDetailsDTO(bugDTO, comments);
     }
 
     public void deleteBugWithTag(String tag) {
@@ -84,5 +94,12 @@ public class BugService {
 
     private EntityNotFoundException bugNotFoundException(String tag) {
         return new EntityNotFoundException("Bug with tag: " + tag + " not found.");
+    }
+
+    private List<CommentDTO> createCommentDTOList(List<Comment> commentList) {
+        return commentList.
+                stream().
+                map(comment -> DtosFactory.createCommentDTO(comment, userRepository.findOne(comment.getAuthor().getId()).getLogin())).
+                collect(Collectors.toList());
     }
 }
