@@ -116,9 +116,14 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
 
         scope.createBug = function() {
             var bug = scope.bug;
+            bug.projectId = scope.project.id;
+            bug.reporterId = scope.loggedUser.id;
+            if(scope.assignee) {
+                bug.assigneeId = scope.assignee.id;
+            }
             var params = JSON.stringify(bug);
 
-            http.post('/bug/create', params, {
+            http.post('/bug', params, {
                 headers: {
                     'Content-Type': 'application/json; charset=UTF-8'
                 }

@@ -51,11 +51,11 @@ public class BugService {
     }
 
     public BugDTO createAndSaveNewBug(BugDTO bugDTO) {
-        Bug bug = bugRepository.save(createBugFromDTO(bugDTO));
-        if(bug == null) {
+        Bug savedBug = bugRepository.save(createBugFromDTO(bugDTO));
+        if(savedBug == null) {
             throw new PersistenceException("Cannot save bug with tag: " + bugDTO.getTag());
         }
-        return DtosFactory.createBugDTO(bug);
+        return DtosFactory.createBugDTO(savedBug);
     }
 
     private Bug createBugFromDTO(BugDTO bugDTO) {
@@ -69,7 +69,9 @@ public class BugService {
         bug.setPriority(bugDTO.getPriority());
         bug.setProject(projectRepository.findOne(bugDTO.getProjectId()));
         bug.setReporter(userRepository.findOne(bugDTO.getReporterId()));
-        bug.setAssignee(userRepository.findOne(bugDTO.getAssigneeId()));
+        if(bugDTO.getAssigneeId() != null) {
+            bug.setAssignee(userRepository.findOne(bugDTO.getAssigneeId()));
+        }
         return bug;
     }
 

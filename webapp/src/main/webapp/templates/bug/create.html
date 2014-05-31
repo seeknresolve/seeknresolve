@@ -19,7 +19,6 @@
                         <label for="bugProject" class="col-md-2 control-label">Project:</label>
                         <div class="col-md-4">
                             <select class="form-control" id="bugProject" ng-model="project" ng-options="project.name for project in projects">
-                                <option value="">-- choose project --</option>
                             </select>
                         </div>
                     </div>
@@ -49,7 +48,7 @@
                     <div class="form-group">
                         <label for="bugAssigneeId" class="col-md-2 control-label">Assignee:</label>
                         <div class="col-md-4">
-                            <select class="form-control" id="bugAssigneeId" ng-model="$parent.projectUsers" ng-options="user.login for user in projectUsers">
+                            <select class="form-control" id="bugAssigneeId" ng-model="assignee" ng-options="user.login for user in projectUsers">
                                 <option value="">-- choose assignee --</option>
                             </select>
                         </div>
