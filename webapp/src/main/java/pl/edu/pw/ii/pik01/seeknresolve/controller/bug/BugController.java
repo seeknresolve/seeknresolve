@@ -3,8 +3,15 @@ package pl.edu.pw.ii.pik01.seeknresolve.controller.bug;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
@@ -33,8 +40,8 @@ public class BugController {
     }
 
     @RequestMapping(value = "/{tag}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<BugDTO> get(@PathVariable("tag") String tag) {
-        BugDTO bug = bugService.getBugWithTag(tag);
+    public Response<BugDetailsDTO> get(@PathVariable("tag") String tag) {
+        BugDetailsDTO bug = bugService.getBugWithTag(tag);
         return new Response<>(bug, Response.Status.RECEIVED);
     }
 

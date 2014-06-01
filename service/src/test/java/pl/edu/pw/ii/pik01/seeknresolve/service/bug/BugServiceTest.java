@@ -12,6 +12,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.CommentRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.TestWithSecurity;
@@ -34,6 +35,9 @@ public class BugServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private CommentRepository commentRepository;
+
     private TestWithSecurity testWithSecurity = new TestWithSecurity();
 
     private BugService bugService;
@@ -41,7 +45,7 @@ public class BugServiceTest {
     @Before
     public void setup() {
         bugService = new BugService(bugRepository, projectRepository,
-                userRepository, testWithSecurity.userProjectRoleRepository);
+                userRepository, commentRepository, testWithSecurity.userProjectRoleRepository);
     }
 
     @Test(expected = EntityNotFoundException.class)

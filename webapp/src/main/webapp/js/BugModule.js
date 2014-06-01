@@ -48,8 +48,8 @@ bugModule.controller('BugListController', ['$scope', '$http', 'notificationsServ
     }
 ]);
 
-bugModule.controller('BugDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
-    function(scope, http, routeParams, location, notificationsService) {
+bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$routeParams', '$location', 'notificationsService',
+    function(scope, http, route, routeParams, location, notificationsService) {
         scope.tag = null;
 
         http.get('/bug/' + routeParams.tag).success(function(data) {
@@ -71,6 +71,24 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$routeParams',
                 scope.errorMessage = 'Can\'t delete bug!';
             });
         };
+
+        scope.createComment = function() {
+            var comment = scope.comment;
+            comment.bugTag = scope.bug.tag;
+            var params = JSON.stringify(comment);
+
+            http.post('/comment/create', params, {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            }).success(function (data, status, headers, config) {
+                notificationsService.success('Success', 'Comment created successfully');
+                route.reload();
+            }).error(function (data, status, headers, config) {
+                notificationsService.error('Error', 'Creating comment failed! ' + data.error);
+                location.path('/bug');
+            });
+        }
     }
 ]);
 
