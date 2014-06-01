@@ -65,7 +65,7 @@ public class BugService {
         bug.setTag(bugDTO.getTag());
         bug.setName(bugDTO.getName());
         bug.setDescription(bugDTO.getDescription());
-        bug.setState(bugDTO.getState());
+        bug.setState(Bug.State.NEW);
         bug.setPriority(bugDTO.getPriority());
         bug.setProject(projectRepository.findOne(bugDTO.getProjectId()));
         bug.setReporter(userRepository.findOne(bugDTO.getReporterId()));

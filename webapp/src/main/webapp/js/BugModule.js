@@ -21,7 +21,7 @@ bugModule.directive('bugPriority', function() {
                     break;
 
                 case "CRITICAL":
-                    scope.class = 'label-critical';
+                    scope.class = 'label-danger';
                     break;
 
                 default:
@@ -95,6 +95,14 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
             scope.loggedUser = user;
         });
 
+        scope.priorities = [
+            'LOW',
+            'NORMAL',
+            'HIGH',
+            'CRITICAL'
+        ];
+        scope.priority = scope.priorities[1];
+
         scope.projectUsers = [];
         scope.projects = [];
         scope.project = null;
@@ -112,6 +120,7 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
 
         scope.createBug = function() {
             var bug = scope.bug;
+            bug.priority = scope.priority;
             bug.projectId = scope.project.id;
             bug.reporterId = scope.loggedUser.id;
             if(scope.assignee) {
