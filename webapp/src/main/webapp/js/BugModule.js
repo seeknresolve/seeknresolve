@@ -1,10 +1,10 @@
-var bugModule = angular.module('bugModule', ['app.services']);
+var bugModule = angular.module('bugModule', ['app.services', 'app.filters']);
 
 bugModule.directive('bugPriority', function() {
     return {
         restrict: 'E',
         scope: true,
-        template: '<span class="label {{class}}">{{priority}}</span>',
+        template: '<span class="label {{class}}">{{priority | capitalizeFilter}}</span>',
         link: function (scope, element, attrs) {
             scope.priority = attrs.priority;
             switch (scope.priority) {
@@ -30,10 +30,6 @@ bugModule.directive('bugPriority', function() {
             }
         }
     }
-});
-
-bugModule.filter('priorityFilter', function(item) {
-
 });
 
 bugModule.controller('BugListController', ['$scope', '$http', 'notificationsService',
