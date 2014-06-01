@@ -54,7 +54,7 @@ public class PermissionService {
         return DtosFactory.createPermissionDTO(permission);
     }
 
-    private Permission createPermissionFromDTO(PermissionDTO permissionDTO) {
+    public Permission createPermissionFromDTO(PermissionDTO permissionDTO) {
         return new Permission(permissionDTO.getPermissionName());
     }
 }

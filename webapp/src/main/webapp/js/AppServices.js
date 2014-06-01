@@ -29,3 +29,22 @@ appServices.service('userService', ['$http', function(http) {
         }
     };
 }]);
+
+appServices.service('permissionService', ['$http', '$log', function($http, $log) {
+    return {
+        hasPermission: function (permissionNameArg, callback) {
+            var permission = {permissionName: permissionNameArg};
+            var params = JSON.stringify(permission);
+
+            $http.post('/permission/hasPermission', params, {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            }).then(function(result){
+                if(callback) {
+                    callback(result.data.object);
+                }
+            });
+        }
+    };
+}]);
