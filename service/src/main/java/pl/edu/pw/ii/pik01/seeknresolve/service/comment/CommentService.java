@@ -71,7 +71,7 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setDateCreated(commentDTO.getDateCreated());
         comment.setContent(commentDTO.getContent());
-        comment.setAuthor(userRepository.findOneByLogin(commentDTO.getAuthorLogin()));
+        comment.setAuthor(userRepository.findOne(commentDTO.getAuthorId()));
         comment.setBug(bugRepository.findOne(commentDTO.getBugTag()));
         return comment;
     }
