@@ -1,14 +1,17 @@
 var permissionModule = angular.module('permissionModule', []);
 
-permissionModule.controller('PermissionListController', ['$scope', '$http',
-    function($scope, $http) {
+permissionModule.controller('PermissionListController', ['$scope', '$http', 'permissionService', '$log',
+    function($scope, $http, permissionService, $log) {
         $scope.permissions = [ ];
+        $scope.shouldShowCreateButton = false;
 
         $http.get('/permission/all').success(function(data) {
             $scope.permissions = data.object;
         }).error(function(data, status, headers, config) {
             $scope.errorMessage = "Can't retrieve permissions list!";
         });
+
+        permissionService.hasPermission('permission-create', function(has){$scope.shouldShowCreateButton = (has == "true")});
     }
 ]);
 

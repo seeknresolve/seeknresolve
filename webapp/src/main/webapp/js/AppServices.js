@@ -29,3 +29,15 @@ appServices.service('userService', ['$http', function(http) {
         }
     };
 }]);
+
+appServices.service('permissionService', ['$http', '$log', function($http, $log) {
+    return {
+        hasPermission: function (permissionName, callback) {
+            $http.get('permission/hasPermission/' + permissionName).then(function(result){
+                if(callback) {
+                    callback(result.data.object);
+                }
+            });
+        }
+    };
+}]);

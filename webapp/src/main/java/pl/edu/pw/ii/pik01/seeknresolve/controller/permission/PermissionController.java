@@ -6,7 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.PermissionDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
+import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionChecker;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
@@ -19,10 +21,12 @@ import java.util.List;
 public class PermissionController {
 
     private final PermissionService permissionService;
+    private final PermissionChecker permissionChecker;
 
     @Autowired
-    public PermissionController(PermissionService permissionService) {
+    public PermissionController(PermissionService permissionService, PermissionChecker permissionChecker) {
         this.permissionService = permissionService;
+        this.permissionChecker = permissionChecker;
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,6 +53,12 @@ public class PermissionController {
     public Response<String> delete(@PathVariable("permissionName") String permissionName) {
         permissionService.delete(permissionName);
         return new Response<>(permissionName, Response.Status.DELETED);
+    }
+
+    @RequestMapping(value = "/hasPermission/{permissionName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> hasPermission(@PathVariable("permissionName") String permissionName) {
+        Boolean hasPermission = permissionChecker.hasPermission(new Permission(permissionName));
+        return new Response<>(hasPermission.toString(), Response.Status.RECEIVED);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
