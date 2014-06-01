@@ -55,9 +55,9 @@ public class PermissionController {
         return new Response<>(permissionName, Response.Status.DELETED);
     }
 
-    @RequestMapping(value = "/hasPermission/{permissionName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<String> hasPermission(@PathVariable("permissionName") String permissionName) {
-        Boolean hasPermission = permissionChecker.hasPermission(new Permission(permissionName));
+    @RequestMapping(value = "/hasPermission", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> hasPermission(@RequestBody PermissionDTO permissionDTO) {
+        Boolean hasPermission = permissionChecker.hasPermission(permissionService.createPermissionFromDTO(permissionDTO));
         return new Response<>(hasPermission.toString(), Response.Status.RECEIVED);
     }
 

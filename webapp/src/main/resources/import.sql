@@ -34,10 +34,10 @@ insert into permission(permission_name) values('project:add_member');
 insert into permission(permission_name) values('project:delete');
 insert into permission(permission_name) values('project:update');
 insert into permission(permission_name) values('project:create');
-insert into permission(permission_name) values('permission-create');
+insert into permission(permission_name) values('permission:create');
 
 insert into role_permissions(role_roleName, permissions_permissionName) values('ADMIN', 'admin:everything');
-insert into role_permissions(role_roleName, permissions_permissionName) values('ADMIN', 'permission-create');
+insert into role_permissions(role_roleName, permissions_permissionName) values('ADMIN', 'permission:create');
 insert into role_permissions(role_roleName, permissions_permissionName) values('PM', 'project:everything');
 insert into role_permissions(role_roleName, permissions_permissionName) values('DEVELOPER', 'project:view');
 insert into role_permissions(role_roleName, permissions_permissionName) values('DEVELOPER', 'project:add_bug');

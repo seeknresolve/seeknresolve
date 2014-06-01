@@ -11,7 +11,7 @@ permissionModule.controller('PermissionListController', ['$scope', '$http', 'per
             $scope.errorMessage = "Can't retrieve permissions list!";
         });
 
-        permissionService.hasPermission('permission-create', function(has){$scope.shouldShowCreateButton = (has == "true")});
+        permissionService.hasPermission('permission:create', function(has){$scope.shouldShowCreateButton = (has == "true")});
     }
 ]);
 
