@@ -21,6 +21,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.security.ContextUser;
 
@@ -29,6 +30,9 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.security.ContextUser;
 public class CommentServiceIntegrationTest {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private ProjectRepository projectRepository;
@@ -77,10 +81,15 @@ public class CommentServiceIntegrationTest {
     private User createAndSaveUser(String login) {
         User user = new UserBuilder().withLogin(login)
                 .withFirstName("R").withLastName("N")
-                .withEmail("r@r.pl").withRole(new UserRole("USER"))
+                .withEmail("r@r.pl").withRole(createAndSaveRole("TEST_USER"))
                 .build();
         user.setPassword("abcd");
         return userRepository.save(user);
+    }
+
+    private UserRole createAndSaveRole(String roleName) {
+        UserRole userRole = new UserRole(roleName);
+        return roleRepository.save(userRole);
     }
 
     private Bug createAndSaveBug(String tag, User user, Project project) {

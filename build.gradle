@@ -29,6 +29,8 @@ allprojects {
         compile 'org.springframework.boot:spring-boot-starter-aop:1.0.2.RELEASE'
         compile 'org.springframework.boot:spring-boot-starter-security:1.0.2.RELEASE'
 
+        compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3'
+
         testCompile 'junit:junit:4.11'
         testCompile 'org.mockito:mockito-all:1.9.5'
         testCompile 'org.assertj:assertj-core:1.6.0'
@@ -64,8 +66,6 @@ project(':service') {
         integrationTestRuntime configurations.testRuntime
 
         compile project(':persistence')
-
-        testCompile project(':webapp')
     }
 }
 
@@ -75,8 +75,6 @@ project(':webapp') {
     dependencies {
         compile project(':persistence')
         compile project(':service')
-
-        compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3'
 
         testCompile 'com.jayway.jsonpath:json-path:0.9.1'
     }
