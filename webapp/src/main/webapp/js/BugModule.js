@@ -103,7 +103,11 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$rou
                 notificationsService.error('Error', 'Creating comment failed! ' + data.error);
                 location.path('/bug');
             });
-        }
+        };
+
+        scope.updateBug = function() {
+            alert("aaa");
+        };
     }
 ]);
 

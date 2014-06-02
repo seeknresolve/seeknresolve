@@ -57,6 +57,12 @@ public class BugController {
         return new Response<>(tag, Response.Status.DELETED);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<BugDTO> update(@RequestBody BugDTO bugDTO) {
+        BugDTO updatedBug = bugService.updateBug(bugDTO);
+        return new Response<>(updatedBug, Response.Status.UPDATED);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(Exception exception) {

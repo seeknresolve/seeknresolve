@@ -15,6 +15,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.CommentRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.TestWithSecurity;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
@@ -23,6 +24,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -119,5 +121,29 @@ public class BugServiceTest {
 
     private Bug givenBug(String tag, String name) {
         return new BugBuilder().withTag(tag).withName(name).build();
+    }
+
+    @Test
+    public void shouldUpdateBug() {
+        //given:
+        Bug bug = givenBug("TTT-3", "Testowy3");
+        BugDTO updateData = givenUpdateData(bug, "Nowa nazwa");
+        given(bugRepository.findOne("TTT-3")).willReturn(bug);
+        given(bugRepository.save(any(Bug.class))).willReturn(createBugFromDTO(updateData));
+        //when:
+        BugDTO updatedBug = bugService.updateBug(updateData);
+        //then:
+        assertThat(updatedBug).isNotNull();
+        assertThat(updatedBug.getName()).isEqualTo("Nowa nazwa");
+    }
+
+    private BugDTO givenUpdateData(Bug bug, String name) {
+        BugDTO bugDTO = DtosFactory.createBugDTO(bug);
+        bugDTO.setName(name);
+        return bugDTO;
+    }
+
+    private Bug createBugFromDTO(BugDTO bugDTO) {
+        return new BugBuilder().withName(bugDTO.getName()).build();
     }
 }
