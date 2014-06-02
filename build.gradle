@@ -29,6 +29,8 @@ allprojects {
         compile 'org.springframework.boot:spring-boot-starter-aop:1.0.2.RELEASE'
         compile 'org.springframework.boot:spring-boot-starter-security:1.0.2.RELEASE'
 
+        compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3'
+
         testCompile 'junit:junit:4.11'
         testCompile 'org.mockito:mockito-all:1.9.5'
         testCompile 'org.assertj:assertj-core:1.6.0'
@@ -43,7 +45,26 @@ project(':persistence') {
 }
 
 project(':service') {
+    sourceSets {
+        integrationTest {
+            java.srcDir file('src/integrationTest/java')
+            resources.srcDir file('src/integrationTest/resources')
+        }
+    }
+
+    task integrationTest(type: Test) {
+        testClassesDir = sourceSets.integrationTest.output.classesDir
+        classpath = sourceSets.integrationTest.runtimeClasspath
+    }
+
+    check.dependsOn integrationTest
+
     dependencies {
+        integrationTestCompile sourceSets.main.output
+        integrationTestCompile configurations.testCompile
+        integrationTestCompile sourceSets.test.output
+        integrationTestRuntime configurations.testRuntime
+
         compile project(':persistence')
     }
 }
@@ -54,8 +75,6 @@ project(':webapp') {
     dependencies {
         compile project(':persistence')
         compile project(':service')
-
-        compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3'
 
         testCompile 'com.jayway.jsonpath:json-path:0.9.1'
     }

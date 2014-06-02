@@ -22,7 +22,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BugServiceTest {
@@ -52,7 +54,7 @@ public class BugServiceTest {
     public void shouldThrowExceptionIfBugToDeleteDoesNotExist() {
         //given:
         String sampleTag = "BUG-123";
-        when(bugRepository.exists(sampleTag)).thenReturn(false);
+        given(bugRepository.exists(sampleTag)).willReturn(false);
         //when:
         bugService.deleteBugWithTag(sampleTag);
     }
@@ -61,7 +63,7 @@ public class BugServiceTest {
     public void shouldDeleteExistingBug() {
         //given:
         String sampleTag = "BUG-123";
-        when(bugRepository.exists(sampleTag)).thenReturn(true);
+        given(bugRepository.exists(sampleTag)).willReturn(true);
         //when:
         bugService.deleteBugWithTag(sampleTag);
         //then:

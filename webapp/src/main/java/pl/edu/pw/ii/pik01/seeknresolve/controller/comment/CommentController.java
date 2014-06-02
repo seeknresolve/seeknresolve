@@ -43,7 +43,7 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<CommentDTO>> getByuserId(@PathVariable("userId") Long userId) {
+    public Response<List<CommentDTO>> getByUserId(@PathVariable("userId") Long userId) {
         List<CommentDTO> commentList = commentService.getAllByAuthorId(userId);
         return new Response<>(commentList, Response.Status.RECEIVED);
     }

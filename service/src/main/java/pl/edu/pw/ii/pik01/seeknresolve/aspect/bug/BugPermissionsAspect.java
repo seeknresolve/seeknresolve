@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CommentDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
@@ -70,5 +71,11 @@ public class BugPermissionsAspect {
     public void checkBugDeletePermission(JoinPoint joinPoint, String tag) {
         Bug bugToDelete = bugRepository.findOne(tag);
         checkPermissionsOnBug(bugToDelete, "project:view", "project:everything", "project:delete");
+    }
+
+    @Before("execution(* pl.edu.pw.ii.pik01.seeknresolve.service.comment.CommentService.createAndSaveNewComment(..)) && args(commentDTO, ..)")
+    public void checkCommentPermission(JoinPoint joinPoint, CommentDTO commentDTO) {
+        Bug bug = bugRepository.findOne(commentDTO.getBugTag());
+        checkPermissionsOnBug(bug, "project:view", "project:everything");
     }
 }
