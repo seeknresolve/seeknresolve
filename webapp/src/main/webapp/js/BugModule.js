@@ -1,5 +1,24 @@
 var bugModule = angular.module('bugModule', ['app.services', 'app.filters']);
 
+bugModule.directive('userDisplay', function() {
+    return {
+        restrict: 'E',
+        scope: true,
+        //TODO: this link should be optional
+        template: '<a href="#/user/{{userLogin}}">{{userName}}</a>',
+        link: function (scope, element, attrs) {
+            scope.userLogin = attrs.userLogin;
+            if(attrs.userLogin == null || attrs.userLogin == '') {
+                scope.userName = 'None';
+            } else {
+                scope.userName = attrs.userName;
+                scope.linkOpen = '<a href="#/user/{{attrs.userLogin}}">';
+                scope.linkClose = '</a>';
+            }
+        }
+    };
+});
+
 bugModule.directive('bugPriority', function() {
     return {
         restrict: 'E',

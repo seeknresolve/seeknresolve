@@ -62,6 +62,14 @@ public class BugDetailsDTO {
         bug.setReporterId(reporterId);
     }
 
+    public String getReporterLogin() {
+        return bug.getReporterLogin();
+    }
+
+    public void setReporterLogin(String reporterLogin) {
+        bug.setReporterLogin(reporterLogin);
+    }
+
     public String getReporterName() {
         return bug.getReporterName();
     }
@@ -76,6 +84,14 @@ public class BugDetailsDTO {
 
     public void setAssigneeId(Long assigneeId) {
         bug.setAssigneeId(assigneeId);
+    }
+
+    public String getAssigneeLogin() {
+        return bug.getAssigneeLogin();
+    }
+
+    public void setAssigneeLogin(String assigneeLogin) {
+        bug.setAssigneeLogin(assigneeLogin);
     }
 
     public String getAssigneeName() {
