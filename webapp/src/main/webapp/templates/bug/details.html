@@ -5,7 +5,6 @@
             <h3>Bug {{bug.tag}} : {{bug.name}}
                 <div class="btn-group btn-group-sm pull-right">
                     <a href="#/bug/" role="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back to list</a>
-                    <a href="#/bug/edit/{{bug.tag}}" role="button" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                     <button role="button" class="btn btn-danger" ng-click="deleteBug(bug.tag)"><span class="glyphicon glyphicon-pencil"></span> Delete</button>
                 </div>
             </h3>
@@ -14,34 +13,70 @@
 
     <div class="row col-md-12">
         <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Description:</div>
-                <div class="panel-body">
+            <form class="form-horizontal col-md-12" role="form" editable-form name="descriptionForm" onaftersave="TODO2()">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title pull-left form-editable-heading">Description:</h4>
 
-                    <p>{{bug.description}}</p>
+                        <div class="btn-group btn-group-sm pull-right">
+                            <button type="button" class="btn btn-sm btn-success" ng-click="descriptionForm.$show()" ng-show="!descriptionForm.$visible">
+                                <span class="glyphicon glyphicon-pencil"></span> Edit
+                            </button>
+                            <span ng-show="descriptionForm.$visible">
+                                <button type="submit" class="btn btn-sm btn-primary" ng-disabled="descriptionForm.$waiting">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-sm btn-default" ng-disabled="descriptionForm.$waiting" ng-click="descriptionForm.$cancel()">
+                                    Cancel
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group col-md-12">
+                            <textarea disabled editable-textarea="bug.description"
+                                      class="col-md-12 text-area-no-resize"
+                                      rows="15" e-rows="15">{{bug.description}}</textarea>
+                        </div>
 
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Details:</div>
-                <div class="panel-body">
 
-                    <form class="form-horizontal" role="form">
+        <div class="col-md-6">
+            <form class="form-horizontal" role="form" editable-form name="detailsForm" onaftersave="TODO()">
+                <div class="panel panel-default">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title pull-left form-editable-heading">Details:</h4>
+
+                        <div class="btn-group btn-group-sm pull-right">
+                            <button type="button" class="btn btn-sm btn-success" ng-click="detailsForm.$show()" ng-show="!detailsForm.$visible">
+                                <span class="glyphicon glyphicon-pencil"></span> Edit
+                            </button>
+                            <span ng-show="detailsForm.$visible">
+                                <button type="submit" class="btn btn-sm btn-primary" ng-disabled="detailsForm.$waiting">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-sm btn-default" ng-disabled="detailsForm.$waiting" ng-click="detailsForm.$cancel()">
+                                    Cancel
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
                         <div class="form-group">
                             <label for="bugTag" class="col-md-4 control-label">Tag:</label>
                             <div class="col-md-8">
-                                <input type="text" disabled class="form-control" id="bugTag"
-                                       value="{{bug.tag}}"/>
+                                <span id="bugTag" class="form-control" editable-text="bug.tag">{{bug.tag}}</span>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="bugName" class="col-md-4 control-label">Name:</label>
                             <div class="col-md-8">
-                                <input type="text" disabled class="form-control" id="bugName"
-                                       value="{{bug.name}}"/>
+                                <span id="bugName" class="form-control" editable-text="bug.name">{{bug.name}}</span>
                             </div>
                         </div>
 
@@ -80,11 +115,11 @@
                             <div class="col-md-8">
                                 <a id="bugAssignee" href="#/user/{{bug.assigneeLogin}}" class="btn btn-primary btn-sm">{{bug.assigneeName}}</a>
                             </div>
-                        </div>
-                    </form>
 
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -128,7 +163,7 @@
                 <div class="panel-body">
                     <form class="form-horizontal col-md-12" role="form">
                        <div class="form-group">
-                            <textarea ng-model="$parent.comment.content" required class="form-control" rows="3" id="commentContent" style="resize: none"></textarea>
+                            <textarea ng-model="$parent.comment.content" required class="form-control text-area-no-resize" rows="3" id="commentContent"></textarea>
                         </div>
 
                         <div class="form-group">
