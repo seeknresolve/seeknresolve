@@ -45,6 +45,14 @@ bugModule.controller('BugListController', ['$scope', '$http', 'notificationsServ
         }).error(function(data, status, headers, config) {
             notificationsService.error('Error', 'Can\'t fetch bugs list!');
         });
+
+        scope.print = function() {
+          http.get('/bug/printAll', { responseType: 'application/pdf' })
+              .success(function(data){
+                  var file = new Blob([data], {type: 'application/pdf'});
+                  saveAs(file, "bugs.pdf");
+              });
+        };
     }
 ]);
 
@@ -52,7 +60,7 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$rou
     function(scope, http, route, routeParams, location, notificationsService) {
         scope.tag = null;
 
-        http.get('/bug/' + routeParams.tag).success(function(data) {
+        http.get('/bug/details/' + routeParams.tag).success(function(data) {
             scope.bug = data.object;
         }).error(function(data, status, headers, config) {
             if(data.error) {

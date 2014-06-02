@@ -45,7 +45,7 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'templates/bug/list.html',
             controller: 'BugListController'
         }).
-        when('/bug/:tag', {
+        when('/bug/details/:tag', {
             templateUrl: 'templates/bug/details.html',
             controller: 'BugDetailsController'
         }).

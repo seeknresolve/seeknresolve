@@ -1,15 +1,19 @@
 package pl.edu.pw.ii.pik01.seeknresolve.controller.bug;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JsonDataSource;
+import net.sf.jasperreports.engine.export.JRExporterContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
@@ -17,8 +21,16 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
+import sun.misc.BASE64Encoder;
 
 import javax.persistence.PersistenceException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -39,7 +51,7 @@ public class BugController {
         return new Response<>(createdBug, Response.Status.CREATED);
     }
 
-    @RequestMapping(value = "/{tag}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/details/{tag}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<BugDetailsDTO> get(@PathVariable("tag") String tag) {
         BugDetailsDTO bug = bugService.getBugWithTag(tag);
         return new Response<>(bug, Response.Status.RECEIVED);
@@ -49,6 +61,19 @@ public class BugController {
     public Response<List<BugDTO>> getAll() {
         List<BugDTO> bugs = bugService.getAllPermittedBugs(userService.getLoggedUser());
         return new Response<>(bugs, Response.Status.RECEIVED);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/printAll", method=RequestMethod.GET)
+    public void printAll(HttpServletResponse response) throws IOException, JRException {
+        List<BugDTO> bugs = bugService.getAllPermittedBugs(userService.getLoggedUser());
+        String json = new Gson().toJson(bugs);
+        JsonDataSource jsonDataSource = new JsonDataSource(new ByteArrayInputStream(json.getBytes()));
+        JasperPrint jasperPrint = JasperFillManager.fillReport("src/main/resources/reports/Bugs.jasper",
+                new HashMap<>(), jsonDataSource);
+        response.setCharacterEncoding("Base64");
+        BASE64Encoder base64Encoder = new BASE64Encoder();
+        base64Encoder.encode(JasperExportManager.exportReportToPdf(jasperPrint), response.getOutputStream());
     }
 
     @RequestMapping(value = "/{tag}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
