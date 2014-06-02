@@ -71,9 +71,9 @@ public class BugController {
         JsonDataSource jsonDataSource = new JsonDataSource(new ByteArrayInputStream(json.getBytes()));
         JasperPrint jasperPrint = JasperFillManager.fillReport("src/main/resources/reports/Bugs.jasper",
                 new HashMap<>(), jsonDataSource);
-        response.setCharacterEncoding("Base64");
-        BASE64Encoder base64Encoder = new BASE64Encoder();
-        base64Encoder.encode(JasperExportManager.exportReportToPdf(jasperPrint), response.getOutputStream());
+        byte[] pdfByte = JasperExportManager.exportReportToPdf(jasperPrint);
+        response.getOutputStream().write(pdfByte);
+        response.flushBuffer();
     }
 
     @RequestMapping(value = "/{tag}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
