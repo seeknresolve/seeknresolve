@@ -1,15 +1,11 @@
 package pl.edu.pw.ii.pik01.seeknresolve.controller.bug;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.io.Files;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JsonDataSource;
-import net.sf.jasperreports.engine.export.JRExporterContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,15 +17,11 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
-import sun.misc.BASE64Encoder;
 
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 
@@ -67,12 +59,17 @@ public class BugController {
     @RequestMapping(value = "/printAll", method=RequestMethod.GET)
     public void printAll(HttpServletResponse response) throws IOException, JRException {
         List<BugDTO> bugs = bugService.getAllPermittedBugs(userService.getLoggedUser());
+
         String json = new Gson().toJson(bugs);
         JsonDataSource jsonDataSource = new JsonDataSource(new ByteArrayInputStream(json.getBytes()));
-        JasperPrint jasperPrint = JasperFillManager.fillReport("src/main/resources/reports/Bugs.jasper",
-                new HashMap<>(), jsonDataSource);
-        byte[] pdfByte = JasperExportManager.exportReportToPdf(jasperPrint);
-        response.getOutputStream().write(pdfByte);
+        JasperPrint jasperPrint = JasperFillManager.fillReport("src/main/resources/reports/Bugs.jasper", new HashMap<>(), jsonDataSource);
+
+        byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+        response.setContentType("application/pdf");
+        response.addHeader("Content-Disposition", "attachment; filename=" + "bugsReport.pdf");
+        response.setContentLength(pdfBytes.length);
+
+        response.getOutputStream().write(pdfBytes);
         response.flushBuffer();
     }
 

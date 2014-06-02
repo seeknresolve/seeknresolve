@@ -45,14 +45,6 @@ bugModule.controller('BugListController', ['$scope', '$http', 'notificationsServ
         }).error(function(data, status, headers, config) {
             notificationsService.error('Error', 'Can\'t fetch bugs list!');
         });
-
-        scope.print = function() {
-          http.get('/bug/printAll', { responseType: 'application/pdf' })
-              .success(function(data){
-                  var file = new Blob([data], {type: 'application/pdf'});
-                  saveAs(file, "bugs.pdf");
-              });
-        };
     }
 ]);
 
