@@ -3,6 +3,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.bug;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.BugBuilder;
@@ -96,14 +97,14 @@ public class BugServiceTest {
         User user = givenUser("rnw");
 
         Project project = givenProject(11L, "testowy");
-        project.addBug(givenBug("T1", "Test1"));
-        project.addBug(givenBug("T2", "Test2"));
+        project.addBug(givenBug("T1", "Test1", Bug.State.NEW));
+        project.addBug(givenBug("T2", "Test2", Bug.State.NEW));
 
         Project project2 = givenProject(12L, "testowy 2");
-        project2.addBug(givenBug("T3", "Test3"));
+        project2.addBug(givenBug("T3", "Test3", Bug.State.NEW));
 
         Project project3 = givenProject(13L, "testowy 3");
-        project3.addBug(givenBug("T4", "Test4"));
+        project3.addBug(givenBug("T4", "Test4", Bug.State.NEW));
 
         testWithSecurity.givenRolesReturnedForUser(user, project, project2);
         //when:
@@ -119,22 +120,25 @@ public class BugServiceTest {
         return new ProjectBuilder().withId(id).withName(name).build();
     }
 
-    private Bug givenBug(String tag, String name) {
-        return new BugBuilder().withTag(tag).withName(name).build();
+    private Bug givenBug(String tag, String name, Bug.State state) {
+        return new BugBuilder().withTag(tag).withName(name).withState(state).build();
     }
 
     @Test
-    public void shouldUpdateBug() {
+    public void shouldUpdateBugWithOnlyChangedFields() {
         //given:
-        Bug bug = givenBug("TTT-3", "Testowy3");
+        ArgumentCaptor<Bug> bugArgumentCaptor = ArgumentCaptor.forClass(Bug.class);
+        Bug bug = givenBug("TTT-3", "Testowy3", Bug.State.READY_TO_TEST);
         BugDTO updateData = givenUpdateData(bug, "Nowa nazwa");
         given(bugRepository.findOne("TTT-3")).willReturn(bug);
-        given(bugRepository.save(any(Bug.class))).willReturn(createBugFromDTO(updateData));
+        given(bugRepository.save(bugArgumentCaptor.capture())).willReturn(createBugFromDTO(updateData));
         //when:
-        BugDTO updatedBug = bugService.updateBug(updateData);
+        bugService.updateBug(updateData);
         //then:
+        Bug updatedBug = bugArgumentCaptor.getValue();
         assertThat(updatedBug).isNotNull();
         assertThat(updatedBug.getName()).isEqualTo("Nowa nazwa");
+        assertThat(updatedBug.getState()).isEqualTo(Bug.State.READY_TO_TEST);
     }
 
     private BugDTO givenUpdateData(Bug bug, String name) {
@@ -145,5 +149,22 @@ public class BugServiceTest {
 
     private Bug createBugFromDTO(BugDTO bugDTO) {
         return new BugBuilder().withName(bugDTO.getName()).build();
+    }
+
+    @Test
+    public void shouldUpdateBugAndChangeState() {
+        //given:
+        ArgumentCaptor<Bug> bugArgumentCaptor = ArgumentCaptor.forClass(Bug.class);
+        Bug bug = givenBug("TTT-3", "Testowy3", Bug.State.CLOSED);
+        BugDTO updateData = givenUpdateData(bug, "Nowa nazwa");
+        given(bugRepository.findOne("TTT-3")).willReturn(bug);
+        given(bugRepository.save(bugArgumentCaptor.capture())).willReturn(createBugFromDTO(updateData));
+        //when:
+        bugService.updateBug(updateData);
+        //then:
+        Bug updatedBug = bugArgumentCaptor.getValue();
+        assertThat(updatedBug).isNotNull();
+        assertThat(updatedBug.getName()).isEqualTo("Nowa nazwa");
+        assertThat(updatedBug.getState()).isEqualTo(Bug.State.CLOSED);
     }
 }

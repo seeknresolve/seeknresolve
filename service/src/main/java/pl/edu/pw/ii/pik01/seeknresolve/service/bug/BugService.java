@@ -112,7 +112,7 @@ public class BugService {
     private void updateBugFromDTO(Bug bug, BugDTO bugDTO) {
         bug.setName(bugDTO.getName());
         bug.setDescription(bugDTO.getDescription());
-        bug.setState(Bug.State.NEW);
+        bug.setState(bugDTO.getState() != null ? bugDTO.getState() : Bug.State.NEW);
         bug.setPriority(bugDTO.getPriority());
         if(bugDTO.getAssigneeId() != null) {
             bug.setAssignee(userRepository.findOne(bugDTO.getAssigneeId()));
