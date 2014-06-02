@@ -1,15 +1,12 @@
 package pl.edu.pw.ii.pik01.seeknresolve.controller.bug;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
@@ -24,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/bug")
 public class BugController {
+    private Logger logger = LoggerFactory.getLogger(BugController.class);
+
     private BugService bugService;
     private UserService userService;
 
@@ -57,6 +56,12 @@ public class BugController {
         return new Response<>(tag, Response.Status.DELETED);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<BugDTO> update(@RequestBody BugDetailsDTO bugDTO) {
+        BugDTO updatedBug = bugService.updateBug(bugDTO.getBug());
+        return new Response<>(updatedBug, Response.Status.UPDATED);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(Exception exception) {
@@ -73,5 +78,11 @@ public class BugController {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleSecurityException(Exception exception) {
         return new ErrorResponse(exception.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handle(HttpMessageNotReadableException e) {
+        logger.error("BAD_REQUEST", e);
     }
 }

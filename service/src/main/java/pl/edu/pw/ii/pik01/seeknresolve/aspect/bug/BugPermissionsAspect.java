@@ -78,4 +78,10 @@ public class BugPermissionsAspect {
         Bug bug = bugRepository.findOne(commentDTO.getBugTag());
         checkPermissionsOnBug(bug, "project:view", "project:everything");
     }
+
+    @Before("execution(* pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService.updateBug(..)) && args(bugDTO, ..)")
+    public void checkBugEditPermission(JoinPoint joinPoint, BugDTO bugDTO) {
+        Bug bug = bugRepository.findOne(bugDTO.getTag());
+        checkPermissionsOnBug(bug, "project:view", "project:everything", "project:edit_bug");
+    }
 }

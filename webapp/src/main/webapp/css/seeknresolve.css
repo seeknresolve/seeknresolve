@@ -1,0 +1,15 @@
+.form-editable-heading {
+    padding-top: 7.5px;
+}
+
+.text-area-no-resize {
+    resize: none;
+}
+
+.editable-wrap {
+    resize: none;
+}
+
+.editable-input {
+    resize: none;
+}

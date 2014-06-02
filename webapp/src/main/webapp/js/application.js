@@ -6,8 +6,13 @@ var seekNResolve = angular.module('seekNResolve', [
     'roleModule',
     'permissionModule',
     'ui.bootstrap',
-    'app.services'
+    'app.services',
+    'xeditable'
 ]);
+
+seekNResolve.run(function(editableOptions) {
+    editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
+});
 
 seekNResolve.directive('loggedUser', ['userService', function(userService) {
     return {

@@ -63,15 +63,9 @@ public class BugService {
         bug.setDateCreated(DateTime.now());
         bug.setDateModified(DateTime.now());
         bug.setTag(bugDTO.getTag());
-        bug.setName(bugDTO.getName());
-        bug.setDescription(bugDTO.getDescription());
-        bug.setState(Bug.State.NEW);
-        bug.setPriority(bugDTO.getPriority());
         bug.setProject(projectRepository.findOne(bugDTO.getProjectId()));
         bug.setReporter(userRepository.findOne(bugDTO.getReporterId()));
-        if(bugDTO.getAssigneeId() != null) {
-            bug.setAssignee(userRepository.findOne(bugDTO.getAssigneeId()));
-        }
+        updateBugFromDTO(bug, bugDTO);
         return bug;
     }
 
@@ -103,5 +97,25 @@ public class BugService {
                 stream().
                 map(comment -> DtosFactory.createCommentDTO(comment, userRepository.findOne(comment.getAuthor().getId()).getLogin())).
                 collect(Collectors.toList());
+    }
+
+    public BugDTO updateBug(BugDTO bugDTO) {
+        Bug bug = bugRepository.findOne(bugDTO.getTag());
+        updateBugFromDTO(bug, bugDTO);
+        Bug updatedBug = bugRepository.save(bug);
+        if(updatedBug == null) {
+            throw new PersistenceException("Cannot update bug " + bugDTO.getTag());
+        }
+        return DtosFactory.createBugDTO(updatedBug);
+    }
+
+    private void updateBugFromDTO(Bug bug, BugDTO bugDTO) {
+        bug.setName(bugDTO.getName());
+        bug.setDescription(bugDTO.getDescription());
+        bug.setState(bugDTO.getState() != null ? bugDTO.getState() : Bug.State.NEW);
+        bug.setPriority(bugDTO.getPriority());
+        if(bugDTO.getAssigneeId() != null) {
+            bug.setAssignee(userRepository.findOne(bugDTO.getAssigneeId()));
+        }
     }
 }
