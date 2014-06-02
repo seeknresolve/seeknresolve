@@ -45,6 +45,8 @@ project(':persistence') {
 project(':service') {
     dependencies {
         compile project(':persistence')
+
+        testCompile project(':webapp')
     }
 }
 
