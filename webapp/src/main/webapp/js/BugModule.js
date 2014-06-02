@@ -83,7 +83,7 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$rou
                 notificationsService.warning('Delete', 'Bug ' + tag + ' was deleted');
                 location.path('/bug');
             }).error(function (data, status, headers, config) {
-                scope.errorMessage = 'Can\'t delete bug!';
+                notificationsService.error('Error', 'Can\'t delete bug!');
             });
         };
 
@@ -106,7 +106,17 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$rou
         };
 
         scope.updateBug = function() {
-            alert("aaa");
+            var params = JSON.stringify(scope.bug);
+            http.put('/bug', params, {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            }).success(function (data, status, headers, config) {
+                notificationsService.info('Info', 'Bug ' + scope.bug.tag + ' was updated');
+                route.reload();
+            }).error(function (data, status, headers, config) {
+                notificationsService.error('Error', 'Can\'t update bug!');
+            });
         };
     }
 ]);

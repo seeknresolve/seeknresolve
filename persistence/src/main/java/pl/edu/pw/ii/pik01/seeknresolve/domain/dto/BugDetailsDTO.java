@@ -9,9 +9,21 @@ public class BugDetailsDTO {
     private BugDTO bug;
     private List<CommentDTO> comments;
 
+    public BugDetailsDTO() {
+
+    }
+
     public BugDetailsDTO(BugDTO bug, List<CommentDTO> comments) {
         this.bug = bug;
         this.comments = comments;
+    }
+
+    public BugDTO getBug() {
+        return bug;
+    }
+
+    public void setBug(BugDTO bug) {
+        this.bug = bug;
     }
 
     public String getTag() {

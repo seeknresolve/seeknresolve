@@ -1,7 +1,9 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.joda.time.DateTime;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentDTO {
     private Long id;
     private String content;
