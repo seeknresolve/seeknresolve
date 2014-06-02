@@ -34,9 +34,13 @@ public class DtosFactory {
         bugDTO.setProjectId(bug.getProject().getId());
         bugDTO.setProjectName(bug.getProject().getName());
         bugDTO.setReporterId(bug.getReporter().getId());
+        bugDTO.setReporterLogin(bug.getReporter().getLogin());
         bugDTO.setReporterName(String.join(" ", bug.getReporter().getFirstName(), bug.getReporter().getLastName()));
-        bugDTO.setAssigneeId(bug.getAssignee().getId());
-        bugDTO.setAssigneeName(String.join(" ", bug.getAssignee().getFirstName(), bug.getAssignee().getLastName()));
+        if(bug.getAssignee() != null) {
+            bugDTO.setAssigneeId(bug.getAssignee().getId());
+            bugDTO.setAssigneeLogin(bug.getAssignee().getLogin());
+            bugDTO.setAssigneeName(String.join(" ", bug.getAssignee().getFirstName(), bug.getAssignee().getLastName()));
+        }
         return bugDTO;
     }
 

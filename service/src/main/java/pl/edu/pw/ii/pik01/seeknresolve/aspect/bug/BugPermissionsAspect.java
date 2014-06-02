@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionChecker;
 
 import java.util.List;
@@ -22,12 +24,29 @@ public class BugPermissionsAspect {
     private BugRepository bugRepository;
 
     @Autowired
+    private ProjectRepository projectRepository;
+
+    @Autowired
     private PermissionChecker permissionChecker;
 
     @Before("execution(* pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService.createAndSaveNewBug(..)) && args(bugDTO, ..)")
     public void checkBugCreatePermission(JoinPoint joinPoint, BugDTO bugDTO) {
-        Bug bug = bugRepository.findOne(bugDTO.getTag());
-        checkPermissionsOnBug(bug, "project:everything", "project:add_bug");
+        Project project = projectRepository.findOne(bugDTO.getProjectId());
+        checkPermissionsOnProject(project, "project:everything", "project:add_bug");
+    }
+
+    private void checkPermissionsOnProject(Project project, String... permissionsNames) {
+        List<Permission> permissions = getPermissionsWithNames(permissionsNames);
+        hasAnyOfPermissionsOnProject(project, permissions);
+    }
+
+    private void hasAnyOfPermissionsOnProject(Project project, List<Permission> permissions) {
+        boolean hasPermission = permissions.stream()
+                .filter(permission -> permissionChecker.hasProjectPermission(project, permission))
+                .findAny().isPresent();
+        if(!hasPermission) {
+            throw new SecurityException("No permission to perform operation on bug.");
+        }
     }
 
     @Before("execution(* pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService.getBugWithTag(..)) && args(tag, ..)")
@@ -38,12 +57,8 @@ public class BugPermissionsAspect {
 
     private void checkPermissionsOnBug(Bug bug, String... permissionsNames) {
         List<Permission> permissions = getPermissionsWithNames(permissionsNames);
-        boolean hasPermission = permissions.stream()
-                .filter(permission -> permissionChecker.hasProjectPermission(bug.getProject(), permission))
-                .findAny().isPresent();
-        if(!hasPermission) {
-            throw new SecurityException("No permission to perform operation on bug.");
-        }
+        Project project = bug.getProject();
+        hasAnyOfPermissionsOnProject(project, permissions);
     }
 
     private List<Permission> getPermissionsWithNames(String... permissionsNames) {

@@ -10,8 +10,10 @@ public class BugDTO {
     private DateTime dateCreated;
     private DateTime dateModified;
     private Long reporterId;
+    private String reporterLogin;
     private String reporterName;
     private Long assigneeId;
+    private String assigneeLogin;
     private String assigneeName;
     private Long projectId;
     private String projectName;
@@ -66,6 +68,14 @@ public class BugDTO {
         this.reporterId = reporterId;
     }
 
+    public String getReporterLogin() {
+        return reporterLogin;
+    }
+
+    public void setReporterLogin(String reporterLogin) {
+        this.reporterLogin = reporterLogin;
+    }
+
     public String getReporterName() {
         return reporterName;
     }
@@ -80,6 +90,14 @@ public class BugDTO {
 
     public void setAssigneeId(Long assigneeId) {
         this.assigneeId = assigneeId;
+    }
+
+    public String getAssigneeLogin() {
+        return assigneeLogin;
+    }
+
+    public void setAssigneeLogin(String assigneeLogin) {
+        this.assigneeLogin = assigneeLogin;
     }
 
     public String getAssigneeName() {

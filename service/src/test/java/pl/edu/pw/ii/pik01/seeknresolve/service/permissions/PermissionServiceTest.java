@@ -15,9 +15,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PermissionServiceTest {
@@ -59,6 +57,4 @@ public class PermissionServiceTest {
 
         verify(permissionRepository, times(1)).delete("perm_name");
     }
-
-
 }

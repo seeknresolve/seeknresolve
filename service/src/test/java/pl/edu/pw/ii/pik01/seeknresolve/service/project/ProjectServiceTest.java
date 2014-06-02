@@ -111,7 +111,7 @@ public class ProjectServiceTest {
         User user = givenUser("rnw");
         testWithSecurity.givenNoRolesReturnedForUser(user);
         //when:
-        List<ProjectDTO> projects = projectService.getAll(user);
+        List<ProjectDTO> projects = projectService.getAllPermittedProjects(user);
         //then:
         assertThat(projects).isEmpty();
     }
@@ -131,7 +131,7 @@ public class ProjectServiceTest {
         Project project3 = givenProject(13L, "testowy 3");
         testWithSecurity.givenRolesReturnedForUser(user, project, project2);
         //when:
-        List<ProjectDTO> projects = projectService.getAll(user);
+        List<ProjectDTO> projects = projectService.getAllPermittedProjects(user);
         //then:
         assertThat(projects).isNotEmpty();
         assertThat(projects).extracting("id", "name").

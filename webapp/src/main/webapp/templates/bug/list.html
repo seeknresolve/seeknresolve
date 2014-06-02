@@ -42,13 +42,11 @@
                         </a>
                     </td>
                     <td>
-                        <a href="#/user/{{bug.assigneeId}}">
-                            {{bug.assigneeName}}
-                        </a>
+                        <user-display user-login="{{bug.assigneeLogin}}" user-name="{{bug.assigneeName}}"></user-display>
                     </td>
                     <td>{{bug.dateCreated | date:'HH:mm:ss MM-dd-yyyy'}}</td>
                     <td>{{bug.dateModified | date:'HH:mm:ss MM-dd-yyyy'}}</td>
-                    <td>{{bug.state}}</td>
+                    <td>{{bug.state | capitalizeFilter}}</td>
                     <td><bug-priority priority="{{bug.priority}}"></bug-priority></td>
                 </tr>
             </tbody>

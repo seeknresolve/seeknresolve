@@ -1,10 +1,29 @@
-var bugModule = angular.module('bugModule', ['app.services']);
+var bugModule = angular.module('bugModule', ['app.services', 'app.filters']);
+
+bugModule.directive('userDisplay', function() {
+    return {
+        restrict: 'E',
+        scope: true,
+        //TODO: this link should be optional
+        template: '<a href="#/user/{{userLogin}}">{{userName}}</a>',
+        link: function (scope, element, attrs) {
+            scope.userLogin = attrs.userLogin;
+            if(attrs.userLogin == null || attrs.userLogin == '') {
+                scope.userName = 'None';
+            } else {
+                scope.userName = attrs.userName;
+                scope.linkOpen = '<a href="#/user/{{attrs.userLogin}}">';
+                scope.linkClose = '</a>';
+            }
+        }
+    };
+});
 
 bugModule.directive('bugPriority', function() {
     return {
         restrict: 'E',
         scope: true,
-        template: '<span class="label {{class}}">{{priority}}</span>',
+        template: '<span class="label {{class}}">{{priority | capitalizeFilter}}</span>',
         link: function (scope, element, attrs) {
             scope.priority = attrs.priority;
             switch (scope.priority) {
@@ -21,7 +40,7 @@ bugModule.directive('bugPriority', function() {
                     break;
 
                 case "CRITICAL":
-                    scope.class = 'label-critical';
+                    scope.class = 'label-danger';
                     break;
 
                 default:
@@ -30,10 +49,6 @@ bugModule.directive('bugPriority', function() {
             }
         }
     }
-});
-
-bugModule.filter('priorityFilter', function(item) {
-
 });
 
 bugModule.controller('BugListController', ['$scope', '$http', 'notificationsService',
@@ -92,18 +107,47 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$rou
     }
 ]);
 
-bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'notificationsService', 'userService',
-    function(scope, http, location, notificationsService, userService) {
+bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'notificationsService', 'userService', 'projectService',
+    function(scope, http, location, notificationsService, userService, projectService) {
         scope.loggedUser = null;
-        userService.getLoggedUser(function(user) {
+        userService.getLoggedUser(function (user) {
             scope.loggedUser = user;
+        });
+
+        scope.priorities = [
+            'LOW',
+            'NORMAL',
+            'HIGH',
+            'CRITICAL'
+        ];
+        scope.priority = scope.priorities[1];
+
+        scope.projectUsers = [];
+        scope.projects = [];
+        scope.project = null;
+        projectService.getAllPermittedProjects(function (projects) {
+            scope.projects = projects;
+            scope.project = projects[0];
+        });
+        scope.$watch('project', function() {
+            if (scope.project) {
+                projectService.getUsersInProject(scope.project.id, function (users) {
+                    scope.projectUsers = users;
+                });
+            }
         });
 
         scope.createBug = function() {
             var bug = scope.bug;
+            bug.priority = scope.priority;
+            bug.projectId = scope.project.id;
+            bug.reporterId = scope.loggedUser.id;
+            if(scope.assignee) {
+                bug.assigneeId = scope.assignee.id;
+            }
             var params = JSON.stringify(bug);
 
-            http.post('/bug/create', params, {
+            http.post('/bug', params, {
                 headers: {
                     'Content-Type': 'application/json; charset=UTF-8'
                 }

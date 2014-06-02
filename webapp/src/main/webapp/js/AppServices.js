@@ -30,6 +30,25 @@ appServices.service('userService', ['$http', function(http) {
     };
 }]);
 
+appServices.service('projectService', ['$http', function(http) {
+    return {
+        getAllPermittedProjects: function(callback) {
+            http({method: 'GET', url: '/project/all'}).then(function (result) {
+                if(callback) {
+                    callback(result.data.object);
+                }
+            });
+        },
+
+        getUsersInProject: function(projectId, callback) {
+            http({method: 'GET', url: '/project/' + projectId + '/users'}).then(function (result) {
+                if(callback) {
+                    callback(result.data.object);
+                }
+            });
+        }
+    }
+}]);
 appServices.service('permissionService', ['$http', '$log', function($http, $log) {
     return {
         hasPermission: function (permissionNameArg, callback) {
