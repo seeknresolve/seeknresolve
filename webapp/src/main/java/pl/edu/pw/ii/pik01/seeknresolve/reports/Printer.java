@@ -1,15 +1,14 @@
 package pl.edu.pw.ii.pik01.seeknresolve.reports;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JsonDataSource;
-import org.joda.time.DateTime;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -40,9 +39,9 @@ public class Printer {
     }
 
     public void print() throws JRException, IOException {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeTypeConverter());
-        String json = gsonBuilder.create().toJson(dataSource.toArray());
+        ObjectMapper objectMapper =  new ObjectMapper();
+        objectMapper.registerModule(new JodaModule());
+        String json = objectMapper.writeValueAsString(dataSource.toArray());
 
         JsonDataSource jsonDataSource = new JsonDataSource(new ByteArrayInputStream(json.getBytes()));
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFilePath, parameters, jsonDataSource);
