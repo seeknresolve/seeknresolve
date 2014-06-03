@@ -18,6 +18,12 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven {
+            url "http://jasperreports.sourceforge.net/maven2"
+        }
+        maven {
+            url "http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/"
+        }
     }
 
     dependencies {
@@ -28,6 +34,7 @@ allprojects {
         compile 'org.springframework.boot:spring-boot-starter-test:1.0.2.RELEASE'
         compile 'org.springframework.boot:spring-boot-starter-aop:1.0.2.RELEASE'
         compile 'org.springframework.boot:spring-boot-starter-security:1.0.2.RELEASE'
+        compile 'net.sf.jasperreports:jasperreports:5.5.2'
 
         compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3'
 
@@ -72,10 +79,44 @@ project(':service') {
 project(':webapp') {
     apply plugin: 'spring-boot'
 
+    configurations.create('jasperreports')
+    configurations.jasperreports {
+        transitive = true
+    }
+
     dependencies {
         compile project(':persistence')
         compile project(':service')
 
+        compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3'
+
+        jasperreports 'net.sf.jasperreports:jasperreports:5.5.2'
+        jasperreports 'joda-time:joda-time:2.3'
+        jasperreports group: 'org.eclipse.jdt', name: 'core', version: '3.1.1'
+
         testCompile 'com.jayway.jsonpath:json-path:0.9.1'
     }
+
+    sourceSets {
+        jasper {
+            srcDir = file(relativePath('src/main/resources/reports'))
+            classesDir = file(relativePath('src/main/resources/compiledReports'))
+        }
+    }
+
+    task compileJasperJava(overwrite: true) << {
+        ant.delete {
+            fileset(dir: sourceSets.jasper.classesDir)
+        }
+
+        ant {
+            taskdef(name: 'jrc', classname: 'net.sf.jasperreports.ant.JRAntCompileTask', classpath: configurations.jasperreports.asPath)
+            sourceSets.jasper.classesDir.mkdirs()
+            jrc(srcdir: sourceSets.jasper.srcDir, destdir: sourceSets.jasper.classesDir) {
+                include(name:'**/*.jrxml')
+            }
+        }
+    }
+
+    classes.dependsOn compileJasperJava
 }
