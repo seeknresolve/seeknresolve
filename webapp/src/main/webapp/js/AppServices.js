@@ -49,6 +49,7 @@ appServices.service('projectService', ['$http', function(http) {
         }
     }
 }]);
+
 appServices.service('permissionService', ['$http', '$log', function($http, $log) {
     return {
         hasPermission: function (permissionNameArg, callback) {

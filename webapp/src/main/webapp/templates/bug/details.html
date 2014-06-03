@@ -114,7 +114,12 @@
                         <div class="form-group">
                             <label for="bugAssignee" class="col-md-4 control-label">Assignee:</label>
                             <div class="col-md-8">
-                                <a id="bugAssignee" href="#/user/{{bug.assigneeLogin}}" class="btn btn-primary btn-sm col-md-6">{{bug.assigneeName}}</a>
+                                <span id="bugAssignee"
+                                      class="col-md-6 form-control"
+                                      editable-select="bug.assigneeId" e-name="assignee"
+                                      e-ng-options="u.id as (u.firstName + ' ' + u.lastName) for u in projectUsers">
+                                    {{ bug.assigneeName || 'Not set' }}
+                                </span>
                             </div>
 
                         </div>

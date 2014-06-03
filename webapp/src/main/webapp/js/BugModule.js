@@ -63,12 +63,17 @@ bugModule.controller('BugListController', ['$scope', '$http', 'notificationsServ
     }
 ]);
 
-bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$routeParams', '$location', 'notificationsService',
-    function(scope, http, route, routeParams, location, notificationsService) {
+bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$routeParams', '$location', 'notificationsService', 'projectService',
+    function(scope, http, route, routeParams, location, notificationsService, projectService) {
         scope.tag = null;
+
+        scope.projectUsers = [];
 
         http.get('/bug/details/' + routeParams.tag).success(function(data) {
             scope.bug = data.object;
+            projectService.getUsersInProject(scope.bug.projectId, function (users) {
+                scope.projectUsers = users;
+            });
         }).error(function(data, status, headers, config) {
             if(data.error) {
                 notificationsService.error('Error', 'Can\'t fetch bug\'s details! ' + data.error);
