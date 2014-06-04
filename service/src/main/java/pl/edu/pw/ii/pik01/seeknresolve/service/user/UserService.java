@@ -3,10 +3,15 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.user;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CreateUserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserRole;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
@@ -20,11 +25,14 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
     private final UserProjectRoleRepository userProjectRoleRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    public UserService(UserRepository userRepository, UserProjectRoleRepository userProjectRoleRepository) {
+    public UserService(UserRepository userRepository, UserProjectRoleRepository userProjectRoleRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.userProjectRoleRepository = userProjectRoleRepository;
+        this.roleRepository = roleRepository;
     }
 
     public User getLoggedUser() {
@@ -38,7 +46,7 @@ public class UserService {
         return DtosFactory.createUserDTO(getLoggedUser());
     }
 
-    public UserDTO createAndSaveNewUser(UserDTO userDTO){
+    public UserDTO createAndSaveNewUser(CreateUserDTO userDTO){
         User user = userRepository.save(crateUserFromUserDTO(userDTO));
         return user == null ? null : DtosFactory.createUserDTO(user);
     }
@@ -67,11 +75,14 @@ public class UserService {
     private User crateUserFromUserDTO(UserDTO userDTO) {
         User user = new User();
         user.setId(userDTO.getId());
+        if(userDTO instanceof CreateUserDTO) {
+            user.setPassword(passwordEncoder.encode(((CreateUserDTO)userDTO).getPassword()));
+        }
+        user.setLogin(userDTO.getLogin());
         user.setEmail(userDTO.getEmail());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
-        user.setLogin(userDTO.getLogin());
-        //TODO: should initialize lists and other?
+        user.setUserRole((UserRole) roleRepository.findOne(userDTO.getUserRole()));
         return user;
     }
 
