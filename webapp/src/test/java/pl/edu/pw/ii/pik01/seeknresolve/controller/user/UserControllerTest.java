@@ -52,7 +52,7 @@ public class UserControllerTest {
 
     @Test
     public void shouldReturn404ForNonExistingUser() throws Exception {
-        mockMvc.perform(get("/user/NonExistingUser")).
+        mockMvc.perform(get("/user/details/NonExistingUser")).
                 andExpect(status().isNotFound()).
                 andExpect(content().contentType(MediaType.APPLICATION_JSON)).
                 andExpect(jsonPath("$.error").exists());
@@ -68,7 +68,7 @@ public class UserControllerTest {
                                                 .build();
         when(userRepository.findOneByLogin(anyString())).thenReturn(existingUser);
 
-        mockMvc.perform(get("/user/cthulu")).
+        mockMvc.perform(get("/user/details/cthulu")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(MediaType.APPLICATION_JSON)).
                 andExpect(jsonPath("$.error").doesNotExist()).
