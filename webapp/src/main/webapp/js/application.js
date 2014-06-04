@@ -64,7 +64,17 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
             controller: 'UserListController'
         }).
 
-        when('/user/:login', {
+        when('/user', {
+            templateUrl: 'templates/user/list.html',
+            controller: 'UserListController'
+        }).
+
+        when('/user/create', {
+            templateUrl: 'templates/user/create.html',
+            controller: 'UserCreateController'
+        }).
+
+        when('/user/details/:login', {
             templateUrl: 'templates/user/details.html',
             controller: 'UserDetailsController'
         }).

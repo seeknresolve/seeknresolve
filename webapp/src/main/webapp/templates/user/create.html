@@ -1,0 +1,74 @@
+<div class="container">
+
+    <div class="row col-lg-12">
+        <div class="page-header" ng-if="errorMessage == null">
+            <h3>
+                Create user
+                <div class="btn-group btn-group-sm pull-right">
+                    <a href="#/user/" role="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span>Back to list</a>
+                </div>
+            </h3>
+        </div>
+    </div>
+
+    <div class="row col-lg-12">
+        <div class="row col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">User details:</div>
+                <div class="panel-body">
+                    <form name="crate_user_form" class="form-horizontal" novalidate ng-submit="createUser()">
+
+                        <div class="form-group">
+                            <label for="login" class="col-md-2 control-label">Login:</label>
+                            <div class="col-md-8">
+                                <input type="text" required class="form-control" id="login" ng-model="creatingUser.login"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login" class="col-md-2 control-label">Password:</label>
+                            <div class="col-md-8">
+                                <input type="password" required class="form-control" id="password" ng-model="creatingUser.password"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="firstName" class="col-md-2 control-label">First name:</label>
+                            <div class="col-md-8">
+                                <input type="text" required class="form-control" id="firstName" ng-model="creatingUser.firstName"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName" class="col-md-2 control-label">Last name:</label>
+                            <div class="col-md-8">
+                                <input type="text" required class="form-control" id="lastName" ng-model="creatingUser.lastName"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="col-md-2 control-label">E-mail:</label>
+                            <div class="col-md-8">
+                                <input type="text" required class="form-control" id="email" ng-model="creatingUser.email"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userRole" class="col-md-2 control-label">User role:</label>
+                            <div class="col-md-8">
+                                <select required class="form-control" id="userRole" ng-model="creatingUser.userRole" ng-options="role.roleName as role.roleName for role in userRoles">
+                                    <option value="" ng-hide="creatingUser.userRole">Select user role</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="pull-right">
+                            <button type=submit ng-disabled="crate_user_form.$invalid" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Create</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

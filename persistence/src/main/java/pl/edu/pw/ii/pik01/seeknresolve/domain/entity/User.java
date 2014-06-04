@@ -28,7 +28,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    private boolean enabled;
+    private boolean enabled = true;
 
     private boolean expired;
 
