@@ -63,7 +63,7 @@ public class BugControllerTest {
 
     @Test
     public void shouldReturn404ForNotExistingBugWithErrorMessageInResponse() throws Exception {
-        mockMvc.perform(get("/bug/TotallyNotExistingBug")).
+        mockMvc.perform(get("/bug/details/TotallyNotExistingBug")).
                 andExpect(status().isNotFound()).
                 andExpect(contentIsJson()).
                 andExpect(jsonPath("$.error").exists());
@@ -77,7 +77,7 @@ public class BugControllerTest {
     public void shouldReturn200AndBugData() throws Exception {
         givenReturningTagData("TTT-1");
 
-        mockMvc.perform(get("/bug/TTT-1")).
+        mockMvc.perform(get("/bug/details/TTT-1")).
                 andExpect(status().isOk()).
                 andExpect(contentIsJson()).
                 andExpect(jsonPath("$.error").doesNotExist()).
