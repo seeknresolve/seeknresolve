@@ -34,6 +34,11 @@ public class PermissionController {
         return new Response<>(permissionService.getAll(), Response.Status.RECEIVED);
     }
 
+    @RequestMapping(value = "/notInRole/{roleName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<PermissionDTO>> getNotInRole(@PathVariable("roleName") String roleName) {
+        return new Response<>(permissionService.getNotInRole(roleName), Response.Status.RECEIVED);
+    }
+
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<PermissionDTO> create(@RequestBody PermissionDTO permissionDTO) {
         try {

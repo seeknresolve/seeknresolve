@@ -8,6 +8,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.PermissionDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.PermissionRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionService;
@@ -23,11 +24,14 @@ public class PermissionServiceTest {
     @Mock
     private PermissionRepository permissionRepository;
 
+    @Mock
+    private RoleRepository roleRepository;
+
     private PermissionService permissionService;
 
     @Before
     public void setUp() {
-        permissionService = new PermissionService(permissionRepository);
+        permissionService = new PermissionService(permissionRepository, roleRepository);
     }
 
     @Test

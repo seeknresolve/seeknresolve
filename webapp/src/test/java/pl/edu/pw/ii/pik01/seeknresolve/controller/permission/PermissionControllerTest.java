@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.PermissionRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionChecker;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionService;
 
@@ -27,13 +28,16 @@ public class PermissionControllerTest {
     private PermissionRepository permissionRepository;
 
     @Mock
+    private RoleRepository roleRepository;
+
+    @Mock
     private PermissionChecker permissionChecker;
 
     private MockMvc mockMvc;
 
     @Before
     public void setUp() {
-        PermissionService permissionService = new PermissionService(permissionRepository);
+        PermissionService permissionService = new PermissionService(permissionRepository, roleRepository);
         PermissionController permissionController = new PermissionController(permissionService, permissionChecker);
         mockMvc = MockMvcBuilders.standaloneSetup(permissionController).build();
     }
