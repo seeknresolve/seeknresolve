@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CreateUserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
@@ -53,6 +54,13 @@ public class UserController {
     @RequestMapping(value = "/logged", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserDTO> getLoggedUser() {
         return new Response<>(userService.getLoggedUserDTO(), Response.Status.RECEIVED);
+    }
+
+    @PreAuthorize("hasPermission(null, 'user:update')")
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<UserDTO> update(@RequestBody UserDTO userDTO) {
+        UserDTO updatedUser = userService.updateUser(userDTO);
+        return new Response<>(updatedUser, Response.Status.UPDATED);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
