@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.PermissionDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.PermissionRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
@@ -17,10 +18,12 @@ import java.util.stream.Collectors;
 public class PermissionService {
 
     private final PermissionRepository permissionRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public PermissionService(PermissionRepository permissionRepository) {
+    public PermissionService(PermissionRepository permissionRepository, RoleRepository roleRepository) {
         this.permissionRepository = permissionRepository;
+        this.roleRepository = roleRepository;
     }
 
     public List<PermissionDTO> getAll() {
@@ -52,6 +55,16 @@ public class PermissionService {
             throw new EntityNotFoundException("Permission with name " + permissionName + " doesn't exist");
         }
         return DtosFactory.createPermissionDTO(permission);
+    }
+
+    public List<PermissionDTO> getNotInRole(String roleName) {
+        List<Permission> permissionList = Lists.newArrayList(permissionRepository.findAll());
+        permissionList.removeAll(roleRepository.findOne(roleName).getPermissions());
+
+        return permissionList
+                .stream()
+                .map(permission -> DtosFactory.createPermissionDTO(permission))
+                .collect(Collectors.toList());
     }
 
     public Permission createPermissionFromDTO(PermissionDTO permissionDTO) {

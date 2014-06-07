@@ -1,6 +1,7 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,7 +14,7 @@ public abstract class Role {
     @JoinTable(
         name = "role_permissions"
     )
-    private Set<Permission> permissions;
+    private Set<Permission> permissions = new HashSet<>();
 
     public Role() {
     }

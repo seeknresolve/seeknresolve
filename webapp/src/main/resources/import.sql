@@ -42,11 +42,15 @@ insert into permission(permission_name) values('project:create');
 insert into permission(permission_name) values('permission:create');
 insert into permission(permission_name) values('user:create');
 insert into permission(permission_name) values('user:update');
+insert into permission(permission_name) values('role:add_permission');
+insert into permission(permission_name) values('role:delete_permission');
 
 insert into role_permissions(role_roleName, permissions_permissionName) values('ADMIN', 'admin:everything');
 insert into role_permissions(role_roleName, permissions_permissionName) values('ADMIN', 'permission:create');
 insert into role_permissions(role_roleName, permissions_permissionName) values('ADMIN', 'user:create');
 insert into role_permissions(role_roleName, permissions_permissionName) values('ADMIN', 'user:update');
+insert into role_permissions(role_roleName, permissions_permissionName) values('ADMIN', 'role:add_permission');
+insert into role_permissions(role_roleName, permissions_permissionName) values('ADMIN', 'role:delete_permission');
 insert into role_permissions(role_roleName, permissions_permissionName) values('PM', 'project:everything');
 insert into role_permissions(role_roleName, permissions_permissionName) values('DEVELOPER', 'project:view');
 insert into role_permissions(role_roleName, permissions_permissionName) values('DEVELOPER', 'project:add_bug');

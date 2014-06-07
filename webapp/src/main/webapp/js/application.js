@@ -88,7 +88,7 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'templates/role/project_list.html',
             controller: 'ProjectRoleListController'
         }).
-        when('/role/:roleName', {
+        when('/role/details/:roleName', {
             templateUrl: 'templates/role/details.html',
             controller: 'RoleDetailsController'
         }).
