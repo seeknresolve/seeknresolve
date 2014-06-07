@@ -66,7 +66,7 @@ public class RoleControllerTest {
     }
 
     @Test
-    public void shouldAddPermissionFromRole() throws Exception {
+    public void shouldAddPermissionToRole() throws Exception {
         ChangeRolePermissionDTO add = new ChangeRolePermissionDTO("admin", "add");
         String params = new ObjectMapper().writeValueAsString(add);
 
