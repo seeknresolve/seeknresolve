@@ -14,41 +14,63 @@
     <div class="row col-lg-12">
         <div class="row col-lg-6">
             <div class="panel panel-default">
-                <div class="panel-heading">User details:</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form">
+                <form class="form-horizontal" role="form" editable-form name="userForm" onaftersave="updateUser()">
+                <div class="panel-heading clearfix">
+                    <h4 class="panel-title pull-left form-editable-heading">User details:</h4>
 
-                        <div class="form-group">
-                            <label for="firstName" class="col-md-2 control-label">First name:</label>
-                            <div class="col-md-8">
-                                <input disabled type="text" required class="form-control" id="firstName" value="{{user.firstName}}"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="lastName" class="col-md-2 control-label">Last name:</label>
-                            <div class="col-md-8">
-                                <input disabled type="text" required class="form-control" id="lastName" value="{{user.lastName}}"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email" class="col-md-2 control-label">E-mail:</label>
-                            <div class="col-md-8">
-                                <input disabled type="text" required class="form-control" id="email" value="{{user.email}}"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="userRole" class="col-md-2 control-label">User role:</label>
-                            <div class="col-md-8">
-                                <input disabled type="text" required class="form-control" id="userRole" value="{{user.userRole}}"/>
-                            </div>
-                        </div>
-
-                    </form>
+                    <div class="btn-group btn-group-sm pull-right">
+                        <button type="button" class="btn btn-sm btn-success" ng-click="userForm.$show()" ng-show="!userForm.$visible && shouldShowEditButton">
+                            <span class="glyphicon glyphicon-pencil"></span> Edit
+                        </button>
+                            <span ng-show="userForm.$visible">
+                                <button type="submit" class="btn btn-sm btn-primary" ng-disabled="userForm.$waiting">
+                                    Save
+                                </button>
+                                <button type="button" class="btn btn-sm btn-default" ng-disabled="userForm.$waiting" ng-click="userForm.$cancel()">
+                                    Cancel
+                                </button>
+                            </span>
+                    </div>
                 </div>
+                <div class="panel-body">
+
+                    <div class="form-group">
+                        <label for="firstName" class="col-md-4 control-label">First name:</label>
+                        <div class="col-md-8">
+                            <span id="firstName" class="form-control" editable-text="user.firstName">{{user.firstName}}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName" class="col-md-4 control-label">Last name:</label>
+                        <div class="col-md-8">
+                            <span id="lastName" class="form-control" editable-text="user.lastName">{{user.lastName}}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="col-md-4 control-label">E-mail:</label>
+                        <div class="col-md-8">
+                            <span id="email" class="form-control" editable-text="user.email">{{user.email}}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userRole" class="col-md-4 control-label">User role:</label>
+                        <div class="col-md-8">
+                                <span id="userRole"
+                                      class="col-md-6 form-control"
+                                      editable-select="user.userRole" e-name="userRole"
+                                      e-ng-options="role.roleName as role.roleName for role in userRoles">
+                                    {{ user.userRole || 'Not set' }}
+                                </span>
+                        </div>
+                    </div>
+
+                </div>
+                    </form>
             </div>
+
         </div>
     </div>
 </div>

@@ -18,6 +18,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.security.ContextUser;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,5 +93,22 @@ public class UserService {
                 .map(userProjectRole -> userProjectRole.getUser())
                 .map(user -> DtosFactory.createUserDTO(user))
                 .collect(Collectors.toList());
+    }
+
+    public UserDTO updateUser(UserDTO userDTO) {
+        User user = userRepository.findOneByLogin(userDTO.getLogin());
+        updateUser(user, userDTO);
+        User updatedUser = userRepository.save(user);
+        if(updatedUser == null) {
+            throw new PersistenceException("Cannot update user " + userDTO.getLogin());
+        }
+        return DtosFactory.createUserDTO(updatedUser);
+    }
+
+    private void updateUser(User user, UserDTO userDTO) {
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setUserRole((UserRole) roleRepository.findOne(userDTO.getUserRole()));
     }
 }

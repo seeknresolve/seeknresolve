@@ -46,9 +46,13 @@ userModule.controller('UserCreateController', ['$scope', '$http', '$location', '
     }
 ]);
 
-userModule.controller('UserDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
-    function(scope, http, routeParams, location, notificationsService) {
+userModule.controller('UserDetailsController', ['$scope', '$http', '$route', '$routeParams', '$location', 'notificationsService', 'permissionService',
+    function(scope, http, route, routeParams, location, notificationsService, permissionService) {
         scope.login = null;
+        scope.userRoles = [ ];
+        scope.shouldShowEditButton = false;
+
+        permissionService.hasPermission('user:update', function(has){scope.shouldShowEditButton = (has == "true")});
 
         http.get('/user/details/' + routeParams.login).success(function(data) {
             scope.user = data.object;
@@ -56,5 +60,27 @@ userModule.controller('UserDetailsController', ['$scope', '$http', '$routeParams
             notificationsService.error('Error', 'Can\'t fetch user\'s details!');
             location.path('/user');
         });
+
+        http.get('/role/users').success(function(data) {
+            scope.userRoles = data.object;
+        }).error(function(data, status, headers, config) {
+            notificationsService.error('Error', 'Getting user roles failed');
+            location.path('/user');
+        });
+
+        scope.updateUser = function() {
+            var params = JSON.stringify(scope.user);
+            http.put('/user', params, {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            }).success(function (data, status, headers, config) {
+                notificationsService.info('Info', 'User ' + scope.user.login + ' was updated');
+                route.reload();
+            }).error(function (data, status, headers, config) {
+                notificationsService.error('Error', 'Can\'t update user!');
+                route.reload();
+            });
+        };
     }
 ]);
