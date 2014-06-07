@@ -1,9 +1,5 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.bug;
 
-import com.google.common.collect.Lists;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +11,10 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Comment;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.*;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.BugFullTextSearchRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -33,7 +29,7 @@ public class BugService {
     private UserProjectRoleRepository userProjectRoleRepository;
 
     @Autowired
-    private EntityManager entityManager;
+    private BugFullTextSearchRepository bugFullTextSearchRepository;
 
     @Autowired
     public BugService(BugRepository bugRepository, ProjectRepository projectRepository,
@@ -129,18 +125,7 @@ public class BugService {
 
     @Transactional
     public List<BugDTO> search(String query) {
-        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-
-        QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
-                .buildQueryBuilder().forEntity(Bug.class).get();
-        org.apache.lucene.search.Query luceneQuery = queryBuilder
-                .keyword()
-                .onFields("tag", "name", "description")
-                .matching(query)
-                .createQuery();
-
-        javax.persistence.Query jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Bug.class);
-        List<Bug> foundBugs = jpaQuery.getResultList();
+        List<Bug> foundBugs = bugFullTextSearchRepository.queryOnFields(query, "tag", "name", "description");
         return foundBugs.stream()
                 .map(bug -> DtosFactory.createBugDTO(bug))
                 .collect(Collectors.toList());
