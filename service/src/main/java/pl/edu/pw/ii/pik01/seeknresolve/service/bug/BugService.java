@@ -1,6 +1,9 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.bug;
 
-import org.joda.time.DateTime;
+import com.google.common.collect.Lists;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,15 +14,13 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Comment;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.CommentRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.*;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
+import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,9 @@ public class BugService {
     private UserRepository userRepository;
     private CommentRepository commentRepository;
     private UserProjectRoleRepository userProjectRoleRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     public BugService(BugRepository bugRepository, ProjectRepository projectRepository,
@@ -63,8 +67,6 @@ public class BugService {
 
     private Bug createBugFromDTO(BugDTO bugDTO) {
         Bug bug = new Bug();
-        bug.setDateCreated(DateTime.now());
-        bug.setDateModified(DateTime.now());
         bug.setTag(bugDTO.getTag());
         bug.setProject(projectRepository.findOne(bugDTO.getProjectId()));
         bug.setReporter(userRepository.findOne(bugDTO.getReporterId()));
@@ -123,5 +125,24 @@ public class BugService {
         if(bugDTO.getAssigneeId() != null) {
             bug.setAssignee(userRepository.findOne(bugDTO.getAssigneeId()));
         }
+    }
+
+    @Transactional
+    public List<BugDTO> search(String query) {
+        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+
+        QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+                .buildQueryBuilder().forEntity(Bug.class).get();
+        org.apache.lucene.search.Query luceneQuery = queryBuilder
+                .keyword()
+                .onFields("tag", "name", "description")
+                .matching(query)
+                .createQuery();
+
+        javax.persistence.Query jpaQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Bug.class);
+        List<Bug> foundBugs = jpaQuery.getResultList();
+        return foundBugs.stream()
+                .map(bug -> DtosFactory.createBugDTO(bug))
+                .collect(Collectors.toList());
     }
 }

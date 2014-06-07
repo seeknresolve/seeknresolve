@@ -81,6 +81,11 @@ public class BugController {
         return new Response<>(updatedBug, Response.Status.UPDATED);
     }
 
+    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<BugDTO>> search() {
+        return new Response<>(bugService.search("SNR-1"), Response.Status.RECEIVED);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(Exception exception) {
