@@ -3,11 +3,15 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.project;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDetailsDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectUserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.ProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
@@ -22,12 +26,14 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectService {
     private ProjectRepository projectRepository;
+    private BugRepository bugRepository;
     private UserProjectRoleRepository userProjectRoleRepository;
     private RoleRepository roleRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, UserProjectRoleRepository userProjectRoleRepository, RoleRepository roleRepository) {
+    public ProjectService(ProjectRepository projectRepository, BugRepository bugRepository, UserProjectRoleRepository userProjectRoleRepository, RoleRepository roleRepository) {
         this.projectRepository = projectRepository;
+        this.bugRepository = bugRepository;
         this.userProjectRoleRepository = userProjectRoleRepository;
         this.roleRepository = roleRepository;
     }
@@ -53,12 +59,31 @@ public class ProjectService {
         return (ProjectRole)roleRepository.findOne(roleName);
     }
 
-    public ProjectDTO getById(Long id) {
-        Project project = projectRepository.findOne(id);
+    public ProjectDetailsDTO getById(Long projectId) {
+        Project project = projectRepository.findOne(projectId);
         if (project == null) {
-            throw getEntityNotFoundException(id);
+            throw getEntityNotFoundException(projectId);
         }
-        return DtosFactory.createProjectDTO(project);
+        List<ProjectUserDTO> users = getProjectUserDTOs(project);
+        List<BugDTO> bugDTOs = getBugDTOs(project);
+        ProjectDTO projectDTO = DtosFactory.createProjectDTO(project);
+        return DtosFactory.createProjectDetailsDTO(users, bugDTOs, projectDTO);
+    }
+
+    private List<ProjectUserDTO> getProjectUserDTOs(Project project) {
+        return userProjectRoleRepository.findByProjectId(project.getId())
+                .stream()
+                .parallel()
+                .map(DtosFactory::createProjectUserDTO)
+                .collect(Collectors.toList());
+    }
+
+    private List<BugDTO> getBugDTOs(Project project) {
+        return bugRepository.findByProject(project)
+                .stream()
+                .parallel()
+                .map(DtosFactory::createBugDTO)
+                .collect(Collectors.toList());
     }
 
     public List<ProjectDTO> getAllPermittedProjects(User user) {

@@ -87,4 +87,12 @@ public class DtosFactory {
         commentDTO.setBugTag(comment.getBug().getTag());
         return commentDTO;
     }
+
+    public static ProjectUserDTO createProjectUserDTO(UserProjectRole userProjectRole) {
+        return new ProjectUserDTO(DtosFactory.createUserDTO(userProjectRole.getUser()), DtosFactory.createRoleDTO(userProjectRole.getProjectRole()));
+    }
+
+    public static ProjectDetailsDTO createProjectDetailsDTO(List<ProjectUserDTO> users, List<BugDTO> bugDTOs, ProjectDTO projectDTO) {
+        return new ProjectDetailsDTO(projectDTO, bugDTOs, users);
+    }
 }

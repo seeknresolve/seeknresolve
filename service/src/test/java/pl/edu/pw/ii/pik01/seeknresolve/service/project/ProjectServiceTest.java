@@ -12,6 +12,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.ProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.TestWithSecurity;
 
@@ -27,13 +28,16 @@ public class ProjectServiceTest {
     @Mock
     private ProjectRepository projectRepository;
 
+    @Mock
+    private BugRepository bugRepository;
+
     private TestWithSecurity testWithSecurity = new TestWithSecurity();
 
     private ProjectService projectService;
 
     @Before
     public void setup() {
-        projectService = new ProjectService(projectRepository,
+        projectService = new ProjectService(projectRepository, bugRepository,
                 testWithSecurity.userProjectRoleRepository, testWithSecurity.roleRepository);
     }
 
