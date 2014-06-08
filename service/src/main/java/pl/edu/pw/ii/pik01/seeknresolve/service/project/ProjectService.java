@@ -18,7 +18,6 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.common.RolesConstants;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
 import javax.persistence.PersistenceException;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
