@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDetailsDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectUserDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserProjectRoleDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.ProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
@@ -64,13 +64,13 @@ public class ProjectService {
         if (project == null) {
             throw getEntityNotFoundException(projectId);
         }
-        List<ProjectUserDTO> users = getProjectUserDTOs(project);
+        List<UserProjectRoleDTO> users = getProjectUserDTOs(project);
         List<BugDTO> bugDTOs = getBugDTOs(project);
         ProjectDTO projectDTO = DtosFactory.createProjectDTO(project);
         return DtosFactory.createProjectDetailsDTO(users, bugDTOs, projectDTO);
     }
 
-    private List<ProjectUserDTO> getProjectUserDTOs(Project project) {
+    private List<UserProjectRoleDTO> getProjectUserDTOs(Project project) {
         return userProjectRoleRepository.findByProjectId(project.getId())
                 .stream()
                 .parallel()

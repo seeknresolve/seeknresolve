@@ -7,9 +7,9 @@ import java.util.List;
 public class ProjectDetailsDTO {
     private ProjectDTO project;
     private final List<BugDTO> bugs;
-    private List<ProjectUserDTO> users;
+    private List<UserProjectRoleDTO> users;
 
-    public ProjectDetailsDTO(ProjectDTO project, List<BugDTO> bugs, List<ProjectUserDTO> users) {
+    public ProjectDetailsDTO(ProjectDTO project, List<BugDTO> bugs, List<UserProjectRoleDTO> users) {
         this.project = project;
         this.bugs = bugs;
         this.users = users;
@@ -35,7 +35,7 @@ public class ProjectDetailsDTO {
         return bugs;
     }
 
-    public List<ProjectUserDTO> getUsers() {
+    public List<UserProjectRoleDTO> getUsers() {
         return users;
     }
 }

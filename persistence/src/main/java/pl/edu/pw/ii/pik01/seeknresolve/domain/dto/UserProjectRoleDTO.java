@@ -1,10 +1,10 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
-public class ProjectUserDTO {
+public class UserProjectRoleDTO {
     private UserDTO user;
     private RoleDTO projectRole;
 
-    public ProjectUserDTO(UserDTO user, RoleDTO projectRole) {
+    public UserProjectRoleDTO(UserDTO user, RoleDTO projectRole) {
         this.user = user;
         this.projectRole = projectRole;
     }

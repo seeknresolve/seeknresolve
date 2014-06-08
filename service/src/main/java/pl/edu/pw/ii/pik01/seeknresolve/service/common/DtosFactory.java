@@ -88,11 +88,11 @@ public class DtosFactory {
         return commentDTO;
     }
 
-    public static ProjectUserDTO createProjectUserDTO(UserProjectRole userProjectRole) {
-        return new ProjectUserDTO(DtosFactory.createUserDTO(userProjectRole.getUser()), DtosFactory.createRoleDTO(userProjectRole.getProjectRole()));
+    public static UserProjectRoleDTO createProjectUserDTO(UserProjectRole userProjectRole) {
+        return new UserProjectRoleDTO(DtosFactory.createUserDTO(userProjectRole.getUser()), DtosFactory.createRoleDTO(userProjectRole.getProjectRole()));
     }
 
-    public static ProjectDetailsDTO createProjectDetailsDTO(List<ProjectUserDTO> users, List<BugDTO> bugDTOs, ProjectDTO projectDTO) {
+    public static ProjectDetailsDTO createProjectDetailsDTO(List<UserProjectRoleDTO> users, List<BugDTO> bugDTOs, ProjectDTO projectDTO) {
         return new ProjectDetailsDTO(projectDTO, bugDTOs, users);
     }
 }
