@@ -11,10 +11,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.ProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.*;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.RolesConstants;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
@@ -26,13 +23,15 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectService {
     private ProjectRepository projectRepository;
+    private UserRepository userRepository;
     private BugRepository bugRepository;
     private UserProjectRoleRepository userProjectRoleRepository;
     private RoleRepository roleRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, BugRepository bugRepository, UserProjectRoleRepository userProjectRoleRepository, RoleRepository roleRepository) {
+    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository, BugRepository bugRepository, UserProjectRoleRepository userProjectRoleRepository, RoleRepository roleRepository) {
         this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
         this.bugRepository = bugRepository;
         this.userProjectRoleRepository = userProjectRoleRepository;
         this.roleRepository = roleRepository;
@@ -45,14 +44,22 @@ public class ProjectService {
         if (savedProject == null) {
             throw new PersistenceException("Cannot save project with id: " + projectDTO.getId());
         }
-        grantAndSaveRoleForProject(user, savedProject);
+        grantRoleForUserToProject(RolesConstants.PROJECT_MANAGER_ROLE_NAME, user, savedProject);
         return DtosFactory.createProjectDTO(savedProject);
     }
 
-    private void grantAndSaveRoleForProject(User user, Project project) {
-        ProjectRole projectRole = getProjectRole(RolesConstants.PROJECT_MANAGER_ROLE_NAME);
+    private Long grantRoleForUserToProject(String role, User user, Project project) {
+        ProjectRole projectRole = getProjectRole(role);
         UserProjectRole userProjectRole = new UserProjectRole(user, project, projectRole);
-        userProjectRoleRepository.save(userProjectRole);
+        return userProjectRoleRepository.save(userProjectRole).getId();
+    }
+
+    public Long grantRoleForUserToProject(String role, Long userId, Long projectId) {
+        User user = userRepository.findOne(userId);
+        Project project = projectRepository.findOne(projectId);
+        ProjectRole projectRole = getProjectRole(role);
+        UserProjectRole userProjectRole = new UserProjectRole(user, project, projectRole);
+        return userProjectRoleRepository.save(userProjectRole).getId();
     }
 
     private ProjectRole getProjectRole(String roleName) {

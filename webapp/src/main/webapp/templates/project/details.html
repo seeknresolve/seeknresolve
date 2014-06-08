@@ -1,5 +1,19 @@
 <div class="container">
 
+    <script type="text/ng-template" id="projectUserAssignment.html">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+            Role: <select ng-model="selected.role" ng-options="role.roleName for role in roles"></select><br>
+            User: <select ng-model="selected.user" ng-options="user.login for user in users"></select><br>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
     <div class="row col-md-12">
         <div class="page-header" ng-if="errorMessage == null">
             <h3>
@@ -22,7 +36,14 @@
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Users assigned to project:</div>
+                <div class="panel-heading">
+                    Users assigned to project:
+                    <div class="btn-group btn-group-sm pull-right">
+                        <button type="button" class="btn btn-sm btn-success" ng-click="openAssignPopup()">
+                            <span class="glyphicon glyphicon-pencil"></span> Assign user
+                        </button>
+                    </div>
+                </div>
                 <table class="table" ng-show="project.users.length">
                     <thead>
                         <tr>
