@@ -1,6 +1,20 @@
 <div class="container">
 
-    <div class="row col-lg-12">
+    <script type="text/ng-template" id="projectUserAssignment.html">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+            Role: <select ng-model="selected.role" ng-options="role.roleName for role in roles"></select><br>
+            User: <select ng-model="selected.user" ng-options="user.login for user in users"></select><br>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <div class="row col-md-12">
         <div class="page-header" ng-if="errorMessage == null">
             <h3>
                 {{project.name}} : {{project.description}}
@@ -11,14 +25,76 @@
         </div>
     </div>
 
-    <div class="row col-lg-12">
-        <div class="row col-lg-6">
+    <div class="row col-md-12">
+        <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">Project details:</div>
                 <div class="panel-body">
                     <p>Data utworzenia: {{project.dateCreated | date:'MM-dd-yyyy HH:mm:ss'}}</p>
                 </div>
             </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Users assigned to project:
+                    <div class="btn-group btn-group-sm pull-right">
+                        <button type="button" class="btn btn-sm btn-success" ng-click="openAssignPopup()">
+                            <span class="glyphicon glyphicon-pencil"></span> Assign user
+                        </button>
+                    </div>
+                </div>
+                <table class="table" ng-show="project.users.length">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in project.users">
+                            <td>{{user.login}} ({{user.firstName}} {{user.lastName}})</td>
+                            <td>{{user.projectRole.roleName}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Bugs:</div>
+            <table class="table" ng-show="project.bugs.length">
+                <thead>
+                <tr>
+                    <th>Tag</th>
+                    <th>Name</th>
+                    <th>Reported by</th>
+                    <th>Assigned to</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="bug in project.bugs">
+                    <td>
+                        <a href="#/bug/details/{{bug.tag}}">
+                            {{bug.tag}}
+                        </a>
+                    </td>
+                    <td>{{bug.name}}</td>
+                    <td>
+                        <a href="#/user/details/{{bug.reporterLogin}}">
+                            {{bug.reporterLogin}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#/user/details/{{bug.assigneeLogin}}">
+                            {{bug.assigneeLogin}}
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

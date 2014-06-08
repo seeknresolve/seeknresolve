@@ -5,7 +5,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserProjectRoleStoreDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.project.ProjectService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
@@ -43,9 +45,9 @@ public class ProjectController {
 
     @PreAuthorize("hasPermission(#id, 'Project', 'project:view') || hasPermission(#id, 'Project', 'project:everything')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<ProjectDTO> get(@PathVariable Long id) {
+    public Response<ProjectDetailsDTO> get(@PathVariable Long id) {
         try {
-            ProjectDTO found = projectService.getById(id);
+            ProjectDetailsDTO found = projectService.getById(id);
             return new Response<>(found, Response.Status.RECEIVED);
         } catch (EntityNotFoundException e) {
             return new Response<>(null, Response.Status.NOT_RECEIVED);
@@ -78,5 +80,15 @@ public class ProjectController {
     @RequestMapping(value = "/{id}/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<List<UserDTO>> getUsersWithRolesOnProject(@PathVariable("id") Long id) {
         return new Response<>(userService.getAllUserWithRolesOnProject(id), Response.Status.RECEIVED);
+    }
+
+    @RequestMapping(value = "/grantRole", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<Long> grantRoleForUserToProject(@RequestBody UserProjectRoleStoreDTO userProjectRoleStoreDTO) {
+        return new Response<>(projectService.grantRoleForUserToProject(
+                    userProjectRoleStoreDTO.getRole(),
+                    userProjectRoleStoreDTO.getUserId(),
+                    userProjectRoleStoreDTO.getProjectId()
+                ),
+                Response.Status.CREATED);
     }
 }
