@@ -67,7 +67,7 @@ public class ProjectController {
 
     @PreAuthorize("hasPermission(#id, 'Project', 'project:delete') || hasPermission(#id, 'Project', 'project:everything')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Long> delete(@PathVariable("id") Long id) {
+    public Response<Long> delete(@PathVariable Long id) {
         try {
             projectService.delete(id);
             return new Response<>(id, Response.Status.DELETED);
@@ -91,4 +91,10 @@ public class ProjectController {
                 ),
                 Response.Status.CREATED);
     }
+
+    @RequestMapping(value = "/search/{query}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<ProjectDTO>> search(@PathVariable String query) {
+        return new Response<>(projectService.search(query), Response.Status.RECEIVED);
+    }
+
 }

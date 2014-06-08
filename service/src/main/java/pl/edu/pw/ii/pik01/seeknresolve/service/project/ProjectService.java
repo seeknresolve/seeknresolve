@@ -18,6 +18,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.common.RolesConstants;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
 import javax.persistence.PersistenceException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -136,5 +137,13 @@ public class ProjectService {
         project.setDescription(projectDTO.getDescription());
         project.setDateCreated(projectDTO.getDateCreated());
         return project;
+    }
+
+    @Transactional
+    public List<ProjectDTO> search(String query) {
+        List<Project> foundBugs = projectRepository.queryOnFields(query, "name", "description");
+        return foundBugs.stream()
+                .map(project -> DtosFactory.createProjectDTO(project))
+                .collect(Collectors.toList());
     }
 }
