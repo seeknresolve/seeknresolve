@@ -3,6 +3,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.comment;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CommentDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Comment;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
@@ -33,10 +34,12 @@ public class CommentService {
         this.userService = userService;
     }
 
+    @Transactional
     public List<CommentDTO> getAllByAuthorId(Long userId) {
         return getAllByAuthor(userRepository.findOne(userId));
     }
 
+    @Transactional
     public List<CommentDTO> getAllOfLoggedUser() {
         return getAllByAuthor(userService.getLoggedUser());
     }
@@ -46,17 +49,20 @@ public class CommentService {
         return createCommentDTOList(commentList);
     }
 
+    @Transactional
     public List<CommentDTO> getAllByBugTag(String bugTag) {
         List<Comment> commentList = commentRepository.findByBug(bugRepository.findOne(bugTag));
         return createCommentDTOList(commentList);
     }
 
+    @Transactional
     public CommentDTO getById(Long id) {
         Comment comment = commentRepository.findOne(id);
         User author = userRepository.findOne(comment.getId());
         return DtosFactory.createCommentDTO(comment, author.getLogin());
     }
 
+    @Transactional
     public CommentDTO createAndSaveNewComment(CommentDTO commentDTO, User author) {
         commentDTO.setDateCreated(DateTime.now());
         commentDTO.setAuthorId(author.getId());

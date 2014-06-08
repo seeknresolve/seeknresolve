@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CreateUserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
@@ -36,6 +37,7 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
+    @Transactional
     public User getLoggedUser() {
         ContextUser principal = (ContextUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -43,15 +45,18 @@ public class UserService {
         return userRepository.findOneByLogin(principal.getUser().getLogin());
     }
 
+    @Transactional
     public UserDTO getLoggedUserDTO() {
         return DtosFactory.createUserDTO(getLoggedUser());
     }
 
+    @Transactional
     public UserDTO createAndSaveNewUser(CreateUserDTO userDTO){
         User user = userRepository.save(crateUserFromUserDTO(userDTO));
         return user == null ? null : DtosFactory.createUserDTO(user);
     }
 
+    @Transactional
     public UserDTO findById(Long id){
         User user = userRepository.findOne(id);
         if(user == null){
@@ -60,6 +65,7 @@ public class UserService {
         return DtosFactory.createUserDTO(user);
     }
 
+    @Transactional
     public UserDTO findByLogin(String login){
         User user = userRepository.findOneByLogin(login);
         if(user == null){
@@ -68,6 +74,7 @@ public class UserService {
         return DtosFactory.createUserDTO(user);
     }
 
+    @Transactional
     public List<UserDTO> getAllUsers() {
         return Lists.newArrayList(userRepository.findAll()).stream().
                 map(user -> DtosFactory.createUserDTO(user)).collect(Collectors.toList());
@@ -87,6 +94,7 @@ public class UserService {
         return user;
     }
 
+    @Transactional
     public List<UserDTO> getAllUserWithRolesOnProject(Long projectId) {
         List<UserProjectRole> projectRoles = userProjectRoleRepository.findByProjectId(projectId);
         return projectRoles.stream()
@@ -95,6 +103,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public UserDTO updateUser(UserDTO userDTO) {
         User user = userRepository.findOneByLogin(userDTO.getLogin());
         updateUser(user, userDTO);

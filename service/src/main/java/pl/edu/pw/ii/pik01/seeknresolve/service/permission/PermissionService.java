@@ -3,6 +3,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.permission;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.PermissionDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.PermissionRepository;
@@ -26,6 +27,7 @@ public class PermissionService {
         this.roleRepository = roleRepository;
     }
 
+    @Transactional
     public List<PermissionDTO> getAll() {
         return Lists.newArrayList(permissionRepository.findAll())
                 .stream()
@@ -33,6 +35,7 @@ public class PermissionService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public PermissionDTO createAndSaveNewPermission(PermissionDTO permissionDTO) {
         Permission permission = createPermissionFromDTO(permissionDTO);
         Permission savedPermission = permissionRepository.save(permission);
@@ -42,6 +45,7 @@ public class PermissionService {
         return DtosFactory.createPermissionDTO(permission);
     }
 
+    @Transactional
     public void delete(String permissionName) {
         if(!permissionRepository.exists(permissionName)) {
             throw new EntityNotFoundException("Permission with name " + permissionName + " doesn't exist");
@@ -49,6 +53,7 @@ public class PermissionService {
         permissionRepository.delete(permissionName);
     }
 
+    @Transactional
     public PermissionDTO get(String permissionName) {
         Permission permission = permissionRepository.findOne(permissionName);
         if(permission == null) {
@@ -57,6 +62,7 @@ public class PermissionService {
         return DtosFactory.createPermissionDTO(permission);
     }
 
+    @Transactional
     public List<PermissionDTO> getNotInRole(String roleName) {
         List<Permission> permissionList = Lists.newArrayList(permissionRepository.findAll());
         permissionList.removeAll(roleRepository.findOne(roleName).getPermissions());
@@ -67,6 +73,7 @@ public class PermissionService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public Permission createPermissionFromDTO(PermissionDTO permissionDTO) {
         return new Permission(permissionDTO.getPermissionName());
     }

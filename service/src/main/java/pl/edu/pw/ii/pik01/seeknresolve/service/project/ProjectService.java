@@ -3,6 +3,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.project;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDetailsDTO;
@@ -37,6 +38,7 @@ public class ProjectService {
         this.roleRepository = roleRepository;
     }
 
+    @Transactional
     public ProjectDTO createAndSaveNewProject(ProjectDTO projectDTO, User user) {
         projectDTO.setDateCreated(DateTime.now());
         Project project = createProjectFromDTO(projectDTO);
@@ -54,6 +56,7 @@ public class ProjectService {
         return userProjectRoleRepository.save(userProjectRole).getId();
     }
 
+    @Transactional
     public Long grantRoleForUserToProject(String role, Long userId, Long projectId) {
         User user = userRepository.findOne(userId);
         Project project = projectRepository.findOne(projectId);
@@ -66,6 +69,7 @@ public class ProjectService {
         return (ProjectRole)roleRepository.findOne(roleName);
     }
 
+    @Transactional
     public ProjectDetailsDTO getById(Long projectId) {
         Project project = projectRepository.findOne(projectId);
         if (project == null) {
@@ -93,6 +97,7 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public List<ProjectDTO> getAllPermittedProjects(User user) {
         List<UserProjectRole> rolesOnProjects = userProjectRoleRepository.findByUser(user);
         return rolesOnProjects.stream()
@@ -101,6 +106,7 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public ProjectDTO update(ProjectDTO projectDTO) {
         Project project = projectRepository.findOne(projectDTO.getId());
         if (project == null) {
@@ -111,6 +117,7 @@ public class ProjectService {
         return DtosFactory.createProjectDTO(project);
     }
 
+    @Transactional
     public void delete(Long id) {
         if(!projectRepository.exists(id)) {
             throw getEntityNotFoundException(id);

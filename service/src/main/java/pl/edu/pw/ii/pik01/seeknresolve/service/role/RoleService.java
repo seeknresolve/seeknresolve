@@ -3,6 +3,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.role;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.RoleDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.ProjectRole;
@@ -27,15 +28,18 @@ public class RoleService {
         this.roleRepository = roleRepository;
         this.permissionRepository = permissionRepository;
     }
-    
+
+    @Transactional
     public List<RoleDTO> getAllUserRoles() {
         return getAllRolesOfType(UserRole.class);
     }
 
+    @Transactional
     public List<RoleDTO> getAllProjectRoles() {
         return getAllRolesOfType(ProjectRole.class);
     }
 
+    @Transactional
     public RoleDTO getRole(String roleName) {
         Role role = roleRepository.findOne(roleName);
         if (role == null) {
@@ -44,6 +48,7 @@ public class RoleService {
         return DtosFactory.createRoleDTO(role);
     }
 
+    @Transactional
     public void addPermissionToRole(String roleName, String permissionName) {
         Role role = roleRepository.findOne(roleName);
         Permission permission = permissionRepository.findOne(permissionName);
@@ -56,6 +61,7 @@ public class RoleService {
         roleRepository.save(role);
     }
 
+    @Transactional
     public void deletePermissionFromRole(String roleName, String permissionName) {
         Role role = roleRepository.findOne(roleName);
         Permission permission = permissionRepository.findOne(permissionName);

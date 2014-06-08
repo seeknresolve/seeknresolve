@@ -3,6 +3,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.service.bug;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CommentDTO;
@@ -41,6 +42,7 @@ public class BugService {
         this.userProjectRoleRepository = userProjectRoleRepository;
     }
 
+    @Transactional
     public List<BugDTO> getAllPermittedBugs(User user) {
         List<UserProjectRole> projectRoles = userProjectRoleRepository.findByUser(user);
         return projectRoles.stream().parallel()
@@ -50,6 +52,7 @@ public class BugService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public BugDTO createAndSaveNewBug(BugDTO bugDTO) {
         Bug savedBug = bugRepository.save(createBugFromDTO(bugDTO));
         if(savedBug == null) {
@@ -69,6 +72,7 @@ public class BugService {
         return bug;
     }
 
+    @Transactional
     public BugDetailsDTO getBugWithTag(String tag) {
         Bug bug = bugRepository.findOne(tag);
         if(bug == null) {
@@ -80,6 +84,7 @@ public class BugService {
         return DtosFactory.createBugDetailsDTO(bugDTO, comments);
     }
 
+    @Transactional
     public void deleteBugWithTag(String tag) {
         if(bugRepository.exists(tag)) {
             bugRepository.delete(tag);
@@ -99,6 +104,7 @@ public class BugService {
                 collect(Collectors.toList());
     }
 
+    @Transactional
     public BugDTO updateBug(BugDTO bugDTO) {
         Bug bug = bugRepository.findOne(bugDTO.getTag());
         updateBugFromDTO(bug, bugDTO);
