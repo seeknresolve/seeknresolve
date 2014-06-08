@@ -2,6 +2,8 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import com.google.common.collect.ImmutableList;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -9,15 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Indexed
 public class Project {
     @Id
     @GeneratedValue
     @Column(nullable = false)
     private Long id;
 
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(nullable = false)
     private String name;
 
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(nullable = true)
     private String description;
 

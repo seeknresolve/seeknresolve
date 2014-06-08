@@ -5,4 +5,8 @@ target/
 .gradle/
 out/
 classes/
+webapp/pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug/
+webapp/pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project/
+service/pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug/
+service/pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project/
 

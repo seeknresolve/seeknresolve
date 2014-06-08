@@ -11,15 +11,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.RoleDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.ProjectRole;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Role;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.PermissionRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoleServiceTest {

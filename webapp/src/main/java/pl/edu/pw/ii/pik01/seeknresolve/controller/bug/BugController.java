@@ -1,12 +1,12 @@
 package pl.edu.pw.ii.pik01.seeknresolve.controller.bug;
 
+import net.sf.jasperreports.engine.JRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDetailsDTO;
@@ -44,7 +44,7 @@ public class BugController {
     }
 
     @RequestMapping(value = "/details/{tag}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<BugDetailsDTO> get(@PathVariable("tag") String tag) {
+    public Response<BugDetailsDTO> get(@PathVariable String tag) {
         BugDetailsDTO bug = bugService.getBugWithTag(tag);
         return new Response<>(bug, Response.Status.RECEIVED);
     }
@@ -70,7 +70,7 @@ public class BugController {
     }
 
     @RequestMapping(value = "/{tag}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<String> delete(@PathVariable("tag") String tag) {
+    public Response<String> delete(@PathVariable String tag) {
         bugService.deleteBugWithTag(tag);
         return new Response<>(tag, Response.Status.DELETED);
     }
@@ -79,6 +79,11 @@ public class BugController {
     public Response<BugDTO> update(@RequestBody BugDetailsDTO bugDTO) {
         BugDTO updatedBug = bugService.updateBug(bugDTO.getBug());
         return new Response<>(updatedBug, Response.Status.UPDATED);
+    }
+
+    @RequestMapping(value = "/search/{query}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<BugDTO>> search(@PathVariable String query) {
+        return new Response<>(bugService.search(query), Response.Status.RECEIVED);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

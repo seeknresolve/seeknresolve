@@ -9,9 +9,15 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomi
 import org.springframework.boot.context.embedded.MimeMappings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.FullTextSearchRepositoryFactoryBean;
 
 @ComponentScan
 @EnableAutoConfiguration
+@EnableJpaRepositories(value = "pl.edu.pw.ii.pik01.seeknresolve.domain",
+        repositoryFactoryBeanClass = FullTextSearchRepositoryFactoryBean.class)
+@EnableJpaAuditing
 public class SeekNResolve implements EmbeddedServletContainerCustomizer {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(SeekNResolve.class);

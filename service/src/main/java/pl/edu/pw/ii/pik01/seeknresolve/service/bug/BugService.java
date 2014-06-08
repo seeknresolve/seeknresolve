@@ -1,6 +1,5 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.bug;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,11 +10,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Comment;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.CommentRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.*;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
@@ -63,8 +58,6 @@ public class BugService {
 
     private Bug createBugFromDTO(BugDTO bugDTO) {
         Bug bug = new Bug();
-        bug.setDateCreated(DateTime.now());
-        bug.setDateModified(DateTime.now());
         bug.setTag(bugDTO.getTag());
         bug.setProject(projectRepository.findOne(bugDTO.getProjectId()));
         bug.setReporter(userRepository.findOne(bugDTO.getReporterId()));
@@ -123,5 +116,13 @@ public class BugService {
         if(bugDTO.getAssigneeId() != null) {
             bug.setAssignee(userRepository.findOne(bugDTO.getAssigneeId()));
         }
+    }
+
+    @Transactional
+    public List<BugDTO> search(String query) {
+        List<Bug> foundBugs = bugRepository.queryOnFields(query, "tag", "name", "description");
+        return foundBugs.stream()
+                .map(bug -> DtosFactory.createBugDTO(bug))
+                .collect(Collectors.toList());
     }
 }
