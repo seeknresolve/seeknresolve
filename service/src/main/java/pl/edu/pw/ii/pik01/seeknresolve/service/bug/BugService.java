@@ -11,7 +11,6 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Comment;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.*;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.BugFullTextSearchRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 
@@ -27,9 +26,6 @@ public class BugService {
     private UserRepository userRepository;
     private CommentRepository commentRepository;
     private UserProjectRoleRepository userProjectRoleRepository;
-
-    @Autowired
-    private BugFullTextSearchRepository bugFullTextSearchRepository;
 
     @Autowired
     public BugService(BugRepository bugRepository, ProjectRepository projectRepository,
@@ -125,7 +121,7 @@ public class BugService {
 
     @Transactional
     public List<BugDTO> search(String query) {
-        List<Bug> foundBugs = bugFullTextSearchRepository.queryOnFields(query, "tag", "name", "description");
+        List<Bug> foundBugs = bugRepository.queryOnFields(query, "tag", "name", "description");
         return foundBugs.stream()
                 .map(bug -> DtosFactory.createBugDTO(bug))
                 .collect(Collectors.toList());

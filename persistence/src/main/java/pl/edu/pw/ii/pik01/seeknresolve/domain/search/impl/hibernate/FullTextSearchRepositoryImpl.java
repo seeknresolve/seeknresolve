@@ -1,20 +1,27 @@
-package pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl;
+package pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate;
 
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.search.FullTextSearchRepository;
 
 import javax.persistence.EntityManager;
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class HibernateFullTextSearchRepository<DOMAIN_CLASS> implements FullTextSearchRepository<DOMAIN_CLASS> {
-    @Autowired
+@NoRepositoryBean
+public class FullTextSearchRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements FullTextSearchRepository<T, ID> {
     private EntityManager entityManager;
 
+    public FullTextSearchRepositoryImpl(Class<T> domainClass, EntityManager entityManager) {
+        super(domainClass, entityManager);
+        this.entityManager = entityManager;
+    }
+
     @Override
-    public List<DOMAIN_CLASS> queryOnFields(String query, String... fields) {
+    public List<T> queryOnFields(String query, String... fields) {
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 
         QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
@@ -30,6 +37,4 @@ public abstract class HibernateFullTextSearchRepository<DOMAIN_CLASS> implements
 
         return jpaQuery.getResultList();
     }
-
-    public abstract Class<? extends DOMAIN_CLASS> getDomainClass();
 }

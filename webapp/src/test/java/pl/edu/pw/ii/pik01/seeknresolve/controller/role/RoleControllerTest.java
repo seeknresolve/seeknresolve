@@ -10,25 +10,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ChangeRolePermissionDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Permission;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserRole;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.PermissionRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.role.RoleService;
 
-import java.util.HashSet;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoleControllerTest {

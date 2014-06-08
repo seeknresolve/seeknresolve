@@ -2,9 +2,6 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
 import org.joda.time.DateTime;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProjectDTO {
     private Long id;
     private String name;

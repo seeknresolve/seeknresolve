@@ -13,7 +13,6 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.CommentRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.comment.CommentService;
-import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
 import static org.assertj.core.api.Assertions.assertThat;

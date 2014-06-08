@@ -1,7 +1,12 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.search;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
+
+import java.io.Serializable;
 import java.util.List;
 
-public interface FullTextSearchRepository<DOMAIN_CLASS> {
-    List<DOMAIN_CLASS> queryOnFields(String query, String... fields);
+@NoRepositoryBean
+public interface FullTextSearchRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
+    List<T> queryOnFields(String query, String... fields);
 }
