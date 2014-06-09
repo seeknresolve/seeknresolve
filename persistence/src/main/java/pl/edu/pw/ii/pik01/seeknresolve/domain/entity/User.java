@@ -1,12 +1,15 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import com.google.common.collect.ImmutableList;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Audited
 public class User {
     @Id
     @GeneratedValue
@@ -42,7 +45,8 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     private List<Comment> comments = new ArrayList<>();
-    
+
+    @NotAudited
     @ManyToOne(targetEntity = UserRole.class, optional = false)
     @JoinColumn(name = "user_role")
     private UserRole userRole;

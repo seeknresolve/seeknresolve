@@ -2,6 +2,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import com.google.common.collect.ImmutableList;
 import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
 import org.joda.time.DateTime;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Indexed
+@Audited
 public class Project {
     @Id
     @GeneratedValue

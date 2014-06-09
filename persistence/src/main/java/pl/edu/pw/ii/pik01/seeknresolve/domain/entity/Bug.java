@@ -2,6 +2,8 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import com.google.common.collect.ImmutableList;
 import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
 import org.joda.time.DateTime;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Entity
 @Indexed
+@Audited
 public class Bug {
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Id
@@ -47,6 +50,7 @@ public class Bug {
     @ManyToOne(optional = false)
     private Project project;
 
+    @NotAudited
     @OneToMany(mappedBy = "bug")
     private List<Attachment> attachments = new ArrayList<>();
 
