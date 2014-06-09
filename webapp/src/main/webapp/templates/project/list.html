@@ -1,6 +1,24 @@
 <div class="container">
 
     <div class="row col-md-12">
+        <div class="col-md-12">
+            <form class="form-horizontal" role="search">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input type="text"
+                               ng-model="selectedProject"
+                               placeholder="Search for projects..."
+                               typeahead="project as (project.name + ' ' + project.description) for project in searchProjects($viewValue)"
+                               typeahead-loading="searchingProjects"
+                               typeahead-on-select="selectProject($item, $model, $label)"
+                               class="form-control">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row col-md-12">
         <div class="page-header">
             <h3>Projects list
                 <div class="btn-group btn-group-sm pull-right">
