@@ -50,6 +50,7 @@ public class Bug {
     @ManyToOne(optional = true)
     private User assignee;
 
+    @NotAudited
     @ManyToOne(optional = false)
     private Project project;
 

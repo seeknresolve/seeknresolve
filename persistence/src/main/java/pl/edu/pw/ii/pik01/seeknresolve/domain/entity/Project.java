@@ -3,6 +3,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 import com.google.common.collect.ImmutableList;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
 import org.joda.time.DateTime;
@@ -37,6 +38,7 @@ public class Project {
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateCreated;
 
+    @NotAudited
     @OneToMany(mappedBy = "project")
     private List<Bug> bugs = new ArrayList<>();
 
