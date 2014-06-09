@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.FullTextSearchRepositoryFactoryBean;
 
 @ComponentScan
@@ -18,6 +19,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.FullTextSear
 @EnableJpaRepositories(value = "pl.edu.pw.ii.pik01.seeknresolve.domain",
         repositoryFactoryBeanClass = FullTextSearchRepositoryFactoryBean.class)
 @EnableJpaAuditing
+@EnableTransactionManagement
 public class SeekNResolve implements EmbeddedServletContainerCustomizer {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(SeekNResolve.class);

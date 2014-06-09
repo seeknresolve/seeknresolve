@@ -1,4 +1,4 @@
-var bugModule = angular.module('bugModule', ['app.services', 'app.filters', 'xeditable']);
+var bugModule = angular.module('bugModule', ['app.services', 'app.filters', 'xeditable', 'angucomplete']);
 
 bugModule.directive('userDisplay', function() {
     return {

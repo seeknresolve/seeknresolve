@@ -1,6 +1,26 @@
 <div class="container">
 
     <div class="row col-md-12">
+        <div class="col-md-12">
+            <form class="form-horizontal" role="search" ng-keypress="alert('aaa')">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <angucomplete id="bugs"
+                                      placeholder="Search for projects"
+                                      pause="400"
+                                      selectedobject="foundProjects"
+                                      url="http://localhost:8080/project/search?query="
+                                      datafield="object"
+                                      titlefield="name"
+                                      descriptionfield="description"
+                                      inputclass="form-control" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row col-md-12">
         <div class="page-header">
             <h3>Projects list
                 <div class="btn-group btn-group-sm pull-right">
