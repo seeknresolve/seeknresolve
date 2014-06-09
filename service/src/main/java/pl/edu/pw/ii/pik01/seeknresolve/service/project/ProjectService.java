@@ -50,19 +50,19 @@ public class ProjectService {
         return DtosFactory.createProjectDTO(savedProject);
     }
 
-    private Long grantRoleForUserToProject(String role, User user, Project project) {
+    private UserProjectRole grantRoleForUserToProject(String role, User user, Project project) {
         ProjectRole projectRole = getProjectRole(role);
         UserProjectRole userProjectRole = new UserProjectRole(user, project, projectRole);
-        return userProjectRoleRepository.save(userProjectRole).getId();
+        return userProjectRoleRepository.save(userProjectRole);
     }
 
     @Transactional
-    public Long grantRoleForUserToProject(String role, Long userId, Long projectId) {
+    public UserProjectRole grantRoleForUserToProject(String role, Long userId, Long projectId) {
         User user = userRepository.findOne(userId);
         Project project = projectRepository.findOne(projectId);
         ProjectRole projectRole = getProjectRole(role);
         UserProjectRole userProjectRole = new UserProjectRole(user, project, projectRole);
-        return userProjectRoleRepository.save(userProjectRole).getId();
+        return userProjectRoleRepository.save(userProjectRole);
     }
 
     private ProjectRole getProjectRole(String roleName) {

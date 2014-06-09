@@ -83,12 +83,12 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/grantRole", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<Long> grantRoleForUserToProject(@RequestBody UserProjectRoleStoreDTO userProjectRoleStoreDTO) {
+    public Response<String> grantRoleForUserToProject(@RequestBody UserProjectRoleStoreDTO userProjectRoleStoreDTO) {
         return new Response<>(projectService.grantRoleForUserToProject(
                     userProjectRoleStoreDTO.getRole(),
                     userProjectRoleStoreDTO.getUserId(),
                     userProjectRoleStoreDTO.getProjectId()
-                ),
+                ) != null ? "success" : "failure",
                 Response.Status.CREATED);
     }
 

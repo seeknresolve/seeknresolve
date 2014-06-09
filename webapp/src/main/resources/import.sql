@@ -65,10 +65,10 @@ insert into role_permissions(role_roleName, permissions_permissionName) values('
 insert into role_permissions(role_roleName, permissions_permissionName) values('EXTERNAL', 'project:add_bug');
 insert into role_permissions(role_roleName, permissions_permissionName) values('GUEST', 'project:view');
 
-insert into user_project_role(id, project_id, project_role_roleName, user_id) values(0, 0, 'PM', 0);
-insert into user_project_role(id, project_id, project_role_roleName, user_id) values(1, 1, 'PM', 0);
-insert into user_project_role(id, project_id, project_role_roleName, user_id) values(2, 0, 'PM', 1);
-insert into user_project_role(id, project_id, project_role_roleName, user_id) values(3, 0, 'PM', 2);
-insert into user_project_role(id, project_id, project_role_roleName, user_id) values(4, 0, 'GUEST', 3);
-insert into user_project_role(id, project_id, project_role_roleName, user_id) values(5, 1, 'GUEST', 3);
-insert into user_project_role(id, project_id, project_role_roleName, user_id) values(6, 2, 'GUEST', 3);
+insert into user_project_role(project_id, project_role_roleName, user_id) values(0, 'PM', 0);
+insert into user_project_role(project_id, project_role_roleName, user_id) values(1, 'PM', 0);
+insert into user_project_role(project_id, project_role_roleName, user_id) values(0, 'PM', 1);
+insert into user_project_role(project_id, project_role_roleName, user_id) values(0, 'PM', 2);
+insert into user_project_role(project_id, project_role_roleName, user_id) values(0, 'GUEST', 3);
+insert into user_project_role(project_id, project_role_roleName, user_id) values(1, 'GUEST', 3);
+insert into user_project_role(project_id, project_role_roleName, user_id) values(2, 'GUEST', 3);
