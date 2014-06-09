@@ -16,7 +16,6 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.TestWithSecurity;
-import pl.edu.pw.ii.pik01.seeknresolve.test.Return;
 
 import java.util.List;
 
@@ -50,7 +49,6 @@ public class ProjectServiceTest {
     public void shouldCreateProjectFromDTO() {
         //given:
         given(projectRepository.save(any(Project.class))).willReturn(createProjectForSave(0L, "Test1"));
-        when(testWithSecurity.userProjectRoleRepository.save(any(UserProjectRole.class))).thenAnswer(Return.firstParameter());
         ProjectDTO projectToSave = createProjectDTOToSave(0L, "Test1");
         User user = givenUser("rnw");
         //when:
@@ -87,7 +85,6 @@ public class ProjectServiceTest {
         ProjectRole projectRole = createProjectRoleForTest("PM");
         given(projectRepository.save(any(Project.class))).willReturn(projectToSave);
         given(testWithSecurity.roleRepository.findOne(any(String.class))).willReturn(projectRole);
-        when(testWithSecurity.userProjectRoleRepository.save(any(UserProjectRole.class))).thenAnswer(Return.firstParameter());
         ProjectDTO projectDTOToSave = createProjectDTOToSave(0L, "Test1");
         User user = givenUser("rnw");
         //when:
