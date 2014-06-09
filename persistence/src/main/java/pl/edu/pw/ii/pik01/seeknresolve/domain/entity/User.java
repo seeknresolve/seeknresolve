@@ -43,6 +43,7 @@ public class User {
     @OneToMany(mappedBy = "assignee")
     private List<Bug> bugsAssigned = new ArrayList<>();
 
+    @NotAudited
     @OneToMany(mappedBy = "author")
     private List<Comment> comments = new ArrayList<>();
 

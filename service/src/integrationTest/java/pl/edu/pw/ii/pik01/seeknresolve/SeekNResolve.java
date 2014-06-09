@@ -18,7 +18,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.FullTextSear
 @EnableAutoConfiguration
 @EnableJpaRepositories(value = "pl.edu.pw.ii.pik01.seeknresolve.domain",
         repositoryFactoryBeanClass = FullTextSearchRepositoryFactoryBean.class)
-@EnableJpaAuditing
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableTransactionManagement
 public class SeekNResolve implements EmbeddedServletContainerCustomizer {
     public static void main(String[] args) {

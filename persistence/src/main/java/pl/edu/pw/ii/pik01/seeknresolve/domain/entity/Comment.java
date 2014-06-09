@@ -1,13 +1,11 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
 
 @Entity
-@Audited
 public class Comment {
     @Id
     @GeneratedValue
