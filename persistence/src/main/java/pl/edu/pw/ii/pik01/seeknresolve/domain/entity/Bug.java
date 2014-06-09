@@ -2,11 +2,14 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import com.google.common.collect.ImmutableList;
 import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +17,9 @@ import java.util.List;
 
 @Entity
 @Indexed
+@Audited
+//TODO: get rid of it by creating orm.xml (persistence.xml)
+@EntityListeners({AuditingEntityListener.class})
 public class Bug {
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Id
@@ -44,12 +50,15 @@ public class Bug {
     @ManyToOne(optional = true)
     private User assignee;
 
+    @NotAudited
     @ManyToOne(optional = false)
     private Project project;
 
+    @NotAudited
     @OneToMany(mappedBy = "bug")
     private List<Attachment> attachments = new ArrayList<>();
 
+    @NotAudited
     @OneToMany(mappedBy = "bug")
     private List<Comment> comments = new ArrayList<>();
 

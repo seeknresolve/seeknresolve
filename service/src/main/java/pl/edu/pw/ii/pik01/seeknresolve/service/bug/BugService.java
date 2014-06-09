@@ -37,7 +37,7 @@ public class BugService {
         this.userProjectRoleRepository = userProjectRoleRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<BugDTO> getAllPermittedBugs(User user) {
         List<UserProjectRole> projectRoles = userProjectRoleRepository.findByUser(user);
         return projectRoles.stream().parallel()
@@ -65,7 +65,7 @@ public class BugService {
         return bug;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public BugDetailsDTO getBugWithTag(String tag) {
         Bug bug = bugRepository.findOne(tag);
         if(bug == null) {
@@ -118,7 +118,7 @@ public class BugService {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<BugDTO> search(String query) {
         List<Bug> foundBugs = bugRepository.queryOnFields(query, "tag", "name", "description");
         return foundBugs.stream()
