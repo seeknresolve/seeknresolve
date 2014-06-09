@@ -2,18 +2,16 @@
 
     <div class="row col-md-12">
         <div class="col-md-12">
-            <form class="form-horizontal" role="search" ng-keypress="alert('aaa')">
+            <form class="form-horizontal" role="search">
                 <div class="form-group">
                     <div class="col-md-12">
-                        <angucomplete id="bugs"
-                                      placeholder="Search for projects"
-                                      pause="400"
-                                      selectedobject="foundProjects"
-                                      url="http://localhost:8080/project/search?query="
-                                      datafield="object"
-                                      titlefield="name"
-                                      descriptionfield="description"
-                                      inputclass="form-control" />
+                        <input type="text"
+                               ng-model="selectedProject"
+                               placeholder="Search for projects..."
+                               typeahead="project as (project.name + ' ' + project.description) for project in searchProjects($viewValue)"
+                               typeahead-loading="searchingProjects"
+                               typeahead-on-select="selectProject($item, $model, $label)"
+                               class="form-control">
                     </div>
                 </div>
             </form>

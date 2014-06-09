@@ -5,15 +5,13 @@
             <form class="form-horizontal" role="search">
                 <div class="form-group">
                     <div class="col-md-12">
-                        <angucomplete id="bugs"
-                                      placeholder="Search for bugs"
-                                      pause="400"
-                                      selectedobject="foundBugs"
-                                      url="http://localhost:8080/bug/search?query="
-                                      datafield="object"
-                                      titlefield="tag"
-                                      descriptionfield="name"
-                                      inputclass="form-control"/>
+                        <input type="text"
+                               ng-model="selectedBug"
+                               placeholder="Search for bugs..."
+                               typeahead="bug as (bug.tag + ' ' + bug.name) for bug in searchBugs($viewValue)"
+                               typeahead-loading="searchingBugs"
+                               typeahead-on-select="selectBug($item, $model, $label)"
+                               class="form-control">
                     </div>
                 </div>
             </form>

@@ -1,4 +1,4 @@
-var bugModule = angular.module('bugModule', ['app.services', 'app.filters', 'xeditable', 'angucomplete']);
+var bugModule = angular.module('bugModule', ['app.services', 'app.filters', 'xeditable', 'ui.bootstrap']);
 
 bugModule.directive('userDisplay', function() {
     return {
@@ -51,8 +51,8 @@ bugModule.directive('bugPriority', function() {
     }
 });
 
-bugModule.controller('BugListController', ['$scope', '$http', 'notificationsService',
-    function(scope, http, notificationsService) {
+bugModule.controller('BugListController', ['$scope', '$http', 'notificationsService', '$location',
+    function(scope, http, notificationsService, location) {
         scope.bugs = [ ];
 
         http.get('/bug/all').success(function(data) {
@@ -60,6 +60,16 @@ bugModule.controller('BugListController', ['$scope', '$http', 'notificationsServ
         }).error(function(data, status, headers, config) {
             notificationsService.error('Error', 'Can\'t fetch bugs list!');
         });
+
+        scope.searchBugs = function(query) {
+            return http.get('/bug/search?query=' + query).then(function(result) {
+                return result.data.object;
+            });
+        };
+
+        scope.selectBug = function(item, model, label) {
+            location.path('/bug/details/' + model.tag);
+        };
     }
 ]);
 

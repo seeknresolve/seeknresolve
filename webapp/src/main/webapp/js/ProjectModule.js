@@ -1,7 +1,7 @@
 var projectModule = angular.module('projectModule', ['app.services']);
 
-projectModule.controller('ProjectListController', ['$scope', '$http',
-    function(scope, http) {
+projectModule.controller('ProjectListController', ['$scope', '$http', '$location',
+    function(scope, http, location) {
         scope.projects = [];
 
         http.get('/project/all').success(function(data) {
@@ -9,6 +9,16 @@ projectModule.controller('ProjectListController', ['$scope', '$http',
         }).error(function(data, status, headers, config) {
             scope.errorMessage = "Can't retrieve project list!";
         });
+
+        scope.searchProjects = function(query) {
+            return http.get('/project/search?query=' + query).then(function(result) {
+                return result.data.object;
+            });
+        };
+
+        scope.selectProject = function(item, model, label) {
+            location.path('/project/' + model.id);
+        };
     }
 ]);
 
@@ -40,7 +50,7 @@ projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstan
             dto = {
                 role: scope.selected.role.roleName,
                 userId: scope.selected.user.id
-            }
+            };
             modalInstance.close(dto);
         };
 
@@ -85,13 +95,6 @@ projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$route
                     notificationsService.error('Error', 'Creating project failed! ' + data.error);
                     location.path('/project');
                 });
-
-
-
-
-
-
-
 
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date() + scope.selectedUser + ' ' + scope.selectedRole);
