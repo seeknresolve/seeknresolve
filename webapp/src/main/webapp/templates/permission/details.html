@@ -12,7 +12,8 @@
                         <span class="glyphicon glyphicon-arrow-left"></span>
                         Back to list
                     </a>
-                    <button role="button" class="btn btn-danger" ng-click="deletePermission(permission.permissionName)"><span class="glyphicon glyphicon-pencil"></span> Delete</button>
+                    <button role="button" ng-show="shouldShowDeletePermissionButton" class="btn btn-danger"
+                            ng-click="deletePermission(permission.permissionName)"><span class="glyphicon glyphicon-pencil"></span> Delete</button>
                 </div>
 
             </h3>
@@ -29,7 +30,7 @@
                         <div class="form-group">
                             <label for="permissionNameL" class="col-sm-3 control-label">Name:</label>
                             <div class="col-sm-9">
-                                <input disabled type="text" class="form-control" id="permissionNameL" value="permission.permissionName" />
+                                <input disabled type="text" class="form-control" id="permissionNameL" value="{{permission.permissionName}}" />
                             </div>
                         </div>
                     </form>

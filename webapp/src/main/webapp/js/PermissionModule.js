@@ -36,9 +36,12 @@ permissionModule.controller('PermissionCreateController', ['$scope', '$http', '$
     }
 ]);
 
-permissionModule.controller('PermissionDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService',
-    function(scope, http, routeParams, location, notificationsService) {
+permissionModule.controller('PermissionDetailsController', ['$scope', '$http', '$routeParams', '$location', 'notificationsService', 'permissionService',
+    function(scope, http, routeParams, location, notificationsService, permissionService) {
         scope.permissionName = null;
+        scope.shouldShowDeletePermissionButton = false;
+
+        permissionService.hasPermission('permission:delete', function(has){scope.shouldShowDeletePermissionButton = (has == "true")});
 
         http.get('/permission/' + routeParams.permissionName).success(function(data) {
             scope.permission = data.object;
