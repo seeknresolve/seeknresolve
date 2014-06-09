@@ -16,6 +16,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.TestWithSecurity;
+import pl.edu.pw.ii.pik01.seeknresolve.test.Return;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class ProjectServiceTest {
     public void shouldCreateProjectFromDTO() {
         //given:
         given(projectRepository.save(any(Project.class))).willReturn(createProjectForSave(0L, "Test1"));
-        given(testWithSecurity.userProjectRoleRepository.save(any(UserProjectRole.class))).willReturn(createUserProjectRole(0L));
+        when(testWithSecurity.userProjectRoleRepository.save(any(UserProjectRole.class))).thenAnswer(Return.firstParameter());
         ProjectDTO projectToSave = createProjectDTOToSave(0L, "Test1");
         User user = givenUser("rnw");
         //when:
@@ -59,12 +60,6 @@ public class ProjectServiceTest {
         assertThat(savedProject.getId()).isEqualTo(0L);
         assertThat(savedProject.getName()).isEqualTo("Test1");
         verifyProjectWasSavedInDb(0L, "Test1");
-    }
-
-    private UserProjectRole createUserProjectRole(Long id) {
-        UserProjectRole userProjectRole = new UserProjectRole();
-        userProjectRole.setId(id);
-        return userProjectRole;
     }
 
     private Project createProjectForSave(Long id, String name) {
@@ -92,7 +87,7 @@ public class ProjectServiceTest {
         ProjectRole projectRole = createProjectRoleForTest("PM");
         given(projectRepository.save(any(Project.class))).willReturn(projectToSave);
         given(testWithSecurity.roleRepository.findOne(any(String.class))).willReturn(projectRole);
-        given(testWithSecurity.userProjectRoleRepository.save(any(UserProjectRole.class))).willReturn(createUserProjectRole(0L));
+        when(testWithSecurity.userProjectRoleRepository.save(any(UserProjectRole.class))).thenAnswer(Return.firstParameter());
         ProjectDTO projectDTOToSave = createProjectDTOToSave(0L, "Test1");
         User user = givenUser("rnw");
         //when:

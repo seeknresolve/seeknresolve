@@ -6,9 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -21,6 +19,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
+import pl.edu.pw.ii.pik01.seeknresolve.test.Return;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -99,21 +98,5 @@ public class UserControllerTest {
 
     private String userAsJson(UserDTO userDTO) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(userDTO);
-    }
-
-    private static class Return<T> implements Answer<T>{
-
-        private int paramNumber = 0;
-
-        public static <Z> Return<Z> firstParameter() {
-            Return<Z> r = new Return<>();
-            r.paramNumber = 0;
-            return r;
-        }
-
-        @Override
-        public T answer(InvocationOnMock invocation) throws Throwable {
-            return (T) invocation.getArguments()[paramNumber];
-        }
     }
 }
