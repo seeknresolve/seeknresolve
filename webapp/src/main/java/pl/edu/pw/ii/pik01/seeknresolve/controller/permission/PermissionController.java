@@ -3,6 +3,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.controller.permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.PermissionDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
@@ -37,6 +38,7 @@ public class PermissionController {
         return new Response<>(permissionService.getNotInRole(roleName), Response.Status.RECEIVED);
     }
 
+    @PreAuthorize("hasPermission(null, 'permission:create')")
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<PermissionDTO> create(@RequestBody PermissionDTO permissionDTO) {
         try {
@@ -52,6 +54,7 @@ public class PermissionController {
         return new Response<>(permissionService.get(permissionName), Response.Status.RECEIVED);
     }
 
+    @PreAuthorize("hasPermission(null, 'permission:delete')")
     @RequestMapping(value = "/{permissionName}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<String> delete(@PathVariable("permissionName") String permissionName) {
         permissionService.delete(permissionName);
