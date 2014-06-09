@@ -16,6 +16,7 @@ import java.util.List;
 @Entity
 @Indexed
 @Audited
+//TODO: get rid of it by creating orm.xml (persistence.xml)
 @EntityListeners({AuditingEntityListener.class})
 public class Project {
     @Id

@@ -69,7 +69,7 @@ public class ProjectService {
         return (ProjectRole)roleRepository.findOne(roleName);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ProjectDetailsDTO getById(Long projectId) {
         Project project = projectRepository.findOne(projectId);
         if (project == null) {
@@ -97,7 +97,7 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ProjectDTO> getAllPermittedProjects(User user) {
         List<UserProjectRole> rolesOnProjects = userProjectRoleRepository.findByUser(user);
         return rolesOnProjects.stream()
@@ -138,7 +138,7 @@ public class ProjectService {
         return project;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ProjectDTO> search(String query) {
         List<Project> foundBugs = projectRepository.queryOnFields(query, "name", "description");
         return foundBugs.stream()
