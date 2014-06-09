@@ -92,8 +92,8 @@ public class ProjectController {
                 Response.Status.CREATED);
     }
 
-    @RequestMapping(value = "/search/{query}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<ProjectDTO>> search(@PathVariable String query) {
+    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<ProjectDTO>> search(@RequestParam("query") String query) {
         return new Response<>(projectService.search(query), Response.Status.RECEIVED);
     }
 

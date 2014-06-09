@@ -81,8 +81,8 @@ public class BugController {
         return new Response<>(updatedBug, Response.Status.UPDATED);
     }
 
-    @RequestMapping(value = "/search/{query}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<List<BugDTO>> search(@PathVariable String query) {
+    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<BugDTO>> search(@RequestParam("query") String query) {
         return new Response<>(bugService.search(query), Response.Status.RECEIVED);
     }
 
