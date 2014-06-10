@@ -5,7 +5,7 @@ bugModule.directive('userDisplay', function() {
         restrict: 'E',
         scope: true,
         //TODO: this link should be optional
-        template: '<a href="#/user/{{userLogin}}">{{userName}}</a>',
+        template: '<a href="#/user/details/{{userLogin}}">{{userName}}</a>',
         link: function (scope, element, attrs) {
             scope.userLogin = attrs.userLogin;
             if(attrs.userLogin == null || attrs.userLogin == '') {
@@ -78,6 +78,23 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$rou
         scope.tag = null;
 
         scope.projectUsers = [];
+
+        scope.priorities = [
+            'LOW',
+            'NORMAL',
+            'HIGH',
+            'CRITICAL'
+        ];
+
+        scope.states = [
+            'NEW',
+            'REJECTED',
+            'IN_PROGRESS',
+            'READY_TO_TEST',
+            'REOPENED',
+            'STOPPED',
+            'CLOSED'
+        ];
 
         http.get('/bug/details/' + routeParams.tag).success(function(data) {
             scope.bug = data.object;
