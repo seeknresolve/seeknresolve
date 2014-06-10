@@ -129,8 +129,8 @@
                                 <span id="bugPriority"
                                       class="col-md-6 form-control"
                                       editable-select="bug.priority" e-name="priority"
-                                      e-ng-options="priority for priority in priorities">
-                                    {{ bug.priority }}
+                                      e-ng-options="priority as (priority | capitalizeFilter) for priority in priorities">
+                                    {{ bug.priority | capitalizeFilter }}
                                 </span>
                             </div>
                         </div>
@@ -141,8 +141,8 @@
                                 <span id="bugState"
                                       class="col-md-6 form-control"
                                       editable-select="bug.state" e-name="state"
-                                      e-ng-options="state for state in states">
-                                    {{ bug.state }}
+                                      e-ng-options="state as (state | capitalizeFilter) for state in states">
+                                    {{ bug.state | capitalizeFilter }}
                                 </span>
                             </div>
                         </div>
