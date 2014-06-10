@@ -65,7 +65,7 @@
                     </td>
                     <td>{{bug.dateCreated | date:'HH:mm:ss MM-dd-yyyy'}}</td>
                     <td>{{bug.dateModified | date:'HH:mm:ss MM-dd-yyyy'}}</td>
-                    <td>{{bug.state | capitalizeFilter}}</td>
+                    <td>{{bug.state | bugStateFilter}}</td>
                     <td><bug-priority priority="{{bug.priority}}"></bug-priority></td>
                 </tr>
             </tbody>

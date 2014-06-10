@@ -141,8 +141,8 @@
                                 <span id="bugState"
                                       class="col-md-6 form-control"
                                       editable-select="bug.state" e-name="state"
-                                      e-ng-options="state as (state | capitalizeFilter) for state in states">
-                                    {{ bug.state | capitalizeFilter }}
+                                      e-ng-options="state as (state | bugStateFilter) for state in states">
+                                    {{ bug.state | bugStateFilter }}
                                 </span>
                             </div>
                         </div>
