@@ -60,6 +60,27 @@
                 </table>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Project history:
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Modification</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="revisionDiff in projectRevisionDiffs">
+                        <td>{{revisionDiff.modificationTime})</td>
+                        <td>{{revisionDiff.description}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div class="row col-md-12">
         <div class="panel panel-default">
