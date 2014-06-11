@@ -15,6 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Connection;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,13 +27,15 @@ public class Printer {
 
     public static final String COMPILED_REPORTS_DIR = "src/main/resources/compiledReports";
 
-    private String jasperFilePath;
+    private String jasperFileName;
     private OutputType outputType;
     private OutputStream outputStream;
     private HttpServletResponse response;
     private String outputFilePath;
     private Map<String, Object> parameters;
     private Collection<?> dataSource;
+    private Connection connection;
+    private String generatedFileName;
 
     private Printer(){
     }
@@ -42,13 +45,21 @@ public class Printer {
     }
 
     public void print() throws JRException, IOException {
-        ObjectMapper objectMapper =  new ObjectMapper();
-        objectMapper.registerModule(new JodaModule());
-        String json = objectMapper.writeValueAsString(dataSource.toArray());
+        JasperPrint jasperPrint;
+        if(dataSource != null) {
+            ObjectMapper objectMapper =  new ObjectMapper();
+            objectMapper.registerModule(new JodaModule());
+            String json = objectMapper.writeValueAsString(dataSource.toArray());
 
-        JsonDataSource jsonDataSource = new JsonDataSource(new ByteArrayInputStream(json.getBytes()));
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFilePath, parameters, jsonDataSource);
+            JsonDataSource jsonDataSource = new JsonDataSource(new ByteArrayInputStream(json.getBytes()));
+            jasperPrint = JasperFillManager.fillReport(COMPILED_REPORTS_DIR + File.separator + jasperFileName + ".jasper", parameters, jsonDataSource);
+        }else {
+            jasperPrint = JasperFillManager.fillReport(COMPILED_REPORTS_DIR + File.separator + jasperFileName + ".jasper", parameters, connection);
+        }
+
         byte[] pdfBytes = JasperExportManager.exportReportToPdf(jasperPrint);
+
+        String outputName = generatedFileName != null ? generatedFileName : jasperFileName;
 
         switch(outputType){
             case FILE:
@@ -59,7 +70,7 @@ public class Printer {
                 break;
             case HTTP_RESPONSE:
                 response.setContentType("application/pdf");
-                response.addHeader("Content-Disposition", "attachment; filename=" + "bugsReport.pdf");
+                response.addHeader("Content-Disposition", "attachment; filename=" + outputName + ".pdf");
                 response.setContentLength(pdfBytes.length);
 
                 response.getOutputStream().write(pdfBytes);
@@ -76,16 +87,18 @@ public class Printer {
 
     public static class PrinterBuilder {
 
-        private String jasperFilePath;
+        private String jasperFileName;
         private OutputType outputType = OutputType.HTTP_RESPONSE;
         private OutputStream outputStream;
         private HttpServletResponse response;
         private String outputFilePath;
         private Map<String, Object> parameters = new HashMap<>();
         private Collection<?> dataSource;
+        private Connection connection;
+        private String generatedFileName;
 
-        public PrinterBuilder setJasperFile(String jasperFilePath){
-            this.jasperFilePath = jasperFilePath;
+        public PrinterBuilder setJasperFileName(String jasperFileName){
+            this.jasperFileName = jasperFileName;
             return this;
         }
 
@@ -127,24 +140,38 @@ public class Printer {
             return this;
         }
 
+        public PrinterBuilder setConnection(Connection connection) {
+            checkNotNull(connection);
+            this.connection = connection;
+            return this;
+        }
+
+        public PrinterBuilder setGeneratedFileName(String generatedFileName) {
+            checkArgument(!Strings.isNullOrEmpty(generatedFileName));
+            this.generatedFileName = generatedFileName;
+            return this;
+        }
+
         public Printer build(){
             Printer printer = new Printer();
 
-            checkArgument(!Strings.isNullOrEmpty(jasperFilePath), "You have to provide report file");
+            checkArgument(!Strings.isNullOrEmpty(jasperFileName), "You have to provide report file");
 
             checkArgument(outputType != OutputType.FILE || outputFilePath != null, "You have to provide output file.");
             checkArgument(outputType != OutputType.STREAM || outputStream != null, "You have to provide output stream");
             checkArgument(outputType != OutputType.HTTP_RESPONSE || response != null, "You have to provide response");
 
-            checkArgument(dataSource != null, "You have to provide data source");
+            checkArgument(dataSource != null ^ connection != null, "You have to provide data source or connection (not both or none)");
 
-            printer.jasperFilePath = this.jasperFilePath;
+            printer.jasperFileName = this.jasperFileName;
             printer.outputType = this.outputType;
             printer.outputStream = this.outputStream;
             printer.response = this.response;
             printer.outputFilePath = this.outputFilePath;
             printer.parameters = this.parameters;
             printer.dataSource = this.dataSource;
+            printer.connection = this.connection;
+            printer.generatedFileName = this.generatedFileName;
 
             return printer;
         }

@@ -1,19 +1,27 @@
 package pl.edu.pw.ii.pik01.seeknresolve.controller.project;
 
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserProjectRoleStoreDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.reports.Printer;
 import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.project.ProjectService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
 import javax.persistence.PersistenceException;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -21,11 +29,13 @@ import java.util.List;
 public class ProjectController {
     private ProjectService projectService;
     private UserService userService;
+    private DataSource dataSource;
 
     @Autowired
-    public ProjectController(ProjectService projectService, UserService userService) {
+    public ProjectController(ProjectService projectService, UserService userService, DataSource dataSource) {
         this.projectService = projectService;
         this.userService = userService;
+        this.dataSource = dataSource;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,6 +105,19 @@ public class ProjectController {
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<List<ProjectDTO>> search(@RequestParam("query") String query) {
         return new Response<>(projectService.search(query), Response.Status.RECEIVED);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/printUsers", method=RequestMethod.GET)
+    public void printAll(HttpServletResponse response) throws IOException, JRException {
+        Printer.getBuilder()
+                .setConnection(DataSourceUtils.getConnection(dataSource))
+                .setJasperFileName("userProjects")
+                .addParameter("loggedUser", userService.getLoggedUser().getLogin())
+                .addParameter("userId", userService.getLoggedUser().getId())
+                .setOutputResponse(response)
+                .build()
+                .print();
     }
 
 }

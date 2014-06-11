@@ -62,7 +62,7 @@ public class BugController {
 
         Printer.getBuilder()
                 .setDataSource(bugs)
-                .setJasperFile(Printer.COMPILED_REPORTS_DIR + File.separatorChar + "Bugs.jasper")
+                .setJasperFileName("Bugs")
                 .addParameter("loggedUser", userService.getLoggedUser().getLogin())
                 .setOutputResponse(response)
                     .build()

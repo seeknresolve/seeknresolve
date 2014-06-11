@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="userProjects" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="25728b4f-e12e-447a-a04a-cd29c7ed6383">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PIK_database"/>
+	<parameter name="userId" class="java.lang.Long"/>
+	<parameter name="loggedUser" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select 
+	p.*,
+	upr.project_role_rolename
+from
+	project p
+	join user_project_role upr on p.id = upr.project_id
+where
+	upr.user_id = $P{userId}
+order by
+	p.name]]>
+	</queryString>
+	<field name="id" class="java.lang.Long"/>
+	<field name="date_created" class="java.sql.Timestamp"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="project_role_rolename" class="java.lang.String"/>
+	<title>
+		<band height="40" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="40" uuid="19e63626-4355-4b28-9239-6129ef212056">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[User projects]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="160" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="21" backcolor="#C8C8C8" uuid="ad0addec-c91b-4c4c-a35c-feee966a626a">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="20" width="555" height="20" uuid="8a73b2b4-ca54-4715-979d-f7f383d5367c">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled"/>
+				<textFieldExpression><![CDATA["<style isBold='true'>Role:</style> " + $F{project_role_rolename}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="40" width="554" height="20" uuid="7ed38566-0a3c-4279-b26b-d52bf1e02990"/>
+				<textElement markup="styled"/>
+				<textFieldExpression><![CDATA["<style isBold='true'>Description:</style> " + $F{description}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="60" width="555" height="100" uuid="304c0290-3875-4d29-ae12-bb0ba7d88486">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="projectId">
+					<subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["bugsInProject.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="80" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="80" uuid="eff79626-8d0a-4fa6-aac2-5b4fd94df219">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="loggedUser">
+					<subreportParameterExpression><![CDATA[$P{loggedUser}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["footer.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+</jasperReport>
