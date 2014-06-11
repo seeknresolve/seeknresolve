@@ -126,6 +126,8 @@ public class BugControllerTest {
 
     private String getBugDTOForSave(String tag) throws JsonProcessingException {
         BugDTO bugDTO = new BugDTO();
+        bugDTO.setName("Name");
+        bugDTO.setDescription("Description");
         bugDTO.setTag(tag);
         return objectMapper.writeValueAsString(bugDTO);
     }

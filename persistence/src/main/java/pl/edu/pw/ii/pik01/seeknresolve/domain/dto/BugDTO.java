@@ -1,11 +1,17 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BugDTO {
+    @NotEmpty
     private String tag;
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String description;
     private DateTime dateCreated;
     private DateTime dateModified;

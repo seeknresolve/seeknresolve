@@ -19,14 +19,15 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/bug")
 public class BugController {
-    private Logger logger = LoggerFactory.getLogger(BugController.class);
+    private Logger log = LoggerFactory.getLogger(BugController.class);
 
     private BugService bugService;
     private UserService userService;
@@ -38,7 +39,8 @@ public class BugController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<BugDTO> create(@RequestBody BugDTO bugDTO) {
+    public Response<BugDTO> create(@RequestBody @Valid BugDTO bugDTO) {
+        log.info("Bug creation started with dto: " + bugDTO);
         BugDTO createdBug = bugService.createAndSaveNewBug(bugDTO);
         return new Response<>(createdBug, Response.Status.CREATED);
     }
@@ -76,8 +78,9 @@ public class BugController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<BugDTO> update(@RequestBody BugDetailsDTO bugDTO) {
-        BugDTO updatedBug = bugService.updateBug(bugDTO.getBug());
+    public Response<BugDTO> update(@RequestBody @Valid BugDTO bugDTO) {
+        log.info("Bug update started with dto: " + bugDTO);
+        BugDTO updatedBug = bugService.updateBug(bugDTO);
         return new Response<>(updatedBug, Response.Status.UPDATED);
     }
 
@@ -104,9 +107,16 @@ public class BugController {
         return new ErrorResponse(exception.getMessage());
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleValidationException(ConstraintViolationException exception) {
+        log.error("Error {}", exception);
+        return "OK";
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handle(HttpMessageNotReadableException e) {
-        logger.error("BAD_REQUEST", e);
+        log.error("BAD_REQUEST", e);
     }
 }

@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private Logger log = LoggerFactory.getLogger(UserController.class);
 
 
     private final UserService userService;
@@ -83,6 +83,6 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handle(HttpMessageNotReadableException e) {
-        logger.error("BAD_REQUEST", e);
+        log.error("BAD_REQUEST", e);
     }
 }

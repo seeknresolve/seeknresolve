@@ -60,7 +60,7 @@ public class CommentServiceIntegrationTest {
     }
 
     private Project createAndSaveProject(String name) {
-        Project project = new ProjectBuilder().withName(name).build();
+        Project project = new ProjectBuilder().withName(name).withDescription("Description").build();
         return projectRepository.save(project);
     }
 
@@ -93,7 +93,7 @@ public class CommentServiceIntegrationTest {
     }
 
     private Bug createAndSaveBug(String tag, User user, Project project) {
-        Bug bug = new BugBuilder().withTag(tag).withAssignee(user).withReporter(user).withProject(project).build();
+        Bug bug = new BugBuilder().withTag(tag).withName("Name").withDescription("Description").withAssignee(user).withReporter(user).withProject(project).build();
         return bugRepository.save(bug);
     }
 
