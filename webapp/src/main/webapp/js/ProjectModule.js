@@ -1,4 +1,4 @@
-var projectModule = angular.module('projectModule', ['app.services']);
+var projectModule = angular.module('projectModule', ['app.services', 'highcharts-ng']);
 
 projectModule.controller('ProjectListController', ['$scope', '$http', '$location',
     function(scope, http, location) {
@@ -80,6 +80,49 @@ projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$route
         }).error(function(data, status, headers, config) {
             scope.errorMessage = "Error getting project history";
         });
+
+        scope.stats = {
+            date: [1,2,3,4,5,6,7,8,9,10],
+            closedBugs: [0, 0, 1, 4, 10, 3, 12, 2, 0, 0],
+            openedBugs: [10, 15, 12, 8, 7, 1, 1, 19, 15, 10]
+        };
+
+
+        scope.chartConfig = {
+            options: {
+                chart: {
+                    type: 'areaspline',
+                    zoomType: 'x'
+                }
+            },
+            title: {
+                text: 'bugs history'
+            },
+            loading: false,
+            xAxis: {
+                title: {
+                    text: 'Date'
+                },
+                categories: scope.stats.date,
+                tickmarkPlacement: 'on',
+                endOnTick: 'true',
+                startOnTick: 'true'
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of bugs'
+                }
+            },
+            series: [{
+                name: 'Opened bugs',
+                data: scope.stats.openedBugs,
+                color: '#FF6A48'
+            }, {
+                name: 'Closed bugs',
+                data: scope.stats.closedBugs,
+                color: '#A7FF4C'
+            }]
+        }
 
         scope.openAssignPopup = function () {
             var modalInstance = modal.open({
