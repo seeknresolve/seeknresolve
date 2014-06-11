@@ -66,7 +66,7 @@ public abstract class EnversMapper<T, N extends Number & Comparable<N>> {
     }
 
     private FieldMapper findFieldMapper(Field field) {
-        return null;
+        return fieldMappers.get(field.getType());
     }
 
     private boolean isAudited(Class<?> clazz) {

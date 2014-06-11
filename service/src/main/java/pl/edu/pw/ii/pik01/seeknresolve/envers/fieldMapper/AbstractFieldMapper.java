@@ -4,7 +4,7 @@ public abstract class AbstractFieldMapper<T> implements FieldMapper<T> {
 
     @Override
     public final String getDescription(Object before, Object after, String fieldName) {
-        return getDescription((T) before, (T) after, fieldName);
+        return doGetDescription((T) before, (T) after, fieldName);
     }
 
     protected abstract String doGetDescription(T before, T after, String fieldName);
