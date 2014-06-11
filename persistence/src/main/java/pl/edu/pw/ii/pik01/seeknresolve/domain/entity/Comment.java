@@ -1,6 +1,7 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ public class Comment {
     @Column(nullable = false)
     private Long id;
 
+    @NotEmpty
     @Column(nullable = false)
     private String content;
 

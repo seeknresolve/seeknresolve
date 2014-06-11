@@ -3,6 +3,8 @@ package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 import com.google.common.collect.ImmutableList;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,18 +18,23 @@ public class User {
     @Column(nullable = false)
     private Long id;
 
+    @NotEmpty
     @Column(nullable = false)
     private String login;
 
+    @NotEmpty
     @Column(nullable = false)
     private String password;
 
+    @NotEmpty
     @Column(nullable = false)
     private String firstName;
 
+    @NotEmpty
     @Column(nullable = false)
     private String lastName;
 
+    @Email
     @Column(nullable = false)
     private String email;
 
