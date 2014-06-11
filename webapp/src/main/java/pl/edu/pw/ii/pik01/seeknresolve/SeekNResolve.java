@@ -23,7 +23,6 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.FullTextSear
 public class SeekNResolve implements EmbeddedServletContainerCustomizer {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(SeekNResolve.class);
-        app.setShowBanner(false);
         app.run(args);
     }
 
