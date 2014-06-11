@@ -10,6 +10,7 @@ buildscript {
 
 allprojects {
     apply plugin: 'java'
+    apply plugin: 'maven'
 
     version = '1.0-SNAPSHOT'
     group = 'pl.edu.pw.ii.pik01'
@@ -23,6 +24,9 @@ allprojects {
         }
         maven {
             url "http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/"
+        }
+        maven {
+            url nexusHost + "/content/repositories/snapshots"
         }
     }
 
@@ -42,6 +46,17 @@ allprojects {
         testCompile 'org.mockito:mockito-all:1.9.5'
         testCompile 'org.assertj:assertj-core:1.6.0'
     }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: nexusHost + "/content/repositories/snapshots") {
+                    authentication(userName: nexusUser, password: nexusPassword)
+                }
+            }
+        }
+    }
+
 }
 
 project(':persistence') {
