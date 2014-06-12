@@ -157,6 +157,23 @@ public class User {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (getId() != null ? !id.equals(user.getId()) : user.getId() != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "id=" + id +

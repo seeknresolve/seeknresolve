@@ -1,6 +1,6 @@
 package pl.edu.pw.ii.pik01.seeknresolve.envers.fieldMapper;
 
-public abstract class AbstractFieldMapper<T> implements FieldMapper<T> {
+public abstract class AbstractFieldMapper<T> implements FieldMapper {
 
     @Override
     public final String getDescription(Object before, Object after, String fieldName) {

@@ -1,5 +1,6 @@
 package pl.edu.pw.ii.pik01.seeknresolve.envers;
 
+import com.google.common.base.Strings;
 import org.hibernate.envers.Audited;
 import org.springframework.data.history.Revision;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.RevisionDiffDTO;
@@ -9,20 +10,20 @@ import java.beans.IntrospectionException;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public abstract class EnversMapper<T, N extends Number & Comparable<N>> {
+public abstract class EnversMapper<T> {
 
     private Map<Class<?>, FieldMapper> fieldMappers = new HashMap<>();
 
-    public List<RevisionDiffDTO> diff(List<Revision<N, T>> revisions) throws IntrospectionException, IllegalAccessException {
+    public List<RevisionDiffDTO> diff(List<Revision<Integer, T>> revisions) throws IntrospectionException, IllegalAccessException {
         List<RevisionDiffDTO> toReturn = new ArrayList<>();
         if(revisions.size() < 2) {
             return toReturn;
         }
 
-        Iterator<Revision<N, T>> iterator = revisions.iterator();
-        Revision<N, T> after = iterator.next();
+        Iterator<Revision<Integer, T>> iterator = revisions.iterator();
+        Revision<Integer, T> after = iterator.next();
         while(iterator.hasNext()) {
-            Revision<N, T> before = after;
+            Revision<Integer, T> before = after;
             after = iterator.next();
 
             String description = buildDescription(before.getEntity(), after.getEntity());
@@ -41,9 +42,8 @@ public abstract class EnversMapper<T, N extends Number & Comparable<N>> {
 
         Class<?> clazz = earlier.getClass();
         do {
-            if (isAudited(clazz)) {
-                getDeclaredFieldsDescription(earlier, later, description, clazz);
-            }
+            getDeclaredFieldsDescription(earlier, later, description, clazz);
+            clazz = clazz.getSuperclass();
         } while (clazz != Object.class);
 
         return description.toString();
@@ -51,18 +51,26 @@ public abstract class EnversMapper<T, N extends Number & Comparable<N>> {
 
     private void getDeclaredFieldsDescription(T before, T after, StringBuilder description, Class<?> clazz) throws IllegalAccessException {
         for (Field field : clazz.getDeclaredFields()) {
-            if (isAudited(field)) {
-                getDescriptionForField(before, after, description, field);
+            //TODO: handle NON_AUTDITED annotation
+            if (isAudited(field) || isAudited(clazz)) {
+                String fieldDesc = getDescriptionForField(before, after,field);
+                if(!Strings.isNullOrEmpty(fieldDesc)) {
+                    description.append(fieldDesc).append("\n");
+                }
             }
         }
     }
 
-    private void getDescriptionForField(T before, T after, StringBuilder description, Field field) throws IllegalAccessException {
+    private String getDescriptionForField(T before, T after, Field field) throws IllegalAccessException {
         FieldMapper fieldMapper = findFieldMapper(field);
         if (fieldMapper != null) {
             field.setAccessible(true);
-            description.append(fieldMapper.getDescription(field.get(before), field.get(after), field.getName()));
+            if((field.get(before) != null && !field.get(before).equals(field.get(after)))
+                || (field.get(after) != null && !field.get(after).equals(field.get(before)))) {
+                return fieldMapper.getDescription(field.get(before), field.get(after), field.getName());
+            }
         }
+        return "";
     }
 
     private FieldMapper findFieldMapper(Field field) {

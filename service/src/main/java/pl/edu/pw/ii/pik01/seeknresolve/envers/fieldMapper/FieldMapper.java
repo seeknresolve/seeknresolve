@@ -1,7 +1,7 @@
 package pl.edu.pw.ii.pik01.seeknresolve.envers.fieldMapper;
 
-public interface FieldMapper<T> {
+public interface FieldMapper {
 
-    String getDescription(T beforeValue, T afterValue, String fieldName);
+    String getDescription(Object beforeValue, Object afterValue, String fieldName);
 
 }

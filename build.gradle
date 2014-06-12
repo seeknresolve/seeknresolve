@@ -39,7 +39,6 @@ allprojects {
         compile 'org.springframework.boot:spring-boot-starter-aop:1.0.2.RELEASE'
         compile 'org.springframework.boot:spring-boot-starter-security:1.0.2.RELEASE'
         compile 'net.sf.jasperreports:jasperreports:5.5.2'
-        compile 'org.springframework.data:spring-data-envers:0.1.0.RELEASE'
 
         compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.3.3'
 

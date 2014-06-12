@@ -12,12 +12,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.FullTextSearchRepositoryFactoryBean;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.CustomRepositoryFactoryBean;
 
 @ComponentScan
 @EnableAutoConfiguration
 @EnableJpaRepositories(value = "pl.edu.pw.ii.pik01.seeknresolve.domain",
-    repositoryFactoryBeanClass = FullTextSearchRepositoryFactoryBean.class)
+    repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableTransactionManagement
 public class SeekNResolve implements EmbeddedServletContainerCustomizer {

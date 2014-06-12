@@ -63,7 +63,7 @@ projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstan
 projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$routeParams', '$modal',
     function(scope, http, routeParams, modal) {
         scope.id = null;
-        scope.projectRevisionDiffs = null;
+        scope.projectRevisionDiffs = [];
 
         http.get('/project/' + routeParams.id).success(function(data) {
             scope.project = data.object;
