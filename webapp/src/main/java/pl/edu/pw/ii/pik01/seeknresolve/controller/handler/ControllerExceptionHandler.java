@@ -27,6 +27,7 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ErrorResponse handleNotFound(Exception exception) {
+        log.error("NOT_FOUND: {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 
@@ -34,6 +35,7 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorResponse handlePersistenceErrors(Exception exception) {
+        log.error("BAD_REQUEST: {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 
@@ -41,6 +43,7 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
     public ErrorResponse handleSecurityException(Exception exception) {
+        log.error("FORBIDDEN: {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 
@@ -48,6 +51,7 @@ public class ControllerExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ValidationErrors handleException(MethodArgumentNotValidException exception) {
+        log.error("BAD_REQUEST: {}", exception.getMessage());
         return validationErrorsFactory.buildValidationErrors(exception.getBindingResult());
     }
 
@@ -55,7 +59,7 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorResponse handle(HttpMessageNotReadableException exception) {
-        log.error("BAD_REQUEST", exception);
+        log.error("BAD_REQUEST", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 }
