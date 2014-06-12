@@ -6,12 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.PermissionDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionChecker;
 import pl.edu.pw.ii.pik01.seeknresolve.service.permission.PermissionService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import java.util.List;
 

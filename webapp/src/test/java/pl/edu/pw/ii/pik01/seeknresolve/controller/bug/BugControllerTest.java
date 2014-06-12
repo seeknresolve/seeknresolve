@@ -3,7 +3,6 @@ package pl.edu.pw.ii.pik01.seeknresolve.controller.bug;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -77,15 +76,6 @@ public class BugControllerTest {
         return handlerExceptionResolver;
     }
 
-    @Ignore
-    @Test
-    public void shouldReturn404ForNotExistingBugWithErrorMessageInResponse() throws Exception {
-        mockMvc.perform(get("/bug/details/TotallyNotExistingBug")).
-                andExpect(status().isNotFound()).
-                andExpect(contentIsJson()).
-                andExpect(jsonPath("$.error").exists());
-    }
-
     private ResultMatcher contentIsJson() {
         return content().contentType(MediaType.APPLICATION_JSON);
     }
@@ -104,15 +94,6 @@ public class BugControllerTest {
     private void givenReturningTagData(String tag) {
         Bug bug = new BugBuilder().withTag(tag).build();
         when(bugRepository.findOne(tag)).thenReturn(bug);
-    }
-
-    @Ignore
-    @Test
-    public void shouldReturn404AndErrorWhenTryingToDeleteNotExistingBug() throws Exception {
-        mockMvc.perform(delete("/bug/NotExistingBug")).
-                andExpect(status().isNotFound()).
-                andExpect(contentIsJson()).
-                andExpect(jsonPath("$.error").exists());
     }
 
     @Test
@@ -153,32 +134,5 @@ public class BugControllerTest {
         bugDTO.setDescription("Description");
         bugDTO.setTag(tag);
         return objectMapper.writeValueAsString(bugDTO);
-    }
-
-    @Ignore
-    @Test
-    public void shouldReturn400IfSaveWasUnsuccessful() throws Exception {
-        givenBugWasNotCreated();
-
-        mockMvc.perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(getBugDTOForSave("T"))).
-                andExpect(status().isBadRequest()).
-                andExpect(contentIsJson()).
-                andExpect(jsonPath("$.error").exists());
-    }
-
-    private void givenBugWasNotCreated() {
-        when(bugRepository.save(any(Bug.class))).thenReturn(null);
-    }
-
-    @Ignore
-    @Test
-    public void shouldReturn400AndFieldErrorsIfBugIsInvalid() throws Exception {
-        String bugAsJson = getBugDTOForSave("");
-        givenBugWasCreated(bugAsJson);
-
-        mockMvc.perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(bugAsJson)).
-                andExpect(status().isBadRequest()).
-                andExpect(contentIsJson()).
-                andExpect(jsonPath("$.fieldErrors").exists());
     }
 }

@@ -10,11 +10,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CreateUserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import java.util.List;
 

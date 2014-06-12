@@ -6,11 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.validation.errors.ValidationErrors;
 import pl.edu.pw.ii.pik01.seeknresolve.validation.errors.ValidationErrorsFactory;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 
 @ControllerAdvice(annotations = RestController.class)

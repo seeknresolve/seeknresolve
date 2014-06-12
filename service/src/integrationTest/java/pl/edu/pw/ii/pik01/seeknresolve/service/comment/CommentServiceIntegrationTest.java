@@ -10,7 +10,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import pl.edu.pw.ii.pik01.seeknresolve.SeekNResolve;
+import pl.edu.pw.ii.pik01.seeknresolve.TestAppContext;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.BugBuilder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.ProjectBuilder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.UserBuilder;
@@ -26,7 +26,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.security.ContextUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = SeekNResolve.class)
+@SpringApplicationConfiguration(classes = TestAppContext.class)
 public class CommentServiceIntegrationTest {
     @Autowired
     private UserRepository userRepository;
