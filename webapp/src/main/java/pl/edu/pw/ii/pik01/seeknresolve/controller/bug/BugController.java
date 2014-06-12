@@ -4,22 +4,16 @@ import net.sf.jasperreports.engine.JRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.reports.Printer;
 import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
-import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
-import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
-import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -87,36 +81,5 @@ public class BugController {
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<List<BugDTO>> search(@RequestParam("query") String query) {
         return new Response<>(bugService.search(query), Response.Status.RECEIVED);
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleNotFound(Exception exception) {
-        return new ErrorResponse(exception.getMessage());
-    }
-
-    @ExceptionHandler(PersistenceException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handlePersistenceErrors(Exception exception) {
-        return new ErrorResponse(exception.getMessage());
-    }
-
-    @ExceptionHandler(SecurityException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponse handleSecurityException(Exception exception) {
-        return new ErrorResponse(exception.getMessage());
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleValidationException(ConstraintViolationException exception) {
-        log.error("Error {}", exception);
-        return "OK";
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handle(HttpMessageNotReadableException e) {
-        log.error("BAD_REQUEST", e);
     }
 }

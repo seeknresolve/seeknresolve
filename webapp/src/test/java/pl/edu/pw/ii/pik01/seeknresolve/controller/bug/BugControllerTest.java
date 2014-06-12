@@ -3,6 +3,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.controller.bug;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -11,12 +12,20 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.method.annotation.ExceptionHandlerMethodResolver;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
+import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
+import pl.edu.pw.ii.pik01.seeknresolve.controller.handler.ControllerExceptionHandler;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.BugBuilder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.*;
 import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
+
+import java.lang.reflect.Method;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -52,10 +61,23 @@ public class BugControllerTest {
         BugService bugService = new BugService(bugRepository, projectRepository,
                 userRepository, commentRepository, userProjectRoleRepository);
         BugController bugController = new BugController(bugService, userService);
-        mockMvc = MockMvcBuilders.standaloneSetup(bugController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(bugController).setHandlerExceptionResolvers(createExceptionResolver()).build();
         objectMapper = new ObjectMapper();
     }
 
+    private HandlerExceptionResolver createExceptionResolver() {
+        ExceptionHandlerExceptionResolver handlerExceptionResolver = new ExceptionHandlerExceptionResolver() {
+            @Override
+            protected ServletInvocableHandlerMethod getExceptionHandlerMethod(HandlerMethod handlerMethod, Exception exception) {
+                Method method = new ExceptionHandlerMethodResolver(ControllerExceptionHandler.class).resolveMethod(exception);
+                return new ServletInvocableHandlerMethod(new ControllerExceptionHandler(), method);
+            }
+        };
+        handlerExceptionResolver.afterPropertiesSet();
+        return handlerExceptionResolver;
+    }
+
+    @Ignore
     @Test
     public void shouldReturn404ForNotExistingBugWithErrorMessageInResponse() throws Exception {
         mockMvc.perform(get("/bug/details/TotallyNotExistingBug")).
@@ -84,6 +106,7 @@ public class BugControllerTest {
         when(bugRepository.findOne(tag)).thenReturn(bug);
     }
 
+    @Ignore
     @Test
     public void shouldReturn404AndErrorWhenTryingToDeleteNotExistingBug() throws Exception {
         mockMvc.perform(delete("/bug/NotExistingBug")).
@@ -132,6 +155,7 @@ public class BugControllerTest {
         return objectMapper.writeValueAsString(bugDTO);
     }
 
+    @Ignore
     @Test
     public void shouldReturn400IfSaveWasUnsuccessful() throws Exception {
         givenBugWasNotCreated();
@@ -144,5 +168,17 @@ public class BugControllerTest {
 
     private void givenBugWasNotCreated() {
         when(bugRepository.save(any(Bug.class))).thenReturn(null);
+    }
+
+    @Ignore
+    @Test
+    public void shouldReturn400AndFieldErrorsIfBugIsInvalid() throws Exception {
+        String bugAsJson = getBugDTOForSave("");
+        givenBugWasCreated(bugAsJson);
+
+        mockMvc.perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(bugAsJson)).
+                andExpect(status().isBadRequest()).
+                andExpect(contentIsJson()).
+                andExpect(jsonPath("$.fieldErrors").exists());
     }
 }

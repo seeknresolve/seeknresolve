@@ -103,7 +103,26 @@ project(':webapp') {
         transitive = true
     }
 
+    sourceSets {
+        integrationTest {
+            java.srcDir file('src/integrationTest/java')
+            resources.srcDir file('src/integrationTest/resources')
+        }
+    }
+
+    task integrationTest(type: Test) {
+        testClassesDir = sourceSets.integrationTest.output.classesDir
+        classpath = sourceSets.integrationTest.runtimeClasspath
+    }
+
+    check.dependsOn integrationTest
+
     dependencies {
+        integrationTestCompile sourceSets.main.output
+        integrationTestCompile configurations.testCompile
+        integrationTestCompile sourceSets.test.output
+        integrationTestRuntime configurations.testRuntime
+
         compile project(':persistence')
         compile project(':service')
 
