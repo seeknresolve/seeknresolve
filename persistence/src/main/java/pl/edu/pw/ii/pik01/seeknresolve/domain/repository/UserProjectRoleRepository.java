@@ -11,7 +11,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import java.util.List;
 
 @Repository
-public interface UserProjectRoleRepository extends CrudRepository<UserProjectRole, UserProjectRole.UserProjectId> {
+public interface UserProjectRoleRepository extends CrudRepository<UserProjectRole, Long> {
     UserProjectRole findByUserAndProject(User user, Project project);
     List<UserProjectRole> findByUser(User user);
     @Query("select upr from UserProjectRole upr where upr.project.id = :projectId")

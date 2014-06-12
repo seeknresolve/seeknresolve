@@ -1,25 +1,19 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class UserProjectRole {
+    @Id
+    @GeneratedValue
+    private long id;
 
-    @Embeddable
-    public static class UserProjectId implements Serializable {
-        private long userId;
-        private long projectId;
-    }
-
-    @EmbeddedId
-    private UserProjectId id;
-
-    @MapsId("userId")
     @ManyToOne(optional = false)
     private User user;
 
-    @MapsId("projectId")
     @ManyToOne(optional = false)
     private Project project;
 
@@ -35,11 +29,11 @@ public class UserProjectRole {
         this.projectRole = projectRole;
     }
 
-    public UserProjectId getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(UserProjectId id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -74,6 +68,7 @@ public class UserProjectRole {
 
         UserProjectRole that = (UserProjectRole) o;
 
+        if (id != that.id) return false;
         if (!project.equals(that.project)) return false;
         if (!projectRole.equals(that.projectRole)) return false;
         if (!user.equals(that.user)) return false;
@@ -83,7 +78,8 @@ public class UserProjectRole {
 
     @Override
     public int hashCode() {
-        int result = 31 * user.hashCode();
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + user.hashCode();
         result = 31 * result + project.hashCode();
         result = 31 * result + projectRole.hashCode();
         return result;

@@ -51,7 +51,7 @@ public class CommentServiceIntegrationTest {
         //given:
         User user = createAndSaveUser("rnwTestOnly");
         userLogged(user);
-        Project project = createAndSaveProject("projectTest");
+        Project project = createAndSaveProject("projectTest" + System.currentTimeMillis());
         Bug bug = createAndSaveBug("TTT-1", user, project);
         CommentDTO comment = givenCommentDTO(user, bug);
         //when:

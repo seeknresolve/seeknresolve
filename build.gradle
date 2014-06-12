@@ -73,8 +73,12 @@ project(':persistence') {
 project(':service') {
     sourceSets {
         integrationTest {
-            java.srcDir file('src/integrationTest/java')
-            resources.srcDir file('src/integrationTest/resources')
+            java {
+                srcDir file('src/integrationTest/java')
+            }
+            resources {
+                srcDir file('src/integrationTest/resources')
+            }
         }
     }
 
@@ -105,8 +109,12 @@ project(':webapp') {
 
     sourceSets {
         integrationTest {
-            java.srcDir file('src/integrationTest/java')
-            resources.srcDir file('src/integrationTest/resources')
+            java {
+                srcDir file('src/integrationTest/java')
+            }
+            resources {
+                srcDir file('src/integrationTest/resources')
+            }
         }
     }
 
@@ -119,8 +127,8 @@ project(':webapp') {
 
     dependencies {
         integrationTestCompile sourceSets.main.output
-        integrationTestCompile configurations.testCompile
         integrationTestCompile sourceSets.test.output
+        integrationTestCompile configurations.testCompile
         integrationTestRuntime configurations.testRuntime
 
         compile project(':persistence')

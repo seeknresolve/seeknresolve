@@ -38,4 +38,8 @@ public abstract class Role {
     public void setPermissions(Set<Permission> permissions) {
         this.permissions = permissions;
     }
+
+    public void addPermission(Permission permission) {
+        permissions.add(permission);
+    }
 }
