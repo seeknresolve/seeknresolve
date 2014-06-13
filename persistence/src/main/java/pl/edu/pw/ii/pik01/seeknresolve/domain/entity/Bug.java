@@ -36,7 +36,6 @@ public class Bug {
     @Column(nullable = false)
     private String name;
 
-    @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(nullable = false)
     private String description;

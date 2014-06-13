@@ -33,8 +33,9 @@
                     <div class="form-group">
                         <label for="bugName" class="col-md-2 control-label">Name:</label>
                         <div class="col-md-8">
-                            <input ng-model="$parent.bug.name" type="text" required class="form-control" id="bugName" placeholder="Name"/>
+                            <input ng-model="$parent.bug.name" type="text" required class="form-control" id="bugName" name="bugName" placeholder="Name"/>
                         </div>
+                        <span ng-show="form.bugName.$error.required">Tell us your email.</span>
                     </div>
 
                     <div class="form-group">
@@ -65,8 +66,8 @@
                     <div class="form-group">
                         <label for="bugDescription" class="col-md-2 control-label">Description:</label>
                         <div class="col-md-8">
-                            <textarea ng-model="$parent.bug.description" type="text" required class="form-control"
-                                      id="bugDescription" placeholder="Description" style="resize: none" rows="15">
+                            <textarea ng-model="$parent.bug.description" type="text" required class="form-control text-area-no-resize"
+                                      id="bugDescription" placeholder="Description" rows="15">
                             </textarea>
                         </div>
                     </div>

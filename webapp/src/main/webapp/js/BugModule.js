@@ -5,15 +5,13 @@ bugModule.directive('userDisplay', function() {
         restrict: 'E',
         scope: true,
         //TODO: this link should be optional
-        template: '<a href="#/user/details/{{userLogin}}">{{userName}}</a>',
+        templateUrl: 'js/UserDisplayTemplate.html',
         link: function (scope, element, attrs) {
             scope.userLogin = attrs.userLogin;
             if(attrs.userLogin == null || attrs.userLogin == '') {
                 scope.userName = 'None';
             } else {
                 scope.userName = attrs.userName;
-                scope.linkOpen = '<a href="#/user/{{attrs.userLogin}}">';
-                scope.linkClose = '</a>';
             }
         }
     };
@@ -139,7 +137,7 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$rou
                 notificationsService.success('Success', 'Comment created successfully');
                 route.reload();
             }).error(function (data, status, headers, config) {
-                notificationsService.error('Error', 'Creating comment failed! ' + data.error);
+                notificationsService.error('Error', 'Comment create failed! ' + data.error);
                 location.path('/bug');
             });
         };
@@ -208,7 +206,7 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
                 notificationsService.success('Success', 'Bug ' + data.object.tag + ' reported successfully');
                 location.path('/bug');
             }).error(function (data, status, headers, config) {
-                notificationsService.error('Error', 'Creating bug failed! ' + data.error);
+                notificationsService.error('Error', 'Bug save failed!');
                 location.path('/bug');
             });
         }
