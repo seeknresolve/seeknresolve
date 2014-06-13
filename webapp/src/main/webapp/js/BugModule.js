@@ -189,7 +189,7 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
         });
 
         scope.createBug = function() {
-            var bug = { };
+            var bug = scope.bug != null ? scope.bug : { };
             bug.priority = scope.priority;
             bug.projectId = scope.project.id;
             bug.reporterId = scope.loggedUser.id;
@@ -210,7 +210,6 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
                     alert(fieldError.field)
                 });
                 notificationsService.error('Error', 'Bug save failed!');
-                location.path('/bug');
             });
         }
     }

@@ -14,34 +14,33 @@
         <div class="panel panel-default">
             <div class="panel-heading">Enter details of new bug:</div>
             <div class="panel-body">
-                <form class="form-horizontal" role="form">
+                <form novalidate class="form-horizontal" role="form" name="bugForm">
                     <div class="form-group">
                         <label for="bugProject" class="col-md-2 control-label">Project:</label>
                         <div class="col-md-4">
-                            <select class="form-control" id="bugProject" ng-model="project" ng-options="project.name for project in projects">
-                            </select>
+                            <select class="form-control" id="bugProject" ng-model="project" ng-options="project.name for project in projects"></select>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="bugTag" class="col-md-2 control-label">Tag:</label>
                         <div class="col-md-8">
-                            <input ng-model="$parent.bug.tag" type="text" required class="form-control" id="bugTag" placeholder="Tag"/>
+                            <input ng-model="$parent.bug.tag" type="text" class="form-control" id="bugTag" placeholder="Tag"/>
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" ng-class="{ 'has-error' : bugForm.bugName.$invalid }">
                         <label for="bugName" class="col-md-2 control-label">Name:</label>
                         <div class="col-md-8">
                             <input ng-model="$parent.bug.name" type="text" required class="form-control" id="bugName" name="bugName" placeholder="Name"/>
+                            <span class="help-block" ng-show="bugForm.bugName.$error.required">Please enter bug name</span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="bugPriority" class="col-md-2 control-label">Priority:</label>
                         <div class="col-md-8">
-                            <select class="form-control" id="bugPriority" ng-model="priority" ng-options="priority for priority in priorities">
-                            </select>
+                            <select class="form-control" id="bugPriority" ng-model="priority" ng-options="priority for priority in priorities"></select>
                         </div>
                     </div>
 
@@ -65,14 +64,14 @@
                     <div class="form-group">
                         <label for="bugDescription" class="col-md-2 control-label">Description:</label>
                         <div class="col-md-8">
-                            <textarea ng-model="$parent.bug.description" type="text" required class="form-control text-area-no-resize"
+                            <textarea ng-model="$parent.bug.description" type="text" class="form-control text-area-no-resize"
                                       id="bugDescription" placeholder="Description" rows="15">
                             </textarea>
                         </div>
                     </div>
 
                     <div class="pull-right">
-                        <a role="button" class="btn btn-success" ng-click="createBug()">
+                        <a role="button" class="btn btn-success" ng-click="createBug()" ng-disabled="bugForm.$invalid">
                             <span class="glyphicon glyphicon-plus"></span>
                             Report
                         </a>
