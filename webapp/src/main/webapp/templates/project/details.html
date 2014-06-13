@@ -60,7 +60,7 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12" ng-show="projectRevisionDiffs.length">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Project history:
@@ -75,7 +75,7 @@
                     <tbody>
                     <tr ng-repeat="revisionDiff in projectRevisionDiffs">
                         <td>{{revisionDiff.modificationTime})</td>
-                        <td>{{revisionDiff.description}}</td>
+                        <td><pre>{{revisionDiff.description}}</pre></td>
                     </tr>
                     </tbody>
                 </table>
