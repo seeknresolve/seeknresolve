@@ -6,12 +6,16 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,15 +25,18 @@ import java.util.List;
 //TODO: get rid of it by creating orm.xml (persistence.xml)
 @EntityListeners({AuditingEntityListener.class})
 public class Bug {
+    @Size(min = 3)
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Id
     @Column
     private String tag;
 
+    @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(nullable = false)
     private String name;
 
+    @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(nullable = false)
     private String description;

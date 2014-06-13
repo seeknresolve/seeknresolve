@@ -2,7 +2,6 @@ package pl.edu.pw.ii.pik01.seeknresolve.controller.project;
 
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,15 +11,14 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserProjectRoleStoreDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.reports.Printer;
-import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.project.ProjectService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 

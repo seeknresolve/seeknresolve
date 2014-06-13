@@ -66,14 +66,19 @@ project(':persistence') {
         compile 'org.hibernate:hibernate-search-orm:5.0.0.Alpha4'
         compile 'org.hibernate:hibernate-search-analyzers:5.0.0.Alpha1'
         compile 'org.hibernate:hibernate-envers:4.3.4.Final'
+        compile 'org.hibernate:hibernate-validator:5.1.1.Final'
     }
 }
 
 project(':service') {
     sourceSets {
         integrationTest {
-            java.srcDir file('src/integrationTest/java')
-            resources.srcDir file('src/integrationTest/resources')
+            java {
+                srcDir file('src/integrationTest/java')
+            }
+            resources {
+                srcDir file('src/integrationTest/resources')
+            }
         }
     }
 
@@ -102,7 +107,30 @@ project(':webapp') {
         transitive = true
     }
 
+    sourceSets {
+        integrationTest {
+            java {
+                srcDir file('src/integrationTest/java')
+            }
+            resources {
+                srcDir file('src/integrationTest/resources')
+            }
+        }
+    }
+
+    task integrationTest(type: Test) {
+        testClassesDir = sourceSets.integrationTest.output.classesDir
+        classpath = sourceSets.integrationTest.runtimeClasspath
+    }
+
+    check.dependsOn integrationTest
+
     dependencies {
+        integrationTestCompile sourceSets.main.output
+        integrationTestCompile sourceSets.test.output
+        integrationTestCompile configurations.testCompile
+        integrationTestRuntime configurations.testRuntime
+
         compile project(':persistence')
         compile project(':service')
 

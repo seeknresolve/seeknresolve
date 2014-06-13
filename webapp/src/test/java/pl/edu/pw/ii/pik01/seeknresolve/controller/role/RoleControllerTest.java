@@ -12,8 +12,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ChangeRolePermissionDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserRole;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
-import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.role.RoleService;
+
+import javax.persistence.EntityNotFoundException;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;

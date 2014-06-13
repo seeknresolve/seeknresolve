@@ -10,7 +10,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import pl.edu.pw.ii.pik01.seeknresolve.SeekNResolve;
+import pl.edu.pw.ii.pik01.seeknresolve.TestAppContext;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.BugBuilder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.ProjectBuilder;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.UserBuilder;
@@ -26,7 +26,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.security.ContextUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = SeekNResolve.class)
+@SpringApplicationConfiguration(classes = TestAppContext.class)
 public class CommentServiceIntegrationTest {
     @Autowired
     private UserRepository userRepository;
@@ -51,7 +51,7 @@ public class CommentServiceIntegrationTest {
         //given:
         User user = createAndSaveUser("rnwTestOnly");
         userLogged(user);
-        Project project = createAndSaveProject("projectTest");
+        Project project = createAndSaveProject("projectTest" + System.currentTimeMillis());
         Bug bug = createAndSaveBug("TTT-1", user, project);
         CommentDTO comment = givenCommentDTO(user, bug);
         //when:
@@ -60,7 +60,7 @@ public class CommentServiceIntegrationTest {
     }
 
     private Project createAndSaveProject(String name) {
-        Project project = new ProjectBuilder().withName(name).build();
+        Project project = new ProjectBuilder().withName(name).withDescription("Description").build();
         return projectRepository.save(project);
     }
 
@@ -93,7 +93,7 @@ public class CommentServiceIntegrationTest {
     }
 
     private Bug createAndSaveBug(String tag, User user, Project project) {
-        Bug bug = new BugBuilder().withTag(tag).withAssignee(user).withReporter(user).withProject(project).build();
+        Bug bug = new BugBuilder().withTag(tag).withName("Name").withDescription("Description").withAssignee(user).withReporter(user).withProject(project).build();
         return bugRepository.save(bug);
     }
 

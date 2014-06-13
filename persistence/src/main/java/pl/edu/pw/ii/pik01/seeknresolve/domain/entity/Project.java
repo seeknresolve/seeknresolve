@@ -6,6 +6,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,10 +26,12 @@ public class Project {
     @Column(nullable = false)
     private Long id;
 
+    @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(nullable = false)
     private String name;
 
+    @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(nullable = true)
     private String description;
