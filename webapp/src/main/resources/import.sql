@@ -8,9 +8,9 @@ insert into user(id, login, password, first_name, last_name, email, user_role, e
 insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(4, 'sts', '$2a$10$Tb4pqBJIYSAdzKwDtJg1u.Nk06WU7rpbm12wkuwPy6MnMYgMYfq6q', 'Stefan', 'Testowy', 'stefan@seeknresolve.pl', 'USER', 1, 0, 0);
 insert into user(id, login, password, first_name, last_name, email, user_role, enabled, expired, locked) values(5, 'admin', '$2a$10$r1Kc2e35BquGDCeefipKa.RWTiLyNa9tKnrLSlEk1JqlFkxNQtzhy', 'ADMIN', 'ADMIN', 'admin@admin.admin', 'ADMIN', 1, 0, 0);
 
-insert into project(id, name, description, date_created) values(0, 'SeekNResolve', 'Szajs robiony dla zaliczenia przedmiotu', CURRENT_TIMESTAMP());
-insert into project(id, name, description, date_created) values(1, 'WebTeX', 'Jedyny webowy edytor LaTeX w internetach', CURRENT_TIMESTAMP());
-insert into project(id, name, description, date_created) values(2, 'Test', 'Testowy opis testowego projetu', CURRENT_TIMESTAMP());
+insert into project(id, name, description, date_created, date_modified) values(0, 'SeekNResolve', 'Szajs robiony dla zaliczenia przedmiotu', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
+insert into project(id, name, description, date_created, date_modified) values(1, 'WebTeX', 'Jedyny webowy edytor LaTeX w internetach', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
+insert into project(id, name, description, date_created, date_modified) values(2, 'Test', 'Testowy opis testowego projetu', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
 insert into bug(tag, name, description, date_created, date_modified, reporter_id, assignee_id, project_id, state, priority) values('SNR-1', 'Bug 1', 'Opis buga', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0, 1, 0, 'NEW', 'LOW');
 insert into bug(tag, name, description, date_created, date_modified, reporter_id, assignee_id, project_id, state, priority) values('SNR-2', 'Bug 2', 'Opis buga', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 4, 0, 0, 'NEW', 'NORMAL');
