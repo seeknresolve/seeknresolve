@@ -5,9 +5,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 
+import javax.validation.constraints.Size;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BugDTO {
-    @NotEmpty
+    @Size(min = 3)
     private String tag;
     @NotEmpty
     private String name;
