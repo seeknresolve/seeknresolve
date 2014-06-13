@@ -152,7 +152,7 @@
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-12" ng-show="bugRevisionDiffs.length">
         <div class="panel panel-default">
             <div class="panel-heading">
                 Bug history:
@@ -167,7 +167,7 @@
                 <tbody>
                 <tr ng-repeat="bugDiff in bugRevisionDiffs">
                     <td>{{bugDiff.modificationTime | date:'HH:mm:ss MM-dd-yyyy'}}</td>
-                    <td>{{bugDiff.description}}</td>
+                    <td><pre>{{bugDiff.description}}</pre></td>
                 </tr>
                 </tbody>
             </table>

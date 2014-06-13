@@ -16,7 +16,7 @@ public class UserMapper extends AbstractFieldMapper<User> {
                 .append(user.getLastName())
                 .append(" (")
                 .append(user.getLogin())
-                .append(" )")
+                .append(")")
                 .toString();
     }
 }

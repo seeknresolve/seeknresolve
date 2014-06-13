@@ -19,6 +19,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.search.CustomRepository;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,9 @@ public class CustomRepositoryImpl<T, ID extends Serializable> extends SimpleJpaR
     @Transactional
     public Revisions<Integer, T> getAllRevisions(ID id) {
         AuditReader auditReaderFactory = AuditReaderFactory.get(entityManager);
+        if(findOne(id) == null) {
+            throw new EntityNotFoundException();
+        }
         List<Number> revisionsNumbers = auditReaderFactory.getRevisions(getDomainClass(), id);
         Map<Number, T> revisionsMap = revisionsNumbers.stream()
                 .collect(Collectors.toMap(Number::intValue, n -> auditReaderFactory.find(getDomainClass(), id, n)));

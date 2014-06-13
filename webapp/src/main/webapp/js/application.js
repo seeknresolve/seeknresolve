@@ -1,5 +1,6 @@
 var seekNResolve = angular.module('seekNResolve', [
     'ngRoute',
+    'ngSanitize',
     'bugModule',
     'projectModule',
     'userModule',

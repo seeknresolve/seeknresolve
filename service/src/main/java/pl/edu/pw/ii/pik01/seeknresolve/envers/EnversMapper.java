@@ -2,6 +2,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.envers;
 
 import com.google.common.base.Strings;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.history.Revision;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.RevisionDiffDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.envers.fieldMapper.FieldMapper;
@@ -37,12 +38,12 @@ public abstract class EnversMapper<T> {
         fieldMappers.put(clazz, fieldMapper);
     }
 
-    private String buildDescription(T earlier, T later) throws IntrospectionException, IllegalAccessException {
+    private String buildDescription(T before, T after) throws IntrospectionException, IllegalAccessException {
         StringBuilder description = new StringBuilder();
 
-        Class<?> clazz = earlier.getClass();
+        Class<?> clazz = before.getClass();
         do {
-            getDeclaredFieldsDescription(earlier, later, description, clazz);
+            getDeclaredFieldsDescription(before, after, description, clazz);
             clazz = clazz.getSuperclass();
         } while (clazz != Object.class);
 
@@ -51,8 +52,7 @@ public abstract class EnversMapper<T> {
 
     private void getDeclaredFieldsDescription(T before, T after, StringBuilder description, Class<?> clazz) throws IllegalAccessException {
         for (Field field : clazz.getDeclaredFields()) {
-            //TODO: handle NON_AUTDITED annotation
-            if (isAudited(field) || isAudited(clazz)) {
+            if ((isAudited(field) || isAudited(clazz) && !isNotAudited(field))) {
                 String fieldDesc = getDescriptionForField(before, after,field);
                 if(!Strings.isNullOrEmpty(fieldDesc)) {
                     description.append(fieldDesc).append("\n");
@@ -83,6 +83,10 @@ public abstract class EnversMapper<T> {
 
     private boolean isAudited(Field field) {
         return field.getAnnotation(Audited.class) != null;
+    }
+
+    private boolean isNotAudited(Field field) {
+        return field.getAnnotation(NotAudited.class) != null;
     }
 
 }
