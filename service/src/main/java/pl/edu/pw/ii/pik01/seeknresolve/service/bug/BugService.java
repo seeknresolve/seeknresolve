@@ -40,7 +40,7 @@ public class BugService {
     @Transactional(readOnly = true)
     public List<BugDTO> getAllPermittedBugs(User user) {
         List<UserProjectRole> projectRoles = userProjectRoleRepository.findByUser(user);
-        return projectRoles.stream().parallel()
+        return projectRoles.stream()
                 .map(projectRole -> projectRole.getProject().getBugs())
                 .flatMap(bugList -> bugList.stream())
                 .map(bug -> DtosFactory.createBugDTO(bug))

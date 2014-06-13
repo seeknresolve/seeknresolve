@@ -84,7 +84,6 @@ public class ProjectService {
     private List<UserProjectRoleDTO> getProjectUserDTOs(Project project) {
         return userProjectRoleRepository.findByProjectId(project.getId())
                 .stream()
-                .parallel()
                 .map(DtosFactory::createProjectUserDTO)
                 .collect(Collectors.toList());
     }
@@ -92,7 +91,6 @@ public class ProjectService {
     private List<BugDTO> getBugDTOs(Project project) {
         return bugRepository.findByProject(project)
                 .stream()
-                .parallel()
                 .map(DtosFactory::createBugDTO)
                 .collect(Collectors.toList());
     }
