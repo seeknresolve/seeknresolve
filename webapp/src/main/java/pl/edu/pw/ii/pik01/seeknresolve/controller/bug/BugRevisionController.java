@@ -6,10 +6,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.RevisionDiffDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugRevisionService;
-import pl.edu.pw.ii.pik01.seeknresolve.service.exception.EntityNotFoundException;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
