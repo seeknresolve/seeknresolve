@@ -9,6 +9,7 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -40,6 +41,11 @@ public class Project {
     @Column(nullable = false)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateCreated;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime dateModified;
 
     @NotAudited
     @OneToMany(mappedBy = "project")
@@ -84,6 +90,14 @@ public class Project {
         this.dateCreated = dateCreated;
     }
 
+    public DateTime getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(DateTime dateModified) {
+        this.dateModified = dateModified;
+    }
+
     public List<Bug> getBugs() {
         return ImmutableList.copyOf(bugs);
     }
@@ -101,6 +115,7 @@ public class Project {
 
         if (bugs != null ? !bugs.equals(project.bugs) : project.bugs != null) return false;
         if (dateCreated != null ? !dateCreated.equals(project.dateCreated) : project.dateCreated != null) return false;
+        if (dateModified != null ? !dateModified.equals(project.dateModified) : project.dateModified != null) return false;
         if (description != null ? !description.equals(project.description) : project.description != null) return false;
         if (id != null ? !id.equals(project.id) : project.id != null) return false;
         if (name != null ? !name.equals(project.name) : project.name != null) return false;
@@ -114,6 +129,7 @@ public class Project {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (dateCreated != null ? dateCreated.hashCode() : 0);
+        result = 31 * result + (dateModified != null ? dateModified.hashCode() : 0);
         result = 31 * result + (bugs != null ? bugs.hashCode() : 0);
         return result;
     }

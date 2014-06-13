@@ -63,6 +63,7 @@ projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstan
 projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$routeParams', '$modal',
     function(scope, http, routeParams, modal) {
         scope.id = null;
+        scope.projectRevisionDiffs = [];
 
         http.get('/project/' + routeParams.id).success(function(data) {
             scope.project = data.object;
@@ -72,6 +73,12 @@ projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$route
             } else {
                 scope.errorMessage = "Can't retrieve project details!";
             }
+        });
+
+        http.get('/projectRevision/all/' + routeParams.id).success(function(data) {
+            scope.projectRevisionDiffs = data.object;
+        }).error(function(data, status, headers, config) {
+            scope.errorMessage = "Error getting project history";
         });
 
         scope.openAssignPopup = function () {

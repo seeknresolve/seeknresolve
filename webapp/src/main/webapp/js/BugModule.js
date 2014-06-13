@@ -76,7 +76,7 @@ bugModule.controller('BugListController', ['$scope', '$http', 'notificationsServ
 bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$routeParams', '$location', 'notificationsService', 'projectService',
     function(scope, http, route, routeParams, location, notificationsService, projectService) {
         scope.tag = null;
-
+        scope.bugRevisionDiffs = [];
         scope.projectUsers = [];
 
         scope.priorities = [
@@ -109,6 +109,13 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$rou
             }
             location.path('/bug');
         });
+
+        http.get('/bugRevision/all/' + routeParams.tag).success(function(data) {
+            scope.bugRevisionDiffs = data.object;
+        }).error(function(data, status, headers, config) {
+            scope.errorMessage = "Error getting project history";
+        });
+
 
         scope.deleteBug = function(tag) {
             http.delete('/bug/' + tag).success(function (data, status, headers, config) {
