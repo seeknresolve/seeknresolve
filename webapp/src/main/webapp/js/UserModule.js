@@ -46,6 +46,16 @@ userModule.controller('UserCreateController', ['$scope', '$http', '$location', '
     }
 ]);
 
+function getUserHistory(scope, http, routeParams, notificationsService) {
+    if(scope.shouldShowUserHistory) {
+        http.get('/userRevision/all/' + routeParams.login).success(function (data) {
+            scope.userRevisionDiffs = data.object;
+        }).error(function (data, status, headers, config) {
+            notificationsService.error("Error getting project history");
+        });
+    }
+}
+
 userModule.controller('UserDetailsController', ['$scope', '$http', '$route', '$routeParams', '$location', 'notificationsService', 'permissionService',
     function(scope, http, route, routeParams, location, notificationsService, permissionService) {
         scope.login = null;
@@ -54,9 +64,17 @@ userModule.controller('UserDetailsController', ['$scope', '$http', '$route', '$r
         scope.shouldShowChangePasswordButton = false;
         scope.isChangingPassword = false;
         scope.changingPassword = {};
+        scope.shouldShowUserHistory = false;
+        scope.userRevisionDiffs = [];
 
         permissionService.hasPermission('user:update', function(has){scope.shouldShowEditButton = (has == "true")});
         permissionService.hasPermission('user:change_password', function(has){scope.shouldShowChangePasswordButton = (has == "true")});
+        permissionService.hasPermission('user:view_history', function(has){
+            scope.shouldShowUserHistory = (has == "true");
+            if(scope.shouldShowUserHistory) {
+                getUserHistory(scope, http, routeParams);
+            }
+        });
 
         http.get('/user/details/' + routeParams.login).success(function(data) {
             scope.user = data.object;

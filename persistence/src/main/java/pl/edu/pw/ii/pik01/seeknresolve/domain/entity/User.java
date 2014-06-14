@@ -1,10 +1,16 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
 import com.google.common.collect.ImmutableList;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.DateTime;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +18,7 @@ import java.util.List;
 
 @Entity
 @Audited
+@EntityListeners({AuditingEntityListener.class})
 public class User {
     @Id
     @GeneratedValue
@@ -22,6 +29,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String login;
 
+    @NotAudited
     @NotEmpty
     @Column(nullable = false)
     private String password;
@@ -38,15 +46,30 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    @NotAudited
     private boolean enabled = true;
 
+    @NotAudited
     private boolean expired;
 
+    @NotAudited
     private boolean locked;
 
+    @CreatedDate
+    @Column(nullable = false)
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime dateCreated;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime dateModified;
+
+    @NotAudited
     @OneToMany(mappedBy = "reporter")
     private List<Bug> bugsReported = new ArrayList<>();
 
+    @NotAudited
     @OneToMany(mappedBy = "assignee")
     private List<Bug> bugsAssigned = new ArrayList<>();
 
@@ -54,7 +77,7 @@ public class User {
     @OneToMany(mappedBy = "author")
     private List<Comment> comments = new ArrayList<>();
 
-    @NotAudited
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @ManyToOne(targetEntity = UserRole.class, optional = false)
     @JoinColumn(name = "user_role")
     private UserRole userRole;
@@ -127,6 +150,22 @@ public class User {
         return locked;
     }
 
+    public DateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(DateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public DateTime getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(DateTime dateModified) {
+        this.dateModified = dateModified;
+    }
+
     public void setLocked(boolean locked) {
         this.locked = locked;
     }
@@ -170,14 +209,14 @@ public class User {
 
         User user = (User) o;
 
-        if (getId() != null ? !id.equals(user.getId()) : user.getId() != null) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
