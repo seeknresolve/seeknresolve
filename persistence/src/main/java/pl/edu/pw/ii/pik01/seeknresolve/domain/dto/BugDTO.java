@@ -25,7 +25,6 @@ public class BugDTO {
     @NotNull
     private Long projectId;
     private String projectName;
-    @NotNull
     private Bug.State state;
     @NotNull
     private Bug.Priority priority;

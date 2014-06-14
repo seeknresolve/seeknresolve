@@ -122,12 +122,16 @@ public class BugService {
 
     private void updateBugDataFromDTO(Bug bug, BugDTO bugDTO) {
         bug.setName(bugDTO.getName());
-        bug.setDescription(bugDTO.getDescription());
+        bug.setDescription(setCorrectDescription(bugDTO));
         bug.setState(bugDTO.getState() != null ? bugDTO.getState() : Bug.State.NEW);
         bug.setPriority(bugDTO.getPriority());
         if(bugDTO.getAssigneeId() != null) {
             bug.setAssignee(userRepository.findOne(bugDTO.getAssigneeId()));
         }
+    }
+
+    private String setCorrectDescription(BugDTO bugDTO) {
+        return bugDTO.getDescription() == null ? "" : bugDTO.getDescription();
     }
 
     @Transactional(readOnly = true)

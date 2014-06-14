@@ -207,7 +207,6 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
                 location.path('/bug');
             }).error(function (data, status, headers, config) {
                 data.fieldErrors.forEach(function (fieldError) {
-                    alert(fieldError.field)
                 });
                 notificationsService.error('Error', 'Bug save failed!');
             });
