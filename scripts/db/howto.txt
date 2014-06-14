@@ -1,0 +1,36 @@
+Development and test databases creation:
+========================================
+
+Prerequisites:
+==============
+
+PostgreSQL in version 9.1 or greater is needed and installed in system.
+On Ubuntu it can be installed by typing a command:
+    sudo apt-get install postgresql-9.1
+
+Then change in pg_hba.conf is needed.
+This file is located in various places based on operating system.
+On Ubuntu it can be found in:
+    /etc/postgresql/${version}/main
+
+Make sure, that you have there entry:
+local   all             all                                     md5
+
+It allows local connection to DB authenticated by password.
+
+
+Database creation:
+==================
+
+You need to log as postgres user in your terminal.
+For example using command:
+    sudo su postgres
+
+Then you can log to DB using command:
+    psql
+
+In postgres console you can eiter paste necessary sql statements from create_*_db.sql files or
+run them directly using psql instruction:
+    \i fileName
+
+You need to be in directory where file is visible and have enough permissions to be read by other users.
