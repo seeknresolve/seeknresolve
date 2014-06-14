@@ -22,7 +22,7 @@ import java.util.List;
 @EntityListeners({AuditingEntityListener.class})
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     private Long id;
 

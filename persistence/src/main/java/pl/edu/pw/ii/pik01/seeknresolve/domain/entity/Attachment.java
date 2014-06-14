@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Attachment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     private Long id;
 
