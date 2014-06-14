@@ -6,11 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CommentDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Comment;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.*;
+import pl.edu.pw.ii.pik01.seeknresolve.service.bug.generator.BugTagGenerator;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 
 import javax.persistence.EntityNotFoundException;
@@ -25,22 +23,24 @@ public class BugService {
     private UserRepository userRepository;
     private CommentRepository commentRepository;
     private UserProjectRoleRepository userProjectRoleRepository;
+    private BugTagGenerator bugTagGenerator;
 
     @Autowired
     public BugService(BugRepository bugRepository, ProjectRepository projectRepository,
                       UserRepository userRepository, CommentRepository commentRepository,
-                      UserProjectRoleRepository userProjectRoleRepository) {
+                      UserProjectRoleRepository userProjectRoleRepository, BugTagGenerator bugTagGenerator) {
         this.bugRepository = bugRepository;
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.userProjectRoleRepository = userProjectRoleRepository;
+        this.bugTagGenerator = bugTagGenerator;
     }
 
     @Transactional(readOnly = true)
     public List<BugDTO> getAllPermittedBugs(User user) {
         List<UserProjectRole> projectRoles = userProjectRoleRepository.findByUser(user);
-        return projectRoles.stream().parallel()
+        return projectRoles.stream()
                 .map(projectRole -> projectRole.getProject().getBugs())
                 .flatMap(bugList -> bugList.stream())
                 .map(bug -> DtosFactory.createBugDTO(bug))
@@ -58,11 +58,23 @@ public class BugService {
 
     private Bug createBugFromDTO(BugDTO bugDTO) {
         Bug bug = new Bug();
-        bug.setTag(bugDTO.getTag());
-        bug.setProject(projectRepository.findOne(bugDTO.getProjectId()));
+        Project project = projectRepository.findOne(bugDTO.getProjectId());
+        bug.setTag(generateNextTagForBug(project));
+        bug.setProject(project);
         bug.setReporter(userRepository.findOne(bugDTO.getReporterId()));
-        updateBugFromDTO(bug, bugDTO);
+        updateBugDataFromDTO(bug, bugDTO);
         return bug;
+    }
+
+    private String generateNextTagForBug(Project project) {
+        String nextTag = bugTagGenerator.generateTag(project);
+        incrementBugNumberAndSaveProject(project);
+        return nextTag;
+    }
+
+    private void incrementBugNumberAndSaveProject(Project project) {
+        project.incrementLastBugNumber();
+        projectRepository.save(project);
     }
 
     @Transactional(readOnly = true)
@@ -100,7 +112,7 @@ public class BugService {
     @Transactional
     public BugDTO updateBug(BugDTO bugDTO) {
         Bug bug = bugRepository.findOne(bugDTO.getTag());
-        updateBugFromDTO(bug, bugDTO);
+        updateBugDataFromDTO(bug, bugDTO);
         Bug updatedBug = bugRepository.save(bug);
         if(updatedBug == null) {
             throw new PersistenceException("Cannot update bug " + bugDTO.getTag());
@@ -108,14 +120,18 @@ public class BugService {
         return DtosFactory.createBugDTO(updatedBug);
     }
 
-    private void updateBugFromDTO(Bug bug, BugDTO bugDTO) {
+    private void updateBugDataFromDTO(Bug bug, BugDTO bugDTO) {
         bug.setName(bugDTO.getName());
-        bug.setDescription(bugDTO.getDescription());
+        bug.setDescription(setCorrectDescription(bugDTO));
         bug.setState(bugDTO.getState() != null ? bugDTO.getState() : Bug.State.NEW);
         bug.setPriority(bugDTO.getPriority());
         if(bugDTO.getAssigneeId() != null) {
             bug.setAssignee(userRepository.findOne(bugDTO.getAssigneeId()));
         }
+    }
+
+    private String setCorrectDescription(BugDTO bugDTO) {
+        return bugDTO.getDescription() == null ? "" : bugDTO.getDescription();
     }
 
     @Transactional(readOnly = true)

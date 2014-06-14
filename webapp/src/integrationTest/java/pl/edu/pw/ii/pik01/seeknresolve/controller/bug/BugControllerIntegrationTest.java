@@ -3,6 +3,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.controller.bug;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,14 +23,16 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.*;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.PermissionsConstants;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.RolesConstants;
 import pl.edu.pw.ii.pik01.seeknresolve.service.security.ContextUser;
 import pl.edu.pw.ii.pik01.seeknresolve.test.TestEntityFactory;
 
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -45,6 +48,9 @@ public class BugControllerIntegrationTest {
 
     @Autowired
     private TestEntityFactory testEntityFactory;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     private MockMvc mockMvc;
 
@@ -75,42 +81,33 @@ public class BugControllerIntegrationTest {
 
     @Test
     public void shouldReturn400AndFieldErrorsIfBugIsInvalid() throws Exception {
-        String bugAsJson = getBugDTOForSave("", "name");
+        User user = userCreatedAndLogged("rnwTestOnly1");
+        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis(), "TEST1");
+        String bugAsJson = createBugDTOForSave("", user, project);
 
         mockMvc.perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(bugAsJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(contentIsJson())
                 .andExpect(jsonPath("$.fieldErrors").exists())
-                .andExpect(jsonPath("$.fieldErrors", hasSize(1)))
-                .andExpect(jsonPath("$.fieldErrors[0].field", equalTo("tag")))
+                .andExpect(jsonPath("$.fieldErrors[0].field", equalTo("name")))
                 .andExpect(jsonPath("$.fieldErrors[0].rejectedValue", equalTo("")));
-    }
-
-    private String getBugDTOForSave(String tag, String name) throws JsonProcessingException {
-        BugDTO bugDTO = new BugDTO();
-        bugDTO.setName(name);
-        bugDTO.setDescription("Description");
-        bugDTO.setTag(tag);
-        return objectMapper.writeValueAsString(bugDTO);
     }
 
     @Test
     public void shouldReturn400AndFieldErrorsIfBugIsInvalidAndHasManyFieldErrors() throws Exception {
-        String bugAsJson = getBugDTOForSave("", "");
+        String bugAsJson = createBugDTOForSave("", null, null);
 
         mockMvc.perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(bugAsJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(contentIsJson())
                 .andExpect(jsonPath("$.fieldErrors").exists())
-                .andExpect(jsonPath("$.fieldErrors", hasSize(2)))
-                .andExpect(jsonPath("$.fieldErrors[*].field", containsInAnyOrder("tag", "name")))
-                .andExpect(jsonPath("$.fieldErrors[*].rejectedValue", containsInAnyOrder("", "")));
+                .andExpect(jsonPath("$.fieldErrors[*].field", containsInAnyOrder("reporterId", "projectId", "name")));
     }
 
     @Test
     public void shouldUpdateBugWithCorrectUpdateData() throws Exception {
-        User user = userCreatedAndLogged("rnwTestOnly");
-        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis());
+        User user = userCreatedAndLogged("rnwTestOnly2");
+        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis(), "TEST2");
         Bug bug = testEntityFactory.createAndSaveBug("TTT-1", user, project);
         testEntityFactory.grantUserProjectRoleWithPermissions(user, project, RolesConstants.DEVELOPER_ROLE_NAME,
                 PermissionsConstants.PROJECT_EVERYTHING);
@@ -151,9 +148,9 @@ public class BugControllerIntegrationTest {
 
     @Test
     public void shouldReturnFieldErrorsWhenBugIsUpdatedWithIncorrectData() throws Exception {
-        User user = userCreatedAndLogged("rnwTestOnly");
-        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis());
-        Bug bug = testEntityFactory.createAndSaveBug("TTT-1", user, project);
+        User user = userCreatedAndLogged("rnwTestOnly3");
+        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis(), "TEST3");
+        Bug bug = testEntityFactory.createAndSaveBug("TEST1-1", user, project);
         testEntityFactory.grantUserProjectRoleWithPermissions(user, project, RolesConstants.DEVELOPER_ROLE_NAME,
                 PermissionsConstants.PROJECT_EVERYTHING);
 
@@ -164,8 +161,44 @@ public class BugControllerIntegrationTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(contentIsJson())
                 .andExpect(jsonPath("$.fieldErrors").exists())
-                .andExpect(jsonPath("$.fieldErrors", hasSize(1)))
                 .andExpect(jsonPath("$.fieldErrors[0].field", equalTo("name")))
                 .andExpect(jsonPath("$.fieldErrors[0].rejectedValue", equalTo("")));
+    }
+
+    @Test
+    public void shouldSaveNewBugAndIncrementLastBugNumberInProject() throws Exception {
+        User user = userCreatedAndLogged("rnwTestOnly4");
+        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis(), "TEST4");
+        testEntityFactory.grantUserProjectRoleWithPermissions(user, project, RolesConstants.DEVELOPER_ROLE_NAME,
+                PermissionsConstants.PROJECT_EVERYTHING);
+
+        String bugName = "RandomName" + RandomStringUtils.randomAlphabetic(5);
+        String createBugDTO = createBugDTOForSave(bugName, user, project);
+
+        mockMvc.perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(createBugDTO))
+                .andExpect(status().isOk())
+                .andExpect(contentIsJson())
+                .andExpect(jsonPath("$.object").exists())
+                .andExpect(jsonPath("$.object.tag").value("TEST4-1"))
+                .andExpect(jsonPath("$.object.name").value(bugName));
+
+        thenLastBugNumberInProjectIncremented(project);
+    }
+
+    private String createBugDTOForSave(String name, User user, Project project) throws JsonProcessingException {
+        BugDTO bugDTO = new BugDTO();
+        bugDTO.setName(name);
+        bugDTO.setDescription("");
+        bugDTO.setReporterId(user != null ? user.getId() : null);
+        bugDTO.setProjectId(user != null ? project.getId() : null);
+        bugDTO.setPriority(Bug.Priority.NORMAL);
+        return objectMapper.writeValueAsString(bugDTO);
+    }
+
+    private void thenLastBugNumberInProjectIncremented(Project project) {
+        Project savedProject = projectRepository.findOne(project.getId());
+        assertThat(savedProject.getId()).isEqualTo(project.getId());
+        assertThat(savedProject.getName()).isEqualTo(project.getName());
+        assertThat(savedProject.getLastBugNumber()).isEqualTo(project.getLastBugNumber() + 1);
     }
 }

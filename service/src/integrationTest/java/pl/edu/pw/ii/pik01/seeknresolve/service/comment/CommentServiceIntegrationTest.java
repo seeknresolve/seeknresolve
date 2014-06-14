@@ -60,7 +60,7 @@ public class CommentServiceIntegrationTest {
     }
 
     private Project createAndSaveProject(String name) {
-        Project project = new ProjectBuilder().withName(name).withDescription("Description").build();
+        Project project = new ProjectBuilder().withName(name).withDescription("Description").withTag("TTT").build();
         return projectRepository.save(project);
     }
 

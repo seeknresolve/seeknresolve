@@ -1,6 +1,5 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate;
 
-import com.google.common.collect.ImmutableSet;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -16,11 +15,11 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.search.CustomRepository;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
