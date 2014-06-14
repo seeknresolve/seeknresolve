@@ -23,6 +23,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.CustomReposi
 public class TestAppContext implements EmbeddedServletContainerCustomizer {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(TestAppContext.class);
+        app.setAdditionalProfiles("test");
         app.setShowBanner(false);
         app.run(args);
     }

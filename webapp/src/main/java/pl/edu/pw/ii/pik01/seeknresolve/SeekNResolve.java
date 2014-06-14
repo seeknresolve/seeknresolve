@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.CustomRepositoryFactoryBean;
 
+@Configuration
 @ComponentScan
 @EnableAutoConfiguration
 @EnableJpaRepositories(value = "pl.edu.pw.ii.pik01.seeknresolve.domain",
@@ -24,6 +25,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.CustomReposi
 public class SeekNResolve implements EmbeddedServletContainerCustomizer {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(SeekNResolve.class);
+        app.setAdditionalProfiles("development");
         app.run(args);
     }
 
