@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ChangePasswordDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CreateUserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
@@ -23,7 +24,6 @@ import java.util.List;
 public class UserController {
     private Logger log = LoggerFactory.getLogger(UserController.class);
 
-
     private final UserService userService;
 
     @Autowired
@@ -36,6 +36,13 @@ public class UserController {
     public Response<UserDTO> create(@RequestBody CreateUserDTO userDTO) {
         UserDTO user = userService.createAndSaveNewUser(userDTO);
         return new Response<>(user, Response.Status.CREATED);
+    }
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasPermission(null, 'user:change_password')")
+    public Response<String> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+        userService.changePassword(changePasswordDTO);
+        return new Response<>("changed", Response.Status.UPDATED);
     }
 
     @RequestMapping(value = "/details/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +63,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasPermission(null, 'user:update')")
-    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserDTO> update(@RequestBody UserDTO userDTO) {
         UserDTO updatedUser = userService.updateUser(userDTO);
         return new Response<>(updatedUser, Response.Status.UPDATED);

@@ -22,14 +22,14 @@
                         <button type="button" class="btn btn-sm btn-success" ng-click="userForm.$show()" ng-show="!userForm.$visible && shouldShowEditButton">
                             <span class="glyphicon glyphicon-pencil"></span> Edit
                         </button>
-                            <span ng-show="userForm.$visible">
-                                <button type="submit" class="btn btn-sm btn-primary" ng-disabled="userForm.$waiting">
-                                    Save
-                                </button>
-                                <button type="button" class="btn btn-sm btn-default" ng-disabled="userForm.$waiting" ng-click="userForm.$cancel()">
-                                    Cancel
-                                </button>
-                            </span>
+                        <span ng-show="userForm.$visible">
+                            <button type="submit" class="btn btn-sm btn-primary" ng-disabled="userForm.$waiting">
+                                Save
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default" ng-disabled="userForm.$waiting" ng-click="userForm.$cancel()">
+                                Cancel
+                            </button>
+                         </span>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -66,11 +66,50 @@
                                 </span>
                         </div>
                     </div>
-
                 </div>
                     </form>
             </div>
 
         </div>
     </div>
+
+    <div class="row col-lg-12" ng-show="shouldShowChangePasswordButton">
+        <div class="row col-lg-6">
+            <div class="panel panel-default">
+                <form class="form-horizontal" role="form">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title pull-left form-editable-heading">Change Password:</h4>
+                        <div class="btn-group btn-group-sm pull-right">
+                            <button type="button" class="btn btn-sm btn-success" ng-click="showChangePassword()" ng-hide="isChangingPassword">
+                                <span class="glyphicon glyphicon-pencil"></span> Change
+                            </button>
+                            <button type="button" class="btn btn-sm btn-primary" ng-click="changePassword()" ng-show="isChangingPassword">
+                                Save
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default" ng-click="cancelChangePassword()" ng-show="isChangingPassword">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group" ng-show="isChangingPassword">
+                            <label for="password" class="col-md-4 control-label">Password:</label>
+                            <div class="col-md-8">
+                                <input type="password" required class="form-control" id="password" ng-model="changingPassword.password"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="isChangingPassword">
+                            <label for="confirmPassword" class="col-md-4 control-label">Confirm password:</label>
+                            <div class="col-md-8">
+                                <input type="password" required class="form-control" id="confirmPassword" ng-model="changingPassword.confirmPassword"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
 </div>

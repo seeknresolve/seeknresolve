@@ -13,14 +13,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.UserBuilder;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ChangePasswordDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CreateUserDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
+
+import javax.persistence.EntityNotFoundException;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -34,27 +37,21 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private UserRepository userRepository;
-
-    @Mock
-    private UserProjectRoleRepository userProjectRoleRepository;
-
-    @Mock
-    private RoleRepository roleRepository;
+    private UserService userService;
 
     @Before
     public void setUp() {
-        UserService userService = new UserService(userRepository, userProjectRoleRepository, roleRepository);
         UserController userController = new UserController(userService);
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
     @Test
     public void shouldReturn404ForNonExistingUser() throws Exception {
+        when(userService.findByLogin(anyString())).thenThrow(EntityNotFoundException.class);
+
         mockMvc.perform(get("/user/details/NonExistingUser")).
                 andExpect(status().isNotFound()).
-                andExpect(content().contentType(MediaType.APPLICATION_JSON)).
-                andExpect(jsonPath("$.error").exists());
+                andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -65,7 +62,8 @@ public class UserControllerTest {
                                                 .withEmail("cthulu@worldDestroyer.xx")
                                                 .withRole(new UserRole("God"))
                                                 .build();
-        when(userRepository.findOneByLogin(anyString())).thenReturn(existingUser);
+
+        when(userService.findByLogin("cthulu")).thenReturn(DtosFactory.createUserDTO(existingUser));
 
         mockMvc.perform(get("/user/details/cthulu")).
                 andExpect(status().isOk()).
@@ -85,20 +83,31 @@ public class UserControllerTest {
         createUserDTO.setPassword("Password");
         createUserDTO.setUserRole("USER");
 
-        when(roleRepository.findOne("USER")).thenReturn(new UserRole("USER"));
-        when(userRepository.save(any(User.class))).thenAnswer(Return.firstParameter());
+        when(userService.createAndSaveNewUser(any())).thenAnswer(Return.firstParameter());
 
         mockMvc.perform(post("/user/create").
                     contentType(MediaType.APPLICATION_JSON).
-                    content(userAsJson(createUserDTO))).
+                    content(asJson(createUserDTO))).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(MediaType.APPLICATION_JSON)).
                 andExpect(jsonPath("$.status").value("CREATED")).
                 andExpect(jsonPath("$.object.login").value("AwasomeLogin"));
     }
 
-    private String userAsJson(UserDTO userDTO) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(userDTO);
+    @Test
+    public void testChangePassword() throws Exception {
+        ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO("mdz", "qwerty");
+
+        mockMvc.perform(post("/user/changePassword").
+                    contentType(MediaType.APPLICATION_JSON).
+                    content(asJson(changePasswordDTO))).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(MediaType.APPLICATION_JSON)).
+                andExpect(jsonPath("$.status").value("UPDATED"));
+    }
+
+    private String asJson(Object object) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(object);
     }
 
     private static class Return<T> implements Answer<T> {
@@ -112,6 +121,7 @@ public class UserControllerTest {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public T answer(InvocationOnMock invocation) throws Throwable {
             return (T) invocation.getArguments()[paramNumber];
         }

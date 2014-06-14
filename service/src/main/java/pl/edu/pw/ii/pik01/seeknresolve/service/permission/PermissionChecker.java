@@ -35,7 +35,6 @@ public class PermissionChecker {
     }
 
     public boolean hasPermission(Permission permission) {
-        //TODO: consider JPQL
         User user = userService.getLoggedUser();
         return hasPermission(user.getUserRole().getPermissions(), permission);
     }
