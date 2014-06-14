@@ -3,6 +3,9 @@ package pl.edu.pw.ii.pik01.seeknresolve.controller.bug;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -167,5 +170,34 @@ public class BugControllerIntegrationTest {
                 .andExpect(jsonPath("$.fieldErrors", hasSize(1)))
                 .andExpect(jsonPath("$.fieldErrors[0].field", equalTo("name")))
                 .andExpect(jsonPath("$.fieldErrors[0].rejectedValue", equalTo("")));
+    }
+
+    @Test
+    public void shouldSaveNewBugAndIncrementLastBugNumberInProject() throws Exception {
+        User user = userCreatedAndLogged("rnwTestOnly");
+        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis(), "TEST3");
+        testEntityFactory.grantUserProjectRoleWithPermissions(user, project, RolesConstants.DEVELOPER_ROLE_NAME,
+                PermissionsConstants.PROJECT_EVERYTHING);
+
+        String bugName = "RandomName" + RandomStringUtils.randomAlphabetic(5);
+        String createBugDTO = createBugDTOForCreate(bugName, user, project);
+
+        mockMvc.perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(createBugDTO))
+                .andExpect(status().isOk())
+                .andExpect(contentIsJson())
+                .andExpect(jsonPath("$.object").exists())
+                .andExpect(jsonPath("$.object.tag", equalTo("TEST3-1")))
+                .andExpect(jsonPath("$.object.name", equalTo(bugName)));
+    }
+
+    private String createBugDTOForCreate(String name, User user, Project project) throws JsonProcessingException {
+        BugDTO bugDTO = new BugDTO();
+        bugDTO.setName(name);
+        bugDTO.setDescription("");
+        bugDTO.setReporterId(user.getId());
+        bugDTO.setProjectId(project.getId());
+        bugDTO.setState(Bug.State.NEW);
+        bugDTO.setPriority(Bug.Priority.NORMAL);
+        return objectMapper.writeValueAsString(bugDTO);
     }
 }

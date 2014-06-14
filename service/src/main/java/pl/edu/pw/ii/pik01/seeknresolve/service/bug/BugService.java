@@ -67,7 +67,14 @@ public class BugService {
     }
 
     private String generateNextTagForBug(Project project) {
-        return bugTagGenerator.generateTag(project);
+        String nextTag = bugTagGenerator.generateTag(project);
+        incrementBugNumberAndSaveProject(project);
+        return nextTag;
+    }
+
+    private void incrementBugNumberAndSaveProject(Project project) {
+        project.incrementLastBugNumber();
+        projectRepository.save(project);
     }
 
     @Transactional(readOnly = true)

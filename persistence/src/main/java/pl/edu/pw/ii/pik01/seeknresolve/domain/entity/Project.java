@@ -122,6 +122,10 @@ public class Project {
         this.lastBugNumber = lastBugNumber;
     }
 
+    public void incrementLastBugNumber() {
+        lastBugNumber++;
+    }
+
     public List<Bug> getBugs() {
         return ImmutableList.copyOf(bugs);
     }

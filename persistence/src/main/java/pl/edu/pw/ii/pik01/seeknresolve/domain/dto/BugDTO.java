@@ -5,24 +5,29 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 
+import javax.validation.constraints.NotNull;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BugDTO {
-    @NotEmpty
     private String tag;
     @NotEmpty
     private String name;
     private String description;
     private DateTime dateCreated;
     private DateTime dateModified;
+    @NotNull
     private Long reporterId;
     private String reporterLogin;
     private String reporterName;
     private Long assigneeId;
     private String assigneeLogin;
     private String assigneeName;
+    @NotNull
     private Long projectId;
     private String projectName;
+    @NotNull
     private Bug.State state;
+    @NotNull
     private Bug.Priority priority;
 
     public String getTag() {
