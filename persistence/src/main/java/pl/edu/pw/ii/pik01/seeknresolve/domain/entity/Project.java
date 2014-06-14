@@ -27,6 +27,7 @@ public class Project {
     @Column(nullable = false)
     private Long id;
 
+    @NotAudited
     @Version
     @Column(nullable = false, columnDefinition = "bigint default 0")
     private Long version;
@@ -51,7 +52,6 @@ public class Project {
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateCreated;
 
-    @NotAudited
     @LastModifiedDate
     @Column(nullable = false)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
