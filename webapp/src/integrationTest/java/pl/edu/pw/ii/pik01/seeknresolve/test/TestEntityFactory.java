@@ -41,8 +41,8 @@ public class TestEntityFactory {
         return roleRepository.save(userRole);
     }
 
-    public Project createAndSaveProject(String name) {
-        Project project = new ProjectBuilder().withName(name).withDescription("Description").build();
+    public Project createAndSaveProject(String name, String tag) {
+        Project project = new ProjectBuilder().withName(name).withTag(tag).withDescription("Description").build();
         return projectRepository.save(project);
     }
 

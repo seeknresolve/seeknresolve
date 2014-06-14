@@ -1,15 +1,12 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.common;
 
-import org.springframework.stereotype.Component;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class DtosFactory {
-
     private DtosFactory() {
     }
 
@@ -17,6 +14,7 @@ public class DtosFactory {
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setId(project.getId());
         projectDTO.setName(project.getName());
+        projectDTO.setTag(project.getTag());
         projectDTO.setDescription(project.getDescription());
         projectDTO.setDateCreated(project.getDateCreated());
         return projectDTO;

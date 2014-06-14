@@ -34,6 +34,11 @@ public class Project {
 
     @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
+    @Column(nullable = false, unique = true)
+    private String tag;
+
+    @NotEmpty
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(nullable = true)
     private String description;
 
@@ -46,6 +51,9 @@ public class Project {
     @Column(nullable = false)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateModified;
+
+    @Column(nullable = false)
+    private Long lastBugNumber;
 
     @NotAudited
     @OneToMany(mappedBy = "project")
@@ -74,6 +82,14 @@ public class Project {
         this.name = name;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -96,6 +112,14 @@ public class Project {
 
     public void setDateModified(DateTime dateModified) {
         this.dateModified = dateModified;
+    }
+
+    public Long getLastBugNumber() {
+        return lastBugNumber;
+    }
+
+    public void setLastBugNumber(Long lastBugNumber) {
+        this.lastBugNumber = lastBugNumber;
     }
 
     public List<Bug> getBugs() {

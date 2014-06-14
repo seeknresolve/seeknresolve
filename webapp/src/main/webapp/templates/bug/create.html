@@ -22,13 +22,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="bugTag" class="col-md-2 control-label">Tag:</label>
-                        <div class="col-md-8">
-                            <input ng-model="$parent.bug.tag" type="text" class="form-control" id="bugTag" placeholder="Tag"/>
-                        </div>
-                    </div>
-
                     <div class="form-group" ng-class="{ 'has-error' : bugForm.bugName.$invalid }">
                         <label for="bugName" class="col-md-2 control-label">Name:</label>
                         <div class="col-md-8">
@@ -71,10 +64,10 @@
                     </div>
 
                     <div class="pull-right">
-                        <a role="button" class="btn btn-success" ng-click="createBug()" ng-disabled="bugForm.$invalid">
+                        <button role="button" class="btn btn-success" ng-click="createBug()" ng-disabled="bugForm.$invalid">
                             <span class="glyphicon glyphicon-plus"></span>
                             Report
-                        </a>
+                        </button>
                     </div>
                 </form>
             </div>

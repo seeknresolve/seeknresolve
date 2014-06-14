@@ -110,7 +110,7 @@ public class BugControllerIntegrationTest {
     @Test
     public void shouldUpdateBugWithCorrectUpdateData() throws Exception {
         User user = userCreatedAndLogged("rnwTestOnly");
-        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis());
+        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis(), "TEST2");
         Bug bug = testEntityFactory.createAndSaveBug("TTT-1", user, project);
         testEntityFactory.grantUserProjectRoleWithPermissions(user, project, RolesConstants.DEVELOPER_ROLE_NAME,
                 PermissionsConstants.PROJECT_EVERYTHING);
@@ -152,8 +152,8 @@ public class BugControllerIntegrationTest {
     @Test
     public void shouldReturnFieldErrorsWhenBugIsUpdatedWithIncorrectData() throws Exception {
         User user = userCreatedAndLogged("rnwTestOnly");
-        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis());
-        Bug bug = testEntityFactory.createAndSaveBug("TTT-1", user, project);
+        Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis(), "TEST1");
+        Bug bug = testEntityFactory.createAndSaveBug("TEST1-1", user, project);
         testEntityFactory.grantUserProjectRoleWithPermissions(user, project, RolesConstants.DEVELOPER_ROLE_NAME,
                 PermissionsConstants.PROJECT_EVERYTHING);
 

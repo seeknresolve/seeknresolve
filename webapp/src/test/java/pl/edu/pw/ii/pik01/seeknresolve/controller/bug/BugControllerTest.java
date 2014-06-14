@@ -22,6 +22,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.BugDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.*;
 import pl.edu.pw.ii.pik01.seeknresolve.service.bug.BugService;
+import pl.edu.pw.ii.pik01.seeknresolve.service.bug.generator.BugTagGenerator;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 
 import java.lang.reflect.Method;
@@ -53,12 +54,15 @@ public class BugControllerTest {
     @Mock
     private UserProjectRoleRepository userProjectRoleRepository;
 
+    @Mock
+    private BugTagGenerator bugTagGenerator;
+
     private ObjectMapper objectMapper;
 
     @Before
     public void setup() {
         BugService bugService = new BugService(bugRepository, projectRepository,
-                userRepository, commentRepository, userProjectRoleRepository);
+                userRepository, commentRepository, userProjectRoleRepository, bugTagGenerator);
         BugController bugController = new BugController(bugService, userService);
         mockMvc = MockMvcBuilders.standaloneSetup(bugController).setHandlerExceptionResolvers(createExceptionResolver()).build();
         objectMapper = new ObjectMapper();
