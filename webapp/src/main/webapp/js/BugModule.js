@@ -196,6 +196,7 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
             if(scope.assignee) {
                 bug.assigneeId = scope.assignee.id;
             }
+            bug.name = "";
             var params = JSON.stringify(bug);
 
             http.post('/bug', params, {
@@ -207,6 +208,7 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
                 location.path('/bug');
             }).error(function (data, status, headers, config) {
                 data.fieldErrors.forEach(function (fieldError) {
+                    scope.bugForm.$setValidity(fieldError.field, false, scope.bugForm);
                 });
                 notificationsService.error('Error', 'Bug save failed!');
             });
