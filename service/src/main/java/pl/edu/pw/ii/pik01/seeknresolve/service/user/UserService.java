@@ -24,6 +24,8 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -117,10 +119,13 @@ public class UserService {
 
     @Transactional
     public void changePassword(ChangePasswordDTO changePasswordDTO) {
+        checkArgument(changePasswordDTO.getPassword().equals(changePasswordDTO.getConfirmPassword()), "Passwords aren't equal");
+
         User user = userRepository.findOneByLogin(changePasswordDTO.getLogin());
         if(user == null) {
             throw new EntityNotFoundException("User with login=" + changePasswordDTO.getLogin() + " not found.");
         }
+
         String encodedPassword = passwordEncoder.encode(changePasswordDTO.getPassword());
         user.setPassword(encodedPassword);
         userRepository.save(user);

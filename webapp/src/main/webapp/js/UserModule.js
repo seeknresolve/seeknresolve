@@ -97,19 +97,23 @@ userModule.controller('UserDetailsController', ['$scope', '$http', '$route', '$r
         }
 
         scope.changePassword = function() {
-            scope.changingPassword.login = scope.user.login;
-            var params = JSON.stringify(scope.changingPassword);
-            http.post('/user/changePassword', params, {
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8'
-                }
-            }).success(function (data, status, headers, config) {
-                notificationsService.info('Info', 'User ' + scope.user.login + ' password was changed');
-                route.reload();
-            }).error(function (data, status, headers, config) {
-                notificationsService.error('Error', 'Can\'t change user password!');
-                route.reload();
-            });
+            if(scope.changingPassword.password != scope.changingPassword.confirmPassword) {
+                notificationsService.error('Error', 'Passwords aren\'t equals');
+            } else {
+                scope.changingPassword.login = scope.user.login;
+                var params = JSON.stringify(scope.changingPassword);
+                http.post('/user/changePassword', params, {
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    }
+                }).success(function (data, status, headers, config) {
+                    notificationsService.info('Info', 'User ' + scope.user.login + ' password was changed');
+                    route.reload();
+                }).error(function (data, status, headers, config) {
+                    notificationsService.error('Error', 'Can\'t change user password!');
+                    route.reload();
+                });
+            }
         }
     }
 ]);
