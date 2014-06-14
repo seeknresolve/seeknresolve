@@ -14,68 +14,59 @@
         <div class="panel panel-default">
             <div class="panel-heading">Enter details of new bug:</div>
             <div class="panel-body">
-                <form class="form-horizontal" role="form">
+                <form novalidate class="form-horizontal" role="form" name="bugForm">
                     <div class="form-group">
                         <label for="bugProject" class="col-md-2 control-label">Project:</label>
                         <div class="col-md-4">
-                            <select class="form-control" id="bugProject" ng-model="project" ng-options="project.name for project in projects">
-                            </select>
+                            <select class="form-control" id="bugProject" ng-model="project" ng-options="project.name for project in projects"></select>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="bugTag" class="col-md-2 control-label">Tag:</label>
+                    <div class="form-group" ng-class="{ 'has-error' : bugForm.name.$invalid }">
+                        <label for="name" class="col-md-2 control-label">Name:</label>
                         <div class="col-md-8">
-                            <input ng-model="$parent.bug.tag" type="text" required class="form-control" id="bugTag" placeholder="Tag"/>
+                            <input ng-model="$parent.bug.name" type="text" required class="form-control" id="name" name="name" placeholder="Name"/>
+                            <span class="help-block" ng-show="bugForm.name.$error.required">Please enter bug name</span>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label for="bugName" class="col-md-2 control-label">Name:</label>
+                        <label for="priority" class="col-md-2 control-label">Priority:</label>
                         <div class="col-md-8">
-                            <input ng-model="$parent.bug.name" type="text" required class="form-control" id="bugName" placeholder="Name"/>
+                            <select class="form-control" id="priority" name="priority" ng-model="priority" ng-options="priority for priority in priorities"></select>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="bugPriority" class="col-md-2 control-label">Priority:</label>
-                        <div class="col-md-8">
-                            <select class="form-control" id="bugPriority" ng-model="priority" ng-options="priority for priority in priorities">
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="bugReporterId" class="col-md-2 control-label">Reporter:</label>
+                        <label for="reporterId" class="col-md-2 control-label">Reporter:</label>
                         <div class="col-md-8">
                             <input type="text" required disabled class="form-control"
-                                   id="bugReporterId" value="{{loggedUser.firstName + ' ' + loggedUser.lastName}}">
+                                   id="reporterId" name="reporterId" value="{{loggedUser.firstName + ' ' + loggedUser.lastName}}">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="bugAssigneeId" class="col-md-2 control-label">Assignee:</label>
+                        <label for="assigneeId" class="col-md-2 control-label">Assignee:</label>
                         <div class="col-md-4">
-                            <select class="form-control" id="bugAssigneeId" ng-model="assignee" ng-options="user.login for user in projectUsers">
+                            <select class="form-control" id="assigneeId" name="assigneeId" ng-model="assignee" ng-options="user.login for user in projectUsers">
                                 <option value="">-- choose assignee --</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="bugDescription" class="col-md-2 control-label">Description:</label>
+                        <label for="description" class="col-md-2 control-label">Description:</label>
                         <div class="col-md-8">
-                            <textarea ng-model="$parent.bug.description" type="text" required class="form-control"
-                                      id="bugDescription" placeholder="Description" style="resize: none" rows="15">
+                            <textarea ng-model="$parent.bug.description" type="text" class="form-control text-area-no-resize"
+                                      id="description" name="description" placeholder="Description" rows="15">
                             </textarea>
                         </div>
                     </div>
 
                     <div class="pull-right">
-                        <a role="button" class="btn btn-success" ng-click="createBug()">
+                        <button role="button" class="btn btn-success" ng-click="createBug()" ng-disabled="bugForm.$invalid">
                             <span class="glyphicon glyphicon-plus"></span>
                             Report
-                        </a>
+                        </button>
                     </div>
                 </form>
             </div>

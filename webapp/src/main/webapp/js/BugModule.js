@@ -5,15 +5,13 @@ bugModule.directive('userDisplay', function() {
         restrict: 'E',
         scope: true,
         //TODO: this link should be optional
-        template: '<a href="#/user/details/{{userLogin}}">{{userName}}</a>',
+        templateUrl: 'js/UserDisplayTemplate.html',
         link: function (scope, element, attrs) {
             scope.userLogin = attrs.userLogin;
             if(attrs.userLogin == null || attrs.userLogin == '') {
                 scope.userName = 'None';
             } else {
                 scope.userName = attrs.userName;
-                scope.linkOpen = '<a href="#/user/{{attrs.userLogin}}">';
-                scope.linkClose = '</a>';
             }
         }
     };
@@ -139,7 +137,7 @@ bugModule.controller('BugDetailsController', ['$scope', '$http', '$route', '$rou
                 notificationsService.success('Success', 'Comment created successfully');
                 route.reload();
             }).error(function (data, status, headers, config) {
-                notificationsService.error('Error', 'Creating comment failed! ' + data.error);
+                notificationsService.error('Error', 'Comment create failed! ' + data.error);
                 location.path('/bug');
             });
         };
@@ -191,7 +189,7 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
         });
 
         scope.createBug = function() {
-            var bug = scope.bug;
+            var bug = scope.bug != null ? scope.bug : { };
             bug.priority = scope.priority;
             bug.projectId = scope.project.id;
             bug.reporterId = scope.loggedUser.id;
@@ -208,8 +206,10 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
                 notificationsService.success('Success', 'Bug ' + data.object.tag + ' reported successfully');
                 location.path('/bug');
             }).error(function (data, status, headers, config) {
-                notificationsService.error('Error', 'Creating bug failed! ' + data.error);
-                location.path('/bug');
+                data.fieldErrors.forEach(function (fieldError) {
+                    scope.bugForm.$setValidity(fieldError.field, false, scope.bugForm);
+                });
+                notificationsService.error('Error', 'Bug save failed!');
             });
         }
     }

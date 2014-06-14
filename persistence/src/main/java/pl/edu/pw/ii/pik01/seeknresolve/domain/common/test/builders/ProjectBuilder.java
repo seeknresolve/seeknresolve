@@ -7,14 +7,20 @@ public class ProjectBuilder {
     private Long id = 0L;
     private String name = "";
     private String description = "";
+    private String tag = "TAG";
     private DateTime dateCreated = DateTime.now();
+    private DateTime dateModified = DateTime.now();
+    private long lastBugNumber = 0;
 
     public Project build() {
         Project project = new Project();
         project.setId(id);
         project.setName(name);
+        project.setTag(tag);
         project.setDescription(description);
         project.setDateCreated(dateCreated);
+        project.setDateModified(dateModified);
+        project.setLastBugNumber(lastBugNumber);
         return project;
     }
 
@@ -33,8 +39,23 @@ public class ProjectBuilder {
         return this;
     }
 
+    public ProjectBuilder withTag(String tag) {
+        this.tag = tag;
+        return this;
+    }
+
     public ProjectBuilder withDateCreated(DateTime dateCreated) {
         this.dateCreated = dateCreated;
+        return this;
+    }
+
+    public ProjectBuilder withDateModified(DateTime dateModified) {
+        this.dateModified = dateModified;
+        return this;
+    }
+
+    public ProjectBuilder withLastBugNumber(long lastBugNumber) {
+        this.lastBugNumber = lastBugNumber;
         return this;
     }
 }

@@ -16,6 +16,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.BugRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.CommentRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.ProjectRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
+import pl.edu.pw.ii.pik01.seeknresolve.service.bug.generator.BugTagGenerator;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.TestWithSecurity;
 
@@ -42,6 +43,9 @@ public class BugServiceTest {
     @Mock
     private CommentRepository commentRepository;
 
+    @Mock
+    private BugTagGenerator bugTagGenerator;
+
     private TestWithSecurity testWithSecurity = new TestWithSecurity();
 
     private BugService bugService;
@@ -49,7 +53,8 @@ public class BugServiceTest {
     @Before
     public void setup() {
         bugService = new BugService(bugRepository, projectRepository,
-                userRepository, commentRepository, testWithSecurity.userProjectRoleRepository);
+                userRepository, commentRepository,
+                testWithSecurity.userProjectRoleRepository, bugTagGenerator);
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -95,14 +100,14 @@ public class BugServiceTest {
         //given:
         User user = givenUser("rnw");
 
-        Project project = givenProject(11L, "testowy");
+        Project project = givenProject(11L, "testowy", "T1");
         project.addBug(givenBug("T1", "Test1", Bug.State.NEW));
         project.addBug(givenBug("T2", "Test2", Bug.State.NEW));
 
-        Project project2 = givenProject(12L, "testowy 2");
+        Project project2 = givenProject(12L, "testowy 2", "T2");
         project2.addBug(givenBug("T3", "Test3", Bug.State.NEW));
 
-        Project project3 = givenProject(13L, "testowy 3");
+        Project project3 = givenProject(13L, "testowy 3", "T3");
         project3.addBug(givenBug("T4", "Test4", Bug.State.NEW));
 
         testWithSecurity.givenRolesReturnedForUser(user, project, project2);
@@ -115,8 +120,8 @@ public class BugServiceTest {
                 .doesNotContain(tuple("T4", "Test4"));
     }
 
-    private Project givenProject(Long id, String name) {
-        return new ProjectBuilder().withId(id).withName(name).build();
+    private Project givenProject(Long id, String name, String tag) {
+        return new ProjectBuilder().withId(id).withName(name).withTag(tag).build();
     }
 
     private Bug givenBug(String tag, String name, Bug.State state) {
@@ -148,22 +153,5 @@ public class BugServiceTest {
 
     private Bug createBugFromDTO(BugDTO bugDTO) {
         return new BugBuilder().withName(bugDTO.getName()).build();
-    }
-
-    @Test
-    public void shouldUpdateBugAndChangeState() {
-        //given:
-        ArgumentCaptor<Bug> bugArgumentCaptor = ArgumentCaptor.forClass(Bug.class);
-        Bug bug = givenBug("TTT-3", "Testowy3", Bug.State.CLOSED);
-        BugDTO updateData = givenUpdateData(bug, "Nowa nazwa");
-        given(bugRepository.findOne("TTT-3")).willReturn(bug);
-        given(bugRepository.save(bugArgumentCaptor.capture())).willReturn(createBugFromDTO(updateData));
-        //when:
-        bugService.updateBug(updateData);
-        //then:
-        Bug updatedBug = bugArgumentCaptor.getValue();
-        assertThat(updatedBug).isNotNull();
-        assertThat(updatedBug.getName()).isEqualTo("Nowa nazwa");
-        assertThat(updatedBug.getState()).isEqualTo(Bug.State.CLOSED);
     }
 }

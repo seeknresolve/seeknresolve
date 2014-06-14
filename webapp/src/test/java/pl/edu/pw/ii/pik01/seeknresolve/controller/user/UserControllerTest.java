@@ -96,7 +96,7 @@ public class UserControllerTest {
 
     @Test
     public void testChangePassword() throws Exception {
-        ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO("mdz", "qwerty");
+        ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO("mdz", "qwerty", "qwerty");
 
         mockMvc.perform(post("/user/changePassword").
                     contentType(MediaType.APPLICATION_JSON).

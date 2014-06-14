@@ -34,7 +34,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(PersistenceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorResponse handlePersistenceErrors(Exception exception) {
+    public ErrorResponse handlePersistenceErrors(PersistenceException exception) {
         log.error("BAD_REQUEST: {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }

@@ -1,0 +1,9 @@
+<span ng-if="userLogin != null && userLogin != ''">
+    <a href="#/user/details/{{userLogin}}">
+        {{userName}}
+    </a>
+</span>
+
+<span ng-if="userLogin == null || userLogin == ''">
+    {{userName}}
+</span>

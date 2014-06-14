@@ -27,10 +27,20 @@ public class Project {
     @Column(nullable = false)
     private Long id;
 
+    @NotAudited
+    @Version
+    @Column(nullable = false, columnDefinition = "bigint default 0")
+    private Long version = 0L;
+
     @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(nullable = false)
     private String name;
+
+    @NotEmpty
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
+    @Column(nullable = false, unique = true)
+    private String tag;
 
     @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
@@ -46,6 +56,10 @@ public class Project {
     @Column(nullable = false)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateModified;
+
+    @NotAudited
+    @Column(nullable = false)
+    private Long lastBugNumber = 0L;
 
     @NotAudited
     @OneToMany(mappedBy = "project")
@@ -74,6 +88,14 @@ public class Project {
         this.name = name;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -96,6 +118,18 @@ public class Project {
 
     public void setDateModified(DateTime dateModified) {
         this.dateModified = dateModified;
+    }
+
+    public Long getLastBugNumber() {
+        return lastBugNumber;
+    }
+
+    public void setLastBugNumber(Long lastBugNumber) {
+        this.lastBugNumber = lastBugNumber;
+    }
+
+    public void incrementLastBugNumber() {
+        lastBugNumber++;
     }
 
     public List<Bug> getBugs() {
