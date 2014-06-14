@@ -50,12 +50,18 @@
                         <tr>
                             <th>User</th>
                             <th>Role</th>
+                            <th>x</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="user in project.users">
                             <td>{{user.login}} ({{user.firstName}} {{user.lastName}})</td>
                             <td>{{user.projectRole.roleName}}</td>
+                            <td>
+                                <button role="button" class="btn btn-danger" ng-click="removeAssignment(user.id)">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

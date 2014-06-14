@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ProjectDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserProjectRoleStoreDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.reports.Printer;
 import pl.edu.pw.ii.pik01.seeknresolve.service.project.ProjectService;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
@@ -90,14 +89,15 @@ public class ProjectController {
         return new Response<>(userService.getAllUserWithRolesOnProject(id), Response.Status.RECEIVED);
     }
 
-    @RequestMapping(value = "/grantRole", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<String> grantRoleForUserToProject(@RequestBody UserProjectRoleStoreDTO userProjectRoleStoreDTO) {
-        return new Response<>(projectService.grantRoleForUserToProject(
-                    userProjectRoleStoreDTO.getRole(),
-                    userProjectRoleStoreDTO.getUserId(),
-                    userProjectRoleStoreDTO.getProjectId()
-                ) != null ? "success" : "failure",
+    @RequestMapping(value = "{projectId}/grantRole/{role}/user/{userId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<String> grantRoleForUserToProject(@PathVariable("projectId") Long projectId, @PathVariable("role") String role, @PathVariable("userId") Long userId) {
+        return new Response<>(projectService.grantRoleForUserToProject(role, userId, projectId) != null ? "success" : "failure",
                 Response.Status.CREATED);
+    }
+
+    @RequestMapping(value = "{projectId}/revokeRole/user/{userId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    private Response<Long> revokeRoleFromUserToProject(@PathVariable("projectId") Long projectId, @PathVariable("userId") Long userId) {
+        return new Response<>(projectService.revokeRoleFromUserToProject(userId, projectId), Response.Status.DELETED);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -57,6 +57,12 @@ public class DtosFactory {
         return userDTO;
     }
 
+    public static List<UserDTO> createUserDTOList(List<User> userList) {
+        return userList.stream()
+                .map(user -> createUserDTO(user))
+                .collect(Collectors.toList());
+    }
+
     public static RoleDTO createRoleDTO(Role role) {
         RoleDTO roleDTO = new RoleDTO();
         roleDTO.setRoleName(role.getRoleName());
