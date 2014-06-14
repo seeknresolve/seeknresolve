@@ -196,7 +196,6 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
             if(scope.assignee) {
                 bug.assigneeId = scope.assignee.id;
             }
-            bug.name = "";
             var params = JSON.stringify(bug);
 
             http.post('/bug', params, {
