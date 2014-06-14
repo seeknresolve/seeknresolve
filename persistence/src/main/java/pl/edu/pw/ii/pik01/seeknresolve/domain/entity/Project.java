@@ -27,6 +27,10 @@ public class Project {
     @Column(nullable = false)
     private Long id;
 
+    @Version
+    @Column(nullable = false, columnDefinition = "bigint default 0")
+    private Long version;
+
     @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     @Column(nullable = false)
@@ -47,11 +51,13 @@ public class Project {
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateCreated;
 
+    @NotAudited
     @LastModifiedDate
     @Column(nullable = false)
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime dateModified;
 
+    @NotAudited
     @Column(nullable = false)
     private Long lastBugNumber;
 
