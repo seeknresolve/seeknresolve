@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ChangePasswordDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CreateUserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
@@ -114,10 +115,22 @@ public class UserService {
         return DtosFactory.createUserDTO(updatedUser);
     }
 
+    @Transactional
+    public void changePassword(ChangePasswordDTO changePasswordDTO) {
+        User user = userRepository.findOneByLogin(changePasswordDTO.getLogin());
+        if(user == null) {
+            throw new EntityNotFoundException("User with login=" + changePasswordDTO.getLogin() + " not found.");
+        }
+        String encodedPassword = passwordEncoder.encode(changePasswordDTO.getPassword());
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+    }
+
     private void updateUser(User user, UserDTO userDTO) {
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setUserRole((UserRole) roleRepository.findOne(userDTO.getUserRole()));
     }
+
 }

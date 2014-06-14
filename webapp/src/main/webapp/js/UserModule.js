@@ -51,8 +51,12 @@ userModule.controller('UserDetailsController', ['$scope', '$http', '$route', '$r
         scope.login = null;
         scope.userRoles = [ ];
         scope.shouldShowEditButton = false;
+        scope.shouldShowChangePasswordButton = false;
+        scope.isChangingPassword = false;
+        scope.changingPassword = {};
 
         permissionService.hasPermission('user:update', function(has){scope.shouldShowEditButton = (has == "true")});
+        permissionService.hasPermission('user:change_password', function(has){scope.shouldShowChangePasswordButton = (has == "true")});
 
         http.get('/user/details/' + routeParams.login).success(function(data) {
             scope.user = data.object;
@@ -70,7 +74,7 @@ userModule.controller('UserDetailsController', ['$scope', '$http', '$route', '$r
 
         scope.updateUser = function() {
             var params = JSON.stringify(scope.user);
-            http.put('/user', params, {
+            http.post('/user/update', params, {
                 headers: {
                     'Content-Type': 'application/json; charset=UTF-8'
                 }
@@ -82,5 +86,30 @@ userModule.controller('UserDetailsController', ['$scope', '$http', '$route', '$r
                 route.reload();
             });
         };
+
+        scope.showChangePassword = function() {
+            scope.isChangingPassword = true;
+        }
+
+        scope.cancelChangePassword = function() {
+            scope.isChangingPassword = false;
+            scope.changingPassword = {};
+        }
+
+        scope.changePassword = function() {
+            scope.changingPassword.login = scope.user.login;
+            var params = JSON.stringify(scope.changingPassword);
+            http.post('/user/changePassword', params, {
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            }).success(function (data, status, headers, config) {
+                notificationsService.info('Info', 'User ' + scope.user.login + ' password was changed');
+                route.reload();
+            }).error(function (data, status, headers, config) {
+                notificationsService.error('Error', 'Can\'t change user password!');
+                route.reload();
+            });
+        }
     }
 ]);
