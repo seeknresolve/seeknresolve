@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project;
 
 public class ProjectBuilder {
-    private Long id = 0L;
+    private Long id = null;
     private String name = "";
     private String description = "";
     private String tag = "TAG";

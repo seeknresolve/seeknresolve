@@ -41,11 +41,8 @@ public class ProjectServiceIntegrationTest {
     @Autowired
     private UserService userService;
 
-    private Project project;
-
     @Before
     public void setUp() {
-        project = createAndSaveProject("projectTest" + System.currentTimeMillis());
         createAndSaveProjectRole(RolesConstants.DEVELOPER_ROLE_NAME);
     }
 
@@ -54,6 +51,7 @@ public class ProjectServiceIntegrationTest {
         //given:
         User assignedUser = createAndSaveUser("assignedUser");
         User notAssignedUser = createAndSaveUser("notAssignedUser");
+        Project project = createAndSaveProject("projectTest" + System.currentTimeMillis());
 
         //when:
         projectService.grantRoleForUserToProject(RolesConstants.DEVELOPER_ROLE_NAME, assignedUser.getId(), project.getId());
@@ -68,6 +66,7 @@ public class ProjectServiceIntegrationTest {
         //given:
         User assigned = createAndSaveUser("assigned");
         User revoked = createAndSaveUser("revoked");
+        Project project = createAndSaveProject("projectTest" + System.currentTimeMillis());
 
         UserProjectRole assignedProjectRole= projectService.grantRoleForUserToProject(RolesConstants.DEVELOPER_ROLE_NAME, assigned.getId(), project.getId());
         UserProjectRole revockedProjectRole = projectService.grantRoleForUserToProject(RolesConstants.DEVELOPER_ROLE_NAME, revoked.getId(), project.getId());
@@ -100,7 +99,7 @@ public class ProjectServiceIntegrationTest {
     }
 
     private Project createAndSaveProject(String name) {
-        Project project = new ProjectBuilder().withName(name).withDescription("Description").build();
+        Project project = new ProjectBuilder().withName(name).withTag(name).withDescription("Description").build();
         return projectRepository.save(project);
     }
 }

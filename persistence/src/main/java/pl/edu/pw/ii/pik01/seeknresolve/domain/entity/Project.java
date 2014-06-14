@@ -23,7 +23,7 @@ import java.util.List;
 @EntityListeners({AuditingEntityListener.class})
 public class Project {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     private Long id;
 
