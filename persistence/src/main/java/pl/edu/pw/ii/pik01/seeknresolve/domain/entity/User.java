@@ -16,8 +16,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Audited
+@Entity
+@Table(name = "\"user\"")
 @EntityListeners({AuditingEntityListener.class})
 public class User {
     @Id
