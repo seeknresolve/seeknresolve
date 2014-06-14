@@ -25,7 +25,7 @@ public abstract class AbstractFieldMapper<T> implements FieldMapper {
     }
 
     protected String formatFieldName(String fieldName) {
-        StringBuilder sb = new StringBuilder(fieldName.replaceAll("(.)([A-Z])", "$1_$2").toLowerCase());
+        StringBuilder sb = new StringBuilder(fieldName.replaceAll("(.)([A-Z])", "$1 $2").toLowerCase());
         sb.replace(0, 1, sb.substring(0, 1).toUpperCase());
         return sb.toString();
     }

@@ -28,7 +28,9 @@ public abstract class EnversMapper<T> {
             after = iterator.next();
 
             String description = buildDescription(before.getEntity(), after.getEntity());
-            toReturn.add(new RevisionDiffDTO(after.getRevisionDate(), description));
+            if(!Strings.isNullOrEmpty(description)) {
+                toReturn.add(new RevisionDiffDTO(after.getRevisionDate(), description));
+            }
         }
 
         return toReturn;
