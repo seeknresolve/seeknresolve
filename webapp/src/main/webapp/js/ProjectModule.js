@@ -131,8 +131,9 @@ projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$route
 
         scope.removeAssignment = function(userId) {
             http.delete('/project/' + scope.project.id + '/revokeRole/user/' + userId).
-                succes(function (data, status, headers, config) {
+                success(function (data, status, headers, config) {
                     notificationsService.success("User role have been revoked.");
+                    getProjectDetails(scope, http, routeParams.id);
                 }).error(function(data, status, headers, config) {
                     scope.errorMessage = "Can't revoke user role.";
                 });

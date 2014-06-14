@@ -96,7 +96,7 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "{projectId}/revokeRole/user/{userId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    private Response<Long> revokeRoleFromUserToProject(@PathVariable("projectId") Long projectId, @PathVariable("userId") Long userId) {
+    public Response<Long> revokeRoleFromUserToProject(@PathVariable("projectId") Long projectId, @PathVariable("userId") Long userId) {
         return new Response<>(projectService.revokeRoleFromUserToProject(userId, projectId), Response.Status.DELETED);
     }
 
