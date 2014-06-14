@@ -30,7 +30,7 @@ public class Project {
     @NotAudited
     @Version
     @Column(nullable = false, columnDefinition = "bigint default 0")
-    private Long version = 0L;
+    private Long version;
 
     @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
