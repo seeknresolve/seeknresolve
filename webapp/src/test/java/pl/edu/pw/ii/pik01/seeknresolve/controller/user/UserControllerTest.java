@@ -17,9 +17,6 @@ import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ChangePasswordDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CreateUserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserRole;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.RoleRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserProjectRoleRepository;
-import pl.edu.pw.ii.pik01.seeknresolve.domain.repository.UserRepository;
 import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
 

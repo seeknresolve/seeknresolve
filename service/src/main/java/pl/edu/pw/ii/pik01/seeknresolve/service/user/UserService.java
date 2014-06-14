@@ -78,6 +78,12 @@ public class UserService {
     }
 
     @Transactional
+    public List<UserDTO> findNotAssignedToProject(Long projectId) {
+        List<User> userList= userRepository.findNotAssignedToProject(projectId);
+        return DtosFactory.createUserDTOList(userList);
+    }
+
+    @Transactional
     public List<UserDTO> getAllUsers() {
         return Lists.newArrayList(userRepository.findAll()).stream().
                 map(user -> DtosFactory.createUserDTO(user)).collect(Collectors.toList());

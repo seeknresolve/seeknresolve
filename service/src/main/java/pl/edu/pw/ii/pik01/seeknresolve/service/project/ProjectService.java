@@ -60,9 +60,17 @@ public class ProjectService {
     public UserProjectRole grantRoleForUserToProject(String role, Long userId, Long projectId) {
         User user = userRepository.findOne(userId);
         Project project = projectRepository.findOne(projectId);
-        ProjectRole projectRole = getProjectRole(role);
-        UserProjectRole userProjectRole = new UserProjectRole(user, project, projectRole);
-        return userProjectRoleRepository.save(userProjectRole);
+        return grantRoleForUserToProject(role, user, project);
+    }
+
+    @Transactional
+    public Long revokeRoleFromUserToProject(Long userId, Long projectId) {
+        User user = userRepository.findOne(userId);
+        Project project = projectRepository.findOne(projectId);
+        UserProjectRole userProjectRole = userProjectRoleRepository.findByUserAndProject(user, project);
+        Long id = userProjectRole.getId();
+        userProjectRoleRepository.delete(userProjectRole);
+        return id;
     }
 
     private ProjectRole getProjectRole(String roleName) {

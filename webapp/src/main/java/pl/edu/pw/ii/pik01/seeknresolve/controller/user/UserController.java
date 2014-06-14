@@ -62,6 +62,11 @@ public class UserController {
         return new Response<>(userService.getLoggedUserDTO(), Response.Status.RECEIVED);
     }
 
+    @RequestMapping(value = "/notAssignedToProject/{projectId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<List<UserDTO>> findNotAssignedToProject(@PathVariable("projectId") Long projectId) {
+        return new Response<>(userService.findNotAssignedToProject(projectId), Response.Status.RECEIVED);
+    }
+
     @PreAuthorize("hasPermission(null, 'user:update')")
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserDTO> update(@RequestBody UserDTO userDTO) {
