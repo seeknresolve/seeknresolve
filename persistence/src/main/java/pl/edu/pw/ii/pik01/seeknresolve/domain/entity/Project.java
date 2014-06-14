@@ -30,7 +30,7 @@ public class Project {
     @NotAudited
     @Version
     @Column(nullable = false, columnDefinition = "bigint default 0")
-    private Long version;
+    private Long version = 0L;
 
     @NotEmpty
     @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
@@ -59,7 +59,7 @@ public class Project {
 
     @NotAudited
     @Column(nullable = false)
-    private Long lastBugNumber;
+    private Long lastBugNumber = 0L;
 
     @NotAudited
     @OneToMany(mappedBy = "project")

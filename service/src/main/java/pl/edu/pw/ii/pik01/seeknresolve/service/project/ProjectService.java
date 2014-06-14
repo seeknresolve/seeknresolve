@@ -131,6 +131,7 @@ public class ProjectService {
         Project project = new Project();
         project.setId(projectDTO.getId());
         project.setName(projectDTO.getName());
+        project.setTag(projectDTO.getTag());
         project.setDescription(projectDTO.getDescription());
         project.setDateCreated(projectDTO.getDateCreated());
         return project;
