@@ -15,6 +15,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.common.DtosFactory;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -137,10 +138,18 @@ public class BugService {
     }
 
     @Transactional(readOnly = true)
-    public List<BugDTO> search(String query) {
+    public List<BugDTO> search(String query, User user) {
         List<Bug> foundBugs = bugRepository.queryOnFields(query, "tag", "name", "description");
         return foundBugs.stream()
+                .filter(userHasAccessRightsToSeeBug(user))
                 .map(bug -> DtosFactory.createBugDTO(bug))
                 .collect(Collectors.toList());
+    }
+
+    private Predicate<Bug> userHasAccessRightsToSeeBug(User user) {
+        return bug -> {
+            UserProjectRole userProjectRole = userProjectRoleRepository.findByUserAndProject(user, bug.getProject());
+            return userProjectRole != null;
+        };
     }
 }

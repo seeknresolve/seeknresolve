@@ -80,6 +80,6 @@ public class BugController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<List<BugDTO>> search(@RequestParam("query") String query) {
-        return new Response<>(bugService.search(query), Response.Status.RECEIVED);
+        return new Response<>(bugService.search(query, userService.getLoggedUser()), Response.Status.RECEIVED);
     }
 }
