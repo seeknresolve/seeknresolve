@@ -3,5 +3,4 @@ drop user if exists "seeknresolve-dev";
 
 create user "seeknresolve-dev" password 'seeknresolve-dev';
 
-create database "seeknresolve-dev";
-alter database "seeknresolve-dev" owner to "seeknresolve-dev";
+create database "seeknresolve-dev" owner "seeknresolve-dev";
