@@ -9,5 +9,6 @@
     <include file="liquibase/001-insert_sample_user_data.sql"/>
     <include file="liquibase/002-insert_sample_project_data.sql"/>
     <include file="liquibase/003-set_data_created_to_project.sql"/>
+    <include file="liquibase/004-add_history_view_permission.sql"/>
 
 </databaseChangeLog>
