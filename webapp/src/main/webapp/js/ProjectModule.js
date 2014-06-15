@@ -68,6 +68,9 @@ function getProjectDetails(scope, http, projectId) {
             scope.bugStat.opened = getOpenedBugsByDate(scope.project.bugs);
             scope.chartConfig.series[0].data = scope.bugStat.opened;
             scope.chartConfig.series[1].data = scope.bugStat.closed;
+            scope.chartConfig.series[1].data.push(
+                [_.last(scope.chartConfig.series[0].data)[0], _.last(scope.chartConfig.series[1].data)[1]]
+            );
         }).error(function(data, status, headers, config) {
             if(data.error) {
                 scope.errorMessage = data.error;
@@ -99,6 +102,9 @@ function aggregateBugsByDate(bugs, dateField) {
     result = _.countBy(result, dateField);
     result = _.pairs(result);
     result = _.sortBy(result, 0);
+    for(i = 1; i < result.length; i++) {
+        result[i][1] += result[i-1][1];
+    }
     return result;
 }
 
