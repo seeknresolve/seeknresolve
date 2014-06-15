@@ -46,7 +46,9 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
         Project project = projectRepository.findOne(Long.parseLong(targetId.toString()));
 
-        checkNotNull(project);
+        if(project == null) {
+            return false;
+        }
 
         Permission permission = new Permission();
         permission.setPermissionName(permissionText.toString());
