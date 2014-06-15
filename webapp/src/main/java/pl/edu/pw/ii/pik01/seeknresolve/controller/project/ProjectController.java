@@ -102,7 +102,7 @@ public class ProjectController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<List<ProjectDTO>> search(@RequestParam("query") String query) {
-        return new Response<>(projectService.search(query), Response.Status.RECEIVED);
+        return new Response<>(projectService.search(query, userService.getLoggedUser()), Response.Status.RECEIVED);
     }
 
     @ResponseBody

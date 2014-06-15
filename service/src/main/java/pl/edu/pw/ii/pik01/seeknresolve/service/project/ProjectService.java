@@ -146,9 +146,10 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectDTO> search(String query) {
+    public List<ProjectDTO> search(String query, User user) {
         List<Project> foundBugs = projectRepository.queryOnFields(query, "name", "description");
         return foundBugs.stream()
+                .filter(project -> userProjectRoleRepository.findByUserAndProject(user, project) != null)
                 .map(project -> DtosFactory.createProjectDTO(project))
                 .collect(Collectors.toList());
     }
