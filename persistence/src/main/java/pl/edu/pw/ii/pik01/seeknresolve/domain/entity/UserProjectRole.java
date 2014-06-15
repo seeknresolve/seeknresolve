@@ -1,14 +1,11 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class UserProjectRole {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @ManyToOne(optional = false)
