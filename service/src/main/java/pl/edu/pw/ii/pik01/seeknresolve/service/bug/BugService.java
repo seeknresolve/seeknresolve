@@ -1,5 +1,6 @@
 package pl.edu.pw.ii.pik01.seeknresolve.service.bug;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +64,7 @@ public class BugService {
         bug.setProject(project);
         bug.setReporter(userRepository.findOne(bugDTO.getReporterId()));
         updateBugDataFromDTO(bug, bugDTO);
+        bug.setDateCreated(DateTime.now());
         return bug;
     }
 
