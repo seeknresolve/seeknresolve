@@ -65,14 +65,28 @@ projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstan
 function getProjectDetails(scope, http, notificationsService, location, projectId) {
     http.get('/project/' + projectId).
         success(function(data) {
+            firstDayOfProject = roundDate(new Date(data.object.dateCreated));
+            todayDate = roundDate(new Date());
             scope.project = data.object;
             scope.bugStat.closed = getClosedBugsByDate(scope.project.bugs);
             scope.bugStat.opened = getOpenedBugsByDate(scope.project.bugs);
             scope.chartConfig.series[0].data = scope.bugStat.opened;
             scope.chartConfig.series[1].data = scope.bugStat.closed;
-            scope.chartConfig.series[1].data.push(
-                [_.last(scope.chartConfig.series[0].data)[0], _.last(scope.chartConfig.series[1].data)[1]]
-            );
+
+            if (_.find(scope.chartConfig.series[0].data, function(obj) {return obj[0] == firstDayOfProject;}) === undefined) {
+                scope.chartConfig.series[0].data.unshift([firstDayOfProject, 0]);
+            } else {
+                scope.chartConfig.series[0].data.unshift([firstDayOfProject - 24*60*60*1000, 0]);
+            }
+
+            if (_.find(scope.chartConfig.series[1].data, function(obj) {return obj[0] == firstDayOfProject;}) === undefined) {
+                scope.chartConfig.series[1].data.unshift([firstDayOfProject, 0]);
+            } else {
+                scope.chartConfig.series[1].data.unshift([firstDayOfProject - 24*60*60*1000, 0]);
+            }
+
+            scope.chartConfig.series[1].data.push([todayDate, _.last(scope.chartConfig.series[1].data)[1]]);
+            scope.chartConfig.series[1].data.push([todayDate, _.last(scope.chartConfig.series[1].data)[1]]);
         }).error(function(data, status, headers, config) {
             if(data.error) {
                 notificationsService.error('Error', data.error);
@@ -95,8 +109,7 @@ function getOpenedBugsByDate(bugs) {
 
 function aggregateBugsByDate(bugs, dateField) {
     result = _.each(bugs, function(bug) {
-        var date = new Date(bug[dateField]);
-        bug[dateField] = Date.UTC(date.getFullYear(), date.getMonth(), date.getDay());
+        bug[dateField] = roundDate(new Date(bug[dateField]));
     });
     result = _.countBy(result, dateField);
     result = _.pairs(result);
@@ -108,6 +121,10 @@ function aggregateBugsByDate(bugs, dateField) {
         obj[0] = parseInt(obj[0]);
     });
     return result;
+}
+
+function roundDate(date) {
+    return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
 function getChartConfig(scope) {
