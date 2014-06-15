@@ -61,15 +61,85 @@ projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstan
 ]);
 
 function getProjectDetails(scope, http, projectId) {
-    http.get('/project/' + projectId).success(function(data) {
-        scope.project = data.object;
-    }).error(function(data, status, headers, config) {
-        if(data.error) {
-            scope.errorMessage = data.error;
-        } else {
-            scope.errorMessage = "Can't retrieve project details!";
-        }
+    http.get('/project/' + projectId).
+        success(function(data) {
+            scope.project = data.object;
+            scope.bugStat.closed = getClosedBugsByDate(scope.project.bugs);
+            scope.bugStat.opened = getOpenedBugsByDate(scope.project.bugs);
+            scope.chartConfig.series[0].data = scope.bugStat.opened;
+            scope.chartConfig.series[1].data = scope.bugStat.closed;
+        }).error(function(data, status, headers, config) {
+            if(data.error) {
+                scope.errorMessage = data.error;
+            } else {
+                scope.errorMessage = "Can't retrieve project details!";
+            }
+        });
+}
+
+function getClosedBugsByDate(bugs) {
+    result = _.filter(bugs, function(bug) { return _.indexOf(["STOPPED", "CLOSED"], bug.state) != -1 ;});
+    return aggregateBugsByDate(result, "dateModified");
+}
+
+function getOpenedBugsByDate(bugs) {
+    result = _.filter(bugs, function(bug) { return _.indexOf(["IN_PROGRESS", "READY_TO_TEST", "REOPENED" ], bug.state) != -1 ;});
+    return aggregateBugsByDate(result, "dateCreated");
+}
+
+function aggregateBugsByDate(bugs, dateField) {
+    result = _.each(bugs, function(bug) {
+        var date = new Date(bug.dateModified);
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        bug.dateModified = date.getTime();
     });
+    result = _.countBy(result, dateField);
+    result = _.pairs(result);
+    result = _.sortBy(result, 0);
+    return result;
+}
+
+function getChartConfig(scope) {
+    config = {
+        options: {
+            chart: {
+                type: 'areaspline',
+                    zoomType: 'x'
+            }
+        },
+        title: {
+            text: 'bugs history'
+        },
+        loading: false,
+            xAxis: {
+        type: 'datetime',
+            dateTimeLabelFormats: {
+            month: '%e. %b',
+                year: '%b'
+        },
+        title: {
+            text: 'Date'
+        }
+    },
+        yAxis: {
+            title: {
+                text: 'Number of bugs'
+            }
+        },
+        series: [{
+            name: 'Opened bugs',
+            data: scope.stats.openedBugs,
+            color: '#FF6A48'
+        }, {
+            name: 'Closed bugs',
+            data: scope.stats.closedBugs,
+            color: '#A7FF4C'
+        }]
+    };
+    return config;
 }
 
 projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$routeParams', 'notificationsService', '$modal',
@@ -77,7 +147,10 @@ projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$route
         scope.id = null;
         scope.projectRevisionDiffs = [];
         scope.project = null;
-
+        scope.bugStat = {
+            closed: null,
+            opened: null
+        };
         getProjectDetails(scope, http, routeParams.id);
 
         http.get('/projectRevision/all/' + routeParams.id).success(function(data) {
@@ -87,47 +160,11 @@ projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$route
         });
 
         scope.stats = {
-            date: [1,2,3,4,5,6,7,8,9,10],
-            closedBugs: [0, 0, 1, 4, 10, 3, 12, 2, 0, 0],
-            openedBugs: [10, 15, 12, 8, 7, 1, 1, 19, 15, 10]
+            closedBugs: null,
+            openedBugs: null
         };
 
-
-        scope.chartConfig = {
-            options: {
-                chart: {
-                    type: 'areaspline',
-                    zoomType: 'x'
-                }
-            },
-            title: {
-                text: 'bugs history'
-            },
-            loading: false,
-            xAxis: {
-                title: {
-                    text: 'Date'
-                },
-                categories: scope.stats.date,
-                tickmarkPlacement: 'on',
-                endOnTick: 'true',
-                startOnTick: 'true'
-            },
-            yAxis: {
-                title: {
-                    text: 'Number of bugs'
-                }
-            },
-            series: [{
-                name: 'Opened bugs',
-                data: scope.stats.openedBugs,
-                color: '#FF6A48'
-            }, {
-                name: 'Closed bugs',
-                data: scope.stats.closedBugs,
-                color: '#A7FF4C'
-            }]
-        };
+        scope.chartConfig = getChartConfig(scope);
 
         scope.removeAssignment = function(userId) {
             http.delete('/project/' + scope.project.id + '/revokeRole/user/' + userId).
