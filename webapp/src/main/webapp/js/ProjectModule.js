@@ -22,7 +22,7 @@ projectModule.controller('ProjectListController', ['$scope', '$http', '$location
     }
 ]);
 
-projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstance', '$http', '$notificationsService', '$location', 'projectId',
+projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstance', '$http', 'notificationsService', '$location', 'projectId',
     function(scope, modalInstance, http, notificationsService, location, projectId) {
         scope.selected = {
             user: null,
