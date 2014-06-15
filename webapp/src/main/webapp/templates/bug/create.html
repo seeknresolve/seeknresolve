@@ -47,7 +47,7 @@
                     <div class="form-group">
                         <label for="assigneeId" class="col-md-2 control-label">Assignee:</label>
                         <div class="col-md-4">
-                            <select class="form-control" id="assigneeId" name="assigneeId" ng-model="assignee" ng-options="user.login for user in projectUsers">
+                            <select class="form-control" id="assigneeId" name="assigneeId" ng-model="assignee" ng-options="user as (user.firstName + ' ' + user.lastName) for user in projectUsers">
                                 <option value="">-- choose assignee --</option>
                             </select>
                         </div>

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.edu.pw.ii.pik01.seeknresolve.TestAppContext;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.BugBuilder;
@@ -27,6 +28,7 @@ import pl.edu.pw.ii.pik01.seeknresolve.service.security.ContextUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestAppContext.class)
+@ActiveProfiles("test")
 public class CommentServiceIntegrationTest {
     @Autowired
     private UserRepository userRepository;

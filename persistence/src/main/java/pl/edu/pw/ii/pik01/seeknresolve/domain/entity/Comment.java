@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 public class Comment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     private Long id;
 
