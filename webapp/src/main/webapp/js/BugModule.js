@@ -206,9 +206,11 @@ bugModule.controller('BugCreateController', ['$scope', '$http', '$location', 'no
                 notificationsService.success('Success', 'Bug ' + data.object.tag + ' reported successfully');
                 location.path('/bug');
             }).error(function (data, status, headers, config) {
-                data.fieldErrors.forEach(function (fieldError) {
-                    scope.bugForm.$setValidity(fieldError.field, false, scope.bugForm);
-                });
+                if(data.fieldErrors != null) {
+                    data.fieldErrors.forEach(function (fieldError) {
+                        scope.bugForm.$setValidity(fieldError.field, false, scope.bugForm);
+                    });
+                }
                 notificationsService.error('Error', 'Bug save failed!');
             });
         }

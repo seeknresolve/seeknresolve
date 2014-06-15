@@ -2,6 +2,7 @@ package pl.edu.pw.ii.pik01.seeknresolve.controller.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,6 +54,14 @@ public class ControllerExceptionHandler {
     public ValidationErrors handleException(MethodArgumentNotValidException exception) {
         log.error("BAD_REQUEST: {}", exception.getMessage());
         return validationErrorsFactory.buildValidationErrors(exception.getBindingResult());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorResponse handleDataIntegrityException(DataIntegrityViolationException exception) {
+        log.error("BAD_REQUEST: {}", exception.getMessage());
+        return new ErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler
