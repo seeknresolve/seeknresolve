@@ -93,11 +93,7 @@ function getOpenedBugsByDate(bugs) {
 function aggregateBugsByDate(bugs, dateField) {
     result = _.each(bugs, function(bug) {
         var date = new Date(bug[dateField]);
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
-        bug[dateField] = date;
+        bug[dateField] = Date.UTC(date.getFullYear(), date.getMonth(), date.getDay());
     });
     result = _.countBy(result, dateField);
     result = _.pairs(result);
@@ -105,6 +101,9 @@ function aggregateBugsByDate(bugs, dateField) {
     for(i = 1; i < result.length; i++) {
         result[i][1] += result[i-1][1];
     }
+    _.each(result, function(obj) {
+        obj[0] = parseInt(obj[0]);
+    });
     return result;
 }
 
@@ -113,18 +112,17 @@ function getChartConfig(scope) {
         options: {
             chart: {
                 type: 'areaspline',
-                    zoomType: 'x'
+                zoomType: 'x'
             }
         },
         title: {
             text: 'bugs history'
         },
-        loading: false,
         xAxis: {
             type: 'datetime',
             dateTimeLabelFormats: {
-                day: '%e of %b',
-                month: '%e, %b',
+                week: '%b %e',
+                month: '%e. %b',
                 year: '%b'
             },
             title: {
@@ -140,13 +138,11 @@ function getChartConfig(scope) {
         series: [{
             name: 'Opened bugs',
             data: scope.stats.openedBugs,
-            color: '#FF6A48',
-            pointInterval: 24 * 3600 * 1000
+            color: '#FF6A48'
         }, {
             name: 'Closed bugs',
             data: scope.stats.closedBugs,
-            color: '#A7FF4C',
-            pointInterval: 24 * 3600 * 1000
+            color: '#A7FF4C'
         }
 ]
     };
