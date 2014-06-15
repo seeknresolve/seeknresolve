@@ -22,8 +22,8 @@ projectModule.controller('ProjectListController', ['$scope', '$http', '$location
     }
 ]);
 
-projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstance', '$http', 'projectId',
-    function(scope, modalInstance, http, projectId) {
+projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstance', '$http', '$notificationsService', '$location', 'projectId',
+    function(scope, modalInstance, http, notificationsService, location, projectId) {
         scope.selected = {
             user: null,
             role: null
@@ -34,7 +34,8 @@ projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstan
             scope.users = data.object;
             scope.selected.user = scope.users[0];
         }).error(function(data, status, headers, config) {
-            scope.errorMessage = "Can't retrieve user list!";
+            notificationsService.error('Error', "Can't retrieve user list!");
+            location.path('/project/' + projectId);
         });
 
         scope.roles = [];
@@ -42,7 +43,8 @@ projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstan
             scope.roles = data.object;
             scope.selected.role = scope.roles[0];
         }).error(function(data, status, headers, config) {
-            scope.errorMessage = "Can't retrieve project role list!";
+            notificationsService.error('Error', "Can't retrieve project role list!");
+            location.path('/project/' + projectId);
         });
 
         scope.ok = function () {
@@ -60,7 +62,7 @@ projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstan
     }
 ]);
 
-function getProjectDetails(scope, http, projectId) {
+function getProjectDetails(scope, http, notificationsService, location, projectId) {
     http.get('/project/' + projectId).
         success(function(data) {
             scope.project = data.object;
@@ -73,10 +75,11 @@ function getProjectDetails(scope, http, projectId) {
             );
         }).error(function(data, status, headers, config) {
             if(data.error) {
-                scope.errorMessage = data.error;
+                notificationsService.error('Error', data.error);
             } else {
-                scope.errorMessage = "Can't retrieve project details!";
+                notificationsService.error('Error', "Can't retrieve project details!");
             }
+            location.path('/project');
         });
 }
 
@@ -149,8 +152,8 @@ function getChartConfig(scope) {
     return config;
 }
 
-projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$routeParams', 'notificationsService', '$modal',
-    function(scope, http, routeParams, notificationsService, modal) {
+projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$routeParams', 'notificationsService', '$location', '$modal',
+    function(scope, http, routeParams, notificationsService, location, modal) {
         scope.id = null;
         scope.projectRevisionDiffs = [];
         scope.project = null;
@@ -158,7 +161,7 @@ projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$route
             closed: null,
             opened: null
         };
-        getProjectDetails(scope, http, routeParams.id);
+        getProjectDetails(scope, http, notificationsService, location, routeParams.id);
 
         http.get('/projectRevision/all/' + routeParams.id).success(function(data) {
             scope.projectRevisionDiffs = data.object;
@@ -177,9 +180,10 @@ projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$route
             http.delete('/project/' + scope.project.id + '/revokeRole/user/' + userId).
                 success(function (data, status, headers, config) {
                     notificationsService.success("User role have been revoked.");
-                    getProjectDetails(scope, http, routeParams.id);
+                    getProjectDetails(scope, http, notificationsService, location, routeParams.id);
                 }).error(function(data, status, headers, config) {
-                    scope.errorMessage = "Can't revoke user role.";
+                    notificationsService.error('Error', "Can't revoke user role.");
+                    location.path('/project/' + projectId);
                 });
         };
 
@@ -198,9 +202,9 @@ projectModule.controller('ProjectDetailsController', ['$scope', '$http', '$route
                 http.post('/project/' + userProjectRole.projectId + '/grantRole/' + userProjectRole.role + '/user/' + userProjectRole.userId).
                     success(function (data, status, headers, config) {
                         notificationsService.success('User has been assigned successfully.');
-                        getProjectDetails(scope, http, routeParams.id);
+                        getProjectDetails(scope, http, notificationsService, location, routeParams.id);
                     }).error(function (data, status, headers, config) {
-                    notificationsService.error('Error', 'Assigning user failed! ' + data.error);
+                        notificationsService.error('Error', 'Assigning user failed! ' + data.error);
                     });
 
             });
