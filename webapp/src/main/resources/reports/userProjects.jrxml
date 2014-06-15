@@ -2,7 +2,9 @@
 <!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="userProjects" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="25728b4f-e12e-447a-a04a-cd29c7ed6383">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PIK_database"/>
-	<parameter name="userId" class="java.lang.Long"/>
+	<parameter name="userId" class="java.lang.Long">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
 	<parameter name="loggedUser" class="java.lang.String">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
@@ -23,6 +25,10 @@ order by
 	<field name="description" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
 	<field name="project_role_rolename" class="java.lang.String"/>
+	<field name="date_modified" class="java.sql.Timestamp"/>
+	<field name="last_bug_number" class="java.lang.Long"/>
+	<field name="tag" class="java.lang.String"/>
+	<field name="version" class="java.lang.Long"/>
 	<title>
 		<band height="40" splitType="Stretch">
 			<property name="local_mesure_unitheight" value="pixel"/>

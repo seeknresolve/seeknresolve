@@ -51,7 +51,7 @@ public class Printer {
             objectMapper.registerModule(new JodaModule());
             String json = objectMapper.writeValueAsString(dataSource.toArray());
 
-            JsonDataSource jsonDataSource = new JsonDataSource(new ByteArrayInputStream(json.getBytes()));
+            JsonDataSource jsonDataSource = new JsonDataSource(new ByteArrayInputStream(json.getBytes("UTF-8")));
             jasperPrint = JasperFillManager.fillReport(COMPILED_REPORTS_DIR + File.separator + jasperFileName + ".jasper", parameters, jsonDataSource);
         }else {
             jasperPrint = JasperFillManager.fillReport(COMPILED_REPORTS_DIR + File.separator + jasperFileName + ".jasper", parameters, connection);

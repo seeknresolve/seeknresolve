@@ -42,8 +42,8 @@
 	assignee.last_name as assignee_last_name
 from 
 	bug b
-	join user reporter on reporter.id = b.reporter_id
-	join user assignee on assignee.id = b.assignee_id
+	join public.user reporter on reporter.id = b.reporter_id
+	join public.user assignee on assignee.id = b.assignee_id
 where
 	b.project_id = $P{projectId}]]>
 	</queryString>
@@ -71,7 +71,10 @@ where
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<rectangle>
-				<reportElement mode="Transparent" x="0" y="0" width="555" height="100" uuid="0ac622a3-3704-4338-af5f-7d3bca34056b"/>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="100" uuid="0ac622a3-3704-4338-af5f-7d3bca34056b">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<graphicElement>
 					<pen lineWidth="2.0" lineStyle="Solid" lineColor="#B05CFF"/>
 				</graphicElement>
