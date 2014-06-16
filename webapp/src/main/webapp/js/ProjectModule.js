@@ -65,28 +65,16 @@ projectModule.controller('ProjectUserAssignController', ['$scope', '$modalInstan
 function getProjectDetails(scope, http, notificationsService, location, projectId) {
     http.get('/project/' + projectId).
         success(function(data) {
-            firstDayOfProject = roundDate(new Date(data.object.dateCreated));
-            todayDate = roundDate(new Date());
             scope.project = data.object;
             scope.bugStat.closed = getClosedBugsByDate(scope.project.bugs);
             scope.bugStat.opened = getOpenedBugsByDate(scope.project.bugs);
             scope.chartConfig.series[0].data = scope.bugStat.opened;
             scope.chartConfig.series[1].data = scope.bugStat.closed;
 
-            if (_.find(scope.chartConfig.series[0].data, function(obj) {return obj[0] == firstDayOfProject;}) === undefined) {
-                scope.chartConfig.series[0].data.unshift([firstDayOfProject, 0]);
-            } else {
-                scope.chartConfig.series[0].data.unshift([firstDayOfProject - 24*60*60*1000, 0]);
-            }
-
-            if (_.find(scope.chartConfig.series[1].data, function(obj) {return obj[0] == firstDayOfProject;}) === undefined) {
-                scope.chartConfig.series[1].data.unshift([firstDayOfProject, 0]);
-            } else {
-                scope.chartConfig.series[1].data.unshift([firstDayOfProject - 24*60*60*1000, 0]);
-            }
-
-            scope.chartConfig.series[1].data.push([todayDate, _.last(scope.chartConfig.series[1].data)[1]]);
-            scope.chartConfig.series[1].data.push([todayDate, _.last(scope.chartConfig.series[1].data)[1]]);
+            //insert first and last point at chart.
+            //probably highchart have some magic option to do that.
+            setFirstAndLastPointIfNeeded(scope.chartConfig.series[0].data);
+            setFirstAndLastPointIfNeeded(scope.chartConfig.series[1].data);
         }).error(function(data, status, headers, config) {
             if(data.error) {
                 notificationsService.error('Error', data.error);
@@ -95,6 +83,15 @@ function getProjectDetails(scope, http, notificationsService, location, projectI
             }
             location.path('/project');
         });
+}
+function setFirstAndLastPointIfNeeded(data) {
+    todayDate = roundDate(new Date());
+    if (_.first(data)[1] != 0) {
+        data.unshift([_.first(data)[0] - 24*60*60*1000, 0]);
+    }
+    if (_.last(data)[0] != todayDate) {
+        data.push([todayDate, _.last(data)[1]]);
+    }
 }
 
 function getClosedBugsByDate(bugs) {
