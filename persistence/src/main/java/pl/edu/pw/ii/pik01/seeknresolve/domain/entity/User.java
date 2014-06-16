@@ -210,7 +210,7 @@ public class User {
 
         User user = (User) o;
 
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (id != null ? !id.equals(user.getId()) : user.getId() != null) return false;
 
         return true;
     }

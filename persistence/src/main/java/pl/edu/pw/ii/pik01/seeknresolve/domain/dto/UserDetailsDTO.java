@@ -1,10 +1,10 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
-/**
- * Created by wojciechko on 16.06.14.
- */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDetailsDTO {
     UserDTO userDTO;
     List<BugDTO> reportedBugs;

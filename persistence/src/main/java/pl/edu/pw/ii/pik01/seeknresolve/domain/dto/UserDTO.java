@@ -1,5 +1,8 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
     private Long id;
     private String login;
