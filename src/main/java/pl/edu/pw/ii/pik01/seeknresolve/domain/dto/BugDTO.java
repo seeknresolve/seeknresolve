@@ -1,6 +1,8 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
@@ -13,7 +15,9 @@ public class BugDTO {
     @NotEmpty
     private String name;
     private String description;
+    @JsonSerialize(using = DateTimeSerializer.class)
     private DateTime dateCreated;
+    @JsonSerialize(using = DateTimeSerializer.class)
     private DateTime dateModified;
     @NotNull
     private Long reporterId;

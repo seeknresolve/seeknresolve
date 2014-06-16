@@ -1,10 +1,8 @@
 package pl.edu.pw.ii.pik01.seeknresolve;
 
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -13,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.search.impl.hibernate.CustomRepositoryFactoryBean;
 
 @ComponentScan
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = { LiquibaseAutoConfiguration.class })
 @EnableJpaRepositories(value = "pl.edu.pw.ii.pik01.seeknresolve.domain",
         repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
@@ -25,10 +23,5 @@ public class TestAppContext {
         app.setAdditionalProfiles("test");
         app.setShowBanner(false);
         app.run(args);
-    }
-
-    @Bean
-    public Module getJodaTimeModule() {
-        return new JodaModule();
     }
 }

@@ -1,9 +1,11 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
 import org.joda.time.DateTime;
 
 public class RevisionDiffDTO {
-
+    @JsonSerialize(using = DateTimeSerializer.class)
     private DateTime modificationTime;
     private String description;
 

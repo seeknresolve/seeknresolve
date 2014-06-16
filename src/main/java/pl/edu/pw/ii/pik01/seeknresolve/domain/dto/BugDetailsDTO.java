@@ -1,5 +1,7 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
 import org.joda.time.DateTime;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug;
 
@@ -50,6 +52,7 @@ public class BugDetailsDTO {
         bug.setDescription(description);
     }
 
+    @JsonSerialize(using = DateTimeSerializer.class)
     public DateTime getDateCreated() {
         return bug.getDateCreated();
     }
@@ -58,6 +61,7 @@ public class BugDetailsDTO {
         bug.setDateCreated(dateCreated);
     }
 
+    @JsonSerialize(using = DateTimeSerializer.class)
     public DateTime getDateModified() {
         return bug.getDateModified();
     }

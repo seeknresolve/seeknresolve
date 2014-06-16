@@ -67,8 +67,8 @@ public class ControllerExceptionHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorResponse handle(HttpMessageNotReadableException exception) {
-        log.error("BAD_REQUEST", exception.getMessage());
+    public ErrorResponse handleMessageNotReadable(HttpMessageNotReadableException exception) {
+        log.error("BAD_REQUEST: {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 }
