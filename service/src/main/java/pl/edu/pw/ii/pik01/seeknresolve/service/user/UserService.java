@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ChangePasswordDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CreateUserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.User;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserProjectRole;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.entity.UserRole;
@@ -61,21 +62,21 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO findById(Long id){
+    public UserDetailsDTO findById(Long id){
         User user = userRepository.findOne(id);
         if(user == null){
             throw new EntityNotFoundException("User with id=" + id + " not found.");
         }
-        return DtosFactory.createUserDTO(user);
+        return DtosFactory.createUserDetailsDTO(user);
     }
 
     @Transactional
-    public UserDTO findByLogin(String login){
+    public UserDetailsDTO findByLogin(String login){
         User user = userRepository.findOneByLogin(login);
         if(user == null){
             throw new EntityNotFoundException("User with login=" + login + " not found.");
         }
-        return DtosFactory.createUserDTO(user);
+        return DtosFactory.createUserDetailsDTO(user);
     }
 
     @Transactional

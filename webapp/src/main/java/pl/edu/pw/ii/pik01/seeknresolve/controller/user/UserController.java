@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.ChangePasswordDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.CreateUserDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDTO;
+import pl.edu.pw.ii.pik01.seeknresolve.domain.dto.UserDetailsDTO;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.ErrorResponse;
 import pl.edu.pw.ii.pik01.seeknresolve.service.response.Response;
 import pl.edu.pw.ii.pik01.seeknresolve.service.user.UserService;
@@ -46,8 +47,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/details/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<UserDTO> get(@PathVariable("login") String login) {
-        UserDTO user = userService.findByLogin(login);
+    public Response<UserDetailsDTO> get(@PathVariable("login") String login) {
+        UserDetailsDTO user = userService.findByLogin(login);
         return new Response<>(user, Response.Status.RECEIVED);
     }
 

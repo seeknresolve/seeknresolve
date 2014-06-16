@@ -73,6 +73,106 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Reported:
+                </div>
+                <table class="table" ng-show="user.reportedBugs.length">
+                    <thead>
+                    <th>Tag</th>
+                    <th>Name</th>
+                    <th>Project</th>
+                    <th>Reporter</th>
+                    <th>Assignee</th>
+                    <th>Created</th>
+                    <th>Last modified</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="reportedBug in user.reportedBugs">
+                        <td>
+                            <a href="#/bug/details/{{reportedBug.tag}}">
+                                {{reportedBug.tag}}
+                            </a>
+                        </td>
+                        <td>{{reportedBug.name}}</td>
+                        <td>
+                            <a href="#/project/{{reportedBug.projectId}}">
+                                {{reportedBug.projectName}}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#/user/details/{{reportedBug.reporterLogin}}">
+                                {{reportedBug.reporterName}}
+                            </a>
+                        </td>
+                        <td>
+                            <user-display user-login="{{reportedBug.assigneeLogin}}" user-name="{{reportedBug.assigneeName}}"></user-display>
+                        </td>
+                        <td>{{reportedBug.dateCreated | date:'HH:mm:ss MM-dd-yyyy'}}</td>
+                        <td>{{reportedBug.dateModified | date:'HH:mm:ss MM-dd-yyyy'}}</td>
+                        <td>{{reportedBug.state | bugStateFilter}}</td>
+                        <td><bug-priority priority="{{reportedBug.priority}}"></bug-priority></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Assigned to:
+                </div>
+                <table class="table" ng-show="user.assignedBugs.length">
+                    <thead>
+                        <th>Tag</th>
+                        <th>Name</th>
+                        <th>Project</th>
+                        <th>Reporter</th>
+                        <th>Assignee</th>
+                        <th>Created</th>
+                        <th>Last modified</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="assignedBug in user.assignedBugs">
+                            <td>
+                                <a href="#/bug/details/{{assignedBug.tag}}">
+                                    {{assignedBug.tag}}
+                                </a>
+                            </td>
+                            <td>{{assignedBug.name}}</td>
+                            <td>
+                                <a href="#/project/{{assignedBug.projectId}}">
+                                    {{assignedBug.projectName}}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#/user/details/{{assignedBug.reporterLogin}}">
+                                    {{assignedBug.reporterName}}
+                                </a>
+                            </td>
+                            <td>
+                                <user-display user-login="{{assignedBug.assigneeLogin}}" user-name="{{assignedBug.assigneeName}}"></user-display>
+                            </td>
+                            <td>{{assignedBug.dateCreated | date:'HH:mm:ss MM-dd-yyyy'}}</td>
+                            <td>{{assignedBug.dateModified | date:'HH:mm:ss MM-dd-yyyy'}}</td>
+                            <td>{{assignedBug.state | bugStateFilter}}</td>
+                            <td><bug-priority priority="{{assignedBug.priority}}"></bug-priority></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div class="row col-lg-12" ng-show="shouldShowChangePasswordButton">
         <div class="row col-lg-6">
             <div class="panel panel-default">

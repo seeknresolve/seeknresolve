@@ -42,6 +42,12 @@ public class DtosFactory {
         return bugDTO;
     }
 
+    public static List<BugDTO> createBugDTOList(List<Bug> bugList) {
+        return bugList.stream()
+                .map(DtosFactory::createBugDTO)
+                .collect(Collectors.toList());
+    }
+
     public static BugDetailsDTO createBugDetailsDTO(BugDTO bug, List<CommentDTO> comments) {
         return new BugDetailsDTO(bug, comments);
     }
@@ -55,6 +61,14 @@ public class DtosFactory {
         userDTO.setLastName(user.getLastName());
         userDTO.setUserRole(user.getUserRole().getRoleName());
         return userDTO;
+    }
+
+
+    public static UserDetailsDTO createUserDetailsDTO(User user) {
+        UserDTO userDto = createUserDTO(user);
+        List<BugDTO> reportedBugs = createBugDTOList(user.getReportedBugs());
+        List<BugDTO> assignedBugs = createBugDTOList(user.getAssignedBugs());
+        return new UserDetailsDTO(userDto, reportedBugs, assignedBugs);
     }
 
     public static List<UserDTO> createUserDTOList(List<User> userList) {
