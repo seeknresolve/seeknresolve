@@ -1,12 +1,15 @@
 package pl.edu.pw.ii.pik01.seeknresolve.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
 import org.joda.time.DateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentDTO {
     private Long id;
     private String content;
+    @JsonSerialize(using = DateTimeSerializer.class)
     private DateTime dateCreated;
     private Long authorId;
     private String authorLogin;
