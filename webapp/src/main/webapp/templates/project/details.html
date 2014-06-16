@@ -55,7 +55,9 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="user in project.users">
-                            <td>{{user.login}} ({{user.firstName}} {{user.lastName}})</td>
+                            <td>
+                                <a href="#/user/details/{{user.login}}">{{user.login}}({{user.firstName}} {{user.lastName}})</a>
+                            </td>
                             <td>{{user.projectRole.roleName}}</td>
                             <td>
                                 <button role="button" class="btn btn-danger" ng-click="removeAssignment(user.id)">
