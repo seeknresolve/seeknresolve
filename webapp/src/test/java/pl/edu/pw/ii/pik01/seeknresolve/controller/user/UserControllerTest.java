@@ -60,7 +60,7 @@ public class UserControllerTest {
                                                 .withRole(new UserRole("God"))
                                                 .build();
 
-        when(userService.findByLogin("cthulu")).thenReturn(DtosFactory.createUserDTO(existingUser));
+        when(userService.findByLogin("cthulu")).thenReturn(DtosFactory.createUserDetailsDTO(existingUser));
 
         mockMvc.perform(get("/user/details/cthulu")).
                 andExpect(status().isOk()).
