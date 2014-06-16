@@ -27,6 +27,7 @@ import javax.sql.DataSource;
     repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableTransactionManagement
+@Profile("development")
 public class SeekNResolve implements EmbeddedServletContainerCustomizer {
     @Autowired
     private DataSource dataSource;
@@ -41,7 +42,6 @@ public class SeekNResolve implements EmbeddedServletContainerCustomizer {
     public Module getJodaTimeModule() {
         return new JodaModule();
     }
-
 
     @Bean
     @Profile("development")

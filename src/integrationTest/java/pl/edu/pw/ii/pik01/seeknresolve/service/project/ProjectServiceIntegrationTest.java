@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.edu.pw.ii.pik01.seeknresolve.TestAppContext;
 import pl.edu.pw.ii.pik01.seeknresolve.domain.common.test.builders.ProjectBuilder;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestAppContext.class)
+@ActiveProfiles("test")
 public class ProjectServiceIntegrationTest {
 
     @Autowired

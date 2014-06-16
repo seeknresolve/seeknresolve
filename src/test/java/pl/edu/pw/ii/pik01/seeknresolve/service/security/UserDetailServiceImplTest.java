@@ -16,7 +16,6 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserDetailServiceImplTest {
-
     private static final String USERNAME = "john";
 
     @Mock
