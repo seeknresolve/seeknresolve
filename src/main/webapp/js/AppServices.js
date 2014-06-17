@@ -17,7 +17,6 @@ appServices.service('notificationsService', ['postman', function(postman) {
     }
 }]);
 
-//TODO: ten callback działa bardzo kulawo, warto to dopracować @rnw
 appServices.service('userService', ['$http', function(http) {
     return {
         getLoggedUser: function (callback) {
@@ -50,13 +49,13 @@ appServices.service('projectService', ['$http', function(http) {
     }
 }]);
 
-appServices.service('permissionService', ['$http', '$log', function($http, $log) {
+appServices.service('permissionService', ['$http', function(http) {
     return {
         hasPermission: function (permissionNameArg, callback) {
             var permission = {permissionName: permissionNameArg};
             var params = JSON.stringify(permission);
 
-            $http.post('/permission/hasPermission', params, {
+            http.post('/permission/hasPermission', params, {
                 headers: {
                     'Content-Type': 'application/json; charset=UTF-8'
                 }

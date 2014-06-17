@@ -107,12 +107,12 @@ userModule.controller('UserDetailsController', ['$scope', '$http', '$route', '$r
 
         scope.showChangePassword = function() {
             scope.isChangingPassword = true;
-        }
+        };
 
         scope.cancelChangePassword = function() {
             scope.isChangingPassword = false;
             scope.changingPassword = {};
-        }
+        };
 
         scope.changePassword = function() {
             if(scope.changingPassword.password != scope.changingPassword.confirmPassword) {
