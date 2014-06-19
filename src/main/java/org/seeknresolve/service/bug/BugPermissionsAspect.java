@@ -1,4 +1,4 @@
-package org.seeknresolve.aspect.bug;
+package org.seeknresolve.service.bug;
 
 import com.google.common.collect.Lists;
 import org.aspectj.lang.JoinPoint;

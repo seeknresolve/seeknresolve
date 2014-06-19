@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component("auditorAware")
-class SpringSecurityAuditorAware implements AuditorAware<User> {
+class SecurityUserAuditorAware implements AuditorAware<User> {
     @Override
     public User getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

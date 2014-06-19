@@ -1,4 +1,4 @@
-package org.seeknresolve.domain.common.test.builders;
+package org.seeknresolve.domain.test.builders;
 
 import org.seeknresolve.domain.entity.User;
 import org.seeknresolve.domain.entity.UserRole;

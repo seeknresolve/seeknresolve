@@ -1,6 +1,6 @@
 package org.seeknresolve;
 
-import org.seeknresolve.domain.search.impl.hibernate.CustomRepositoryFactoryBean;
+import org.seeknresolve.domain.search.impl.hibernate.SearchWithAuditRepositoryFactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan
 @EnableAutoConfiguration(exclude = { LiquibaseAutoConfiguration.class })
 @EnableJpaRepositories(value = "org.seeknresolve.domain",
-        repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
+        repositoryFactoryBeanClass = SearchWithAuditRepositoryFactoryBean.class)
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableTransactionManagement
 @Profile("test")

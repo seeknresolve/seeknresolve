@@ -1,10 +1,10 @@
 package org.seeknresolve.test;
 
-import org.seeknresolve.domain.common.test.builders.BugBuilder;
-import org.seeknresolve.domain.common.test.builders.ProjectBuilder;
-import org.seeknresolve.domain.common.test.builders.UserBuilder;
 import org.seeknresolve.domain.entity.*;
 import org.seeknresolve.domain.repository.*;
+import org.seeknresolve.domain.test.builders.BugBuilder;
+import org.seeknresolve.domain.test.builders.ProjectBuilder;
+import org.seeknresolve.domain.test.builders.UserBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

@@ -6,7 +6,7 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.joda.time.DateTime;
-import org.seeknresolve.domain.search.CustomRepository;
+import org.seeknresolve.domain.search.SearchWithAuditRepository;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.history.Revision;
 import org.springframework.data.history.RevisionMetadata;
@@ -26,10 +26,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @NoRepositoryBean
-public class CustomRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements CustomRepository<T, ID> {
+public class SearchWithAuditRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements SearchWithAuditRepository<T, ID> {
     private final EntityManager entityManager;
 
-    public CustomRepositoryImpl(Class<T> domainClass, EntityManager entityManager) {
+    public SearchWithAuditRepositoryImpl(Class<T> domainClass, EntityManager entityManager) {
         super(domainClass, entityManager);
         this.entityManager = entityManager;
     }

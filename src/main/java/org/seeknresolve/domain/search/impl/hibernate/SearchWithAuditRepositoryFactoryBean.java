@@ -1,6 +1,6 @@
 package org.seeknresolve.domain.search.impl.hibernate;
 
-import org.seeknresolve.domain.search.CustomRepository;
+import org.seeknresolve.domain.search.SearchWithAuditRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 import java.io.Serializable;
 
 @NoRepositoryBean
-public class CustomRepositoryFactoryBean<R extends JpaRepository<T, ID>, T, ID extends Serializable>
+public class SearchWithAuditRepositoryFactoryBean<R extends JpaRepository<T, ID>, T, ID extends Serializable>
         extends JpaRepositoryFactoryBean<R, T, ID> {
 
     @Override
@@ -31,12 +31,12 @@ public class CustomRepositoryFactoryBean<R extends JpaRepository<T, ID>, T, ID e
 
         @Override
         protected <T, ID extends Serializable> SimpleJpaRepository<?, ?> getTargetRepository(RepositoryMetadata metadata, EntityManager entityManager) {
-            return new CustomRepositoryImpl<>((Class<T>)metadata.getDomainType(), entityManager);
+            return new SearchWithAuditRepositoryImpl<>((Class<T>)metadata.getDomainType(), entityManager);
         }
 
         @Override
         protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
-            return CustomRepository.class;
+            return SearchWithAuditRepository.class;
         }
     }
 }

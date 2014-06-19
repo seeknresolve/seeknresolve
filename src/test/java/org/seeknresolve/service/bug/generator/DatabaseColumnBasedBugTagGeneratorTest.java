@@ -1,8 +1,8 @@
 package org.seeknresolve.service.bug.generator;
 
 import org.junit.Test;
-import org.seeknresolve.domain.common.test.builders.ProjectBuilder;
 import org.seeknresolve.domain.entity.Project;
+import org.seeknresolve.domain.test.builders.ProjectBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

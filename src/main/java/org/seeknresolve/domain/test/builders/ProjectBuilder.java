@@ -1,4 +1,4 @@
-package org.seeknresolve.domain.common.test.builders;
+package org.seeknresolve.domain.test.builders;
 
 import org.joda.time.DateTime;
 import org.seeknresolve.domain.entity.Project;

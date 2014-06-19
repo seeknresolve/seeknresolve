@@ -5,12 +5,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.seeknresolve.domain.common.test.builders.UserBuilder;
 import org.seeknresolve.domain.dto.ChangePasswordDTO;
 import org.seeknresolve.domain.entity.User;
 import org.seeknresolve.domain.repository.RoleRepository;
 import org.seeknresolve.domain.repository.UserProjectRoleRepository;
 import org.seeknresolve.domain.repository.UserRepository;
+import org.seeknresolve.domain.test.builders.UserBuilder;
 
 import javax.persistence.EntityNotFoundException;
 

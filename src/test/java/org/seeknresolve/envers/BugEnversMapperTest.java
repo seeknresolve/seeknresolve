@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.seeknresolve.domain.common.test.builders.BugBuilder;
 import org.seeknresolve.domain.dto.RevisionDiffDTO;
 import org.seeknresolve.domain.entity.Bug;
+import org.seeknresolve.domain.test.builders.BugBuilder;
 import org.springframework.data.history.Revision;
 import org.springframework.data.history.RevisionMetadata;
 

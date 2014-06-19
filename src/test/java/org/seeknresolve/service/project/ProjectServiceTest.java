@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.seeknresolve.domain.common.test.builders.ProjectBuilder;
 import org.seeknresolve.domain.dto.ProjectDTO;
 import org.seeknresolve.domain.entity.Project;
 import org.seeknresolve.domain.entity.ProjectRole;
@@ -15,6 +14,7 @@ import org.seeknresolve.domain.entity.UserProjectRole;
 import org.seeknresolve.domain.repository.BugRepository;
 import org.seeknresolve.domain.repository.ProjectRepository;
 import org.seeknresolve.domain.repository.UserRepository;
+import org.seeknresolve.domain.test.builders.ProjectBuilder;
 import org.seeknresolve.service.common.TestWithSecurity;
 
 import java.util.List;
