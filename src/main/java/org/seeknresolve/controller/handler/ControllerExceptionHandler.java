@@ -16,7 +16,7 @@ import javax.persistence.PersistenceException;
 
 @ControllerAdvice(annotations = RestController.class)
 public class ControllerExceptionHandler {
-    private Logger log = LoggerFactory.getLogger(ControllerExceptionHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
     private ValidationErrorsFactory validationErrorsFactory;
 
@@ -48,7 +48,7 @@ public class ControllerExceptionHandler {
         return new ErrorResponse(exception.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ValidationErrors handleException(MethodArgumentNotValidException exception) {
@@ -64,11 +64,11 @@ public class ControllerExceptionHandler {
         return new ErrorResponse(exception.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorResponse handleMessageNotReadable(HttpMessageNotReadableException exception) {
-        log.error("BAD_REQUEST: {}", exception.getMessage());
+        log.error("BAD_REQUEST, message not readable: {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 }

@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 @Component
 @Profile("development")
 public class DatabaseIndexer {
-    private Logger log = LoggerFactory.getLogger(DatabaseIndexer.class);
+    private static final Logger log = LoggerFactory.getLogger(DatabaseIndexer.class);
 
     @Autowired
     public DatabaseIndexer(EntityManager entityManager) throws InterruptedException {

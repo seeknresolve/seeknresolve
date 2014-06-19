@@ -2,26 +2,22 @@ package org.seeknresolve.controller.role;
 
 import org.seeknresolve.domain.dto.ChangeRolePermissionDTO;
 import org.seeknresolve.domain.dto.RoleDTO;
-import org.seeknresolve.service.response.ErrorResponse;
 import org.seeknresolve.service.response.Response;
 import org.seeknresolve.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/role")
 public class RoleController {
-
     private final RoleService roleService;
 
     @Autowired
-    public  RoleController(RoleService roleService) {
+    public RoleController(RoleService roleService) {
         this.roleService = roleService;
     }
 
@@ -55,11 +51,4 @@ public class RoleController {
         roleService.deletePermissionFromRole(changeRolePermissionDTO.getRoleName(), changeRolePermissionDTO.getPermissionName());
         return new Response<>(changeRolePermissionDTO, Response.Status.DELETED);
     }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleNotFound(Exception exception) {
-        return new ErrorResponse(exception.getMessage());
-    }
-
 }

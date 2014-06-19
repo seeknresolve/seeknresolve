@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PersistenceException;
 import java.util.List;
 
 @RestController
@@ -25,12 +24,8 @@ public class CommentController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<CommentDTO> create(@RequestBody CommentDTO commentDTO) {
-        try {
-            CommentDTO created = commentService.createAndSaveNewComment(commentDTO, userService.getLoggedUser());
-            return new Response<>(created, Response.Status.CREATED);
-        } catch (PersistenceException e) {
-            return new Response<>(null, Response.Status.NOT_CREATED);
-        }
+        CommentDTO created = commentService.createAndSaveNewComment(commentDTO, userService.getLoggedUser());
+        return new Response<>(created, Response.Status.CREATED);
     }
     @RequestMapping(value = "/bug/{bugTag}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<List<CommentDTO>> getByBugTag(@PathVariable("bugTag") String bugTag) {

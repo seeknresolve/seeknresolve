@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/bug")
 public class BugController {
-    private Logger log = LoggerFactory.getLogger(BugController.class);
+    private static final Logger log = LoggerFactory.getLogger(BugController.class);
 
     private BugService bugService;
     private UserService userService;
@@ -41,6 +41,7 @@ public class BugController {
 
     @RequestMapping(value = "/details/{tag}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<BugDetailsDTO> get(@PathVariable String tag) {
+        log.info("Fetching bug details for tag: " + tag);
         BugDetailsDTO bug = bugService.getBugWithTag(tag);
         return new Response<>(bug, Response.Status.RECEIVED);
     }
@@ -67,6 +68,7 @@ public class BugController {
 
     @RequestMapping(value = "/{tag}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response<String> delete(@PathVariable String tag) {
+        log.info("Delete bug with tag: " + tag);
         bugService.deleteBugWithTag(tag);
         return new Response<>(tag, Response.Status.DELETED);
     }
