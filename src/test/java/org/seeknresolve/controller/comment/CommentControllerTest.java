@@ -1,4 +1,4 @@
-package org.seeknresolve.controller.bug;
+package org.seeknresolve.controller.comment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
