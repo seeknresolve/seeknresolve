@@ -17,8 +17,8 @@ configurations.jasperreports {
     transitive = true
 }
 
-version = '1.0-SNAPSHOT'
-group = 'pl.edu.pw.ii.pik01'
+version = '1.0.0-SNAPSHOT'
+group = 'org.seeknresolve'
 sourceCompatibility = 1.8
 
 repositories {

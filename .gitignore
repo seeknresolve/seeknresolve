@@ -5,11 +5,11 @@ target/
 .gradle/
 out/
 classes/
-webapp/pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug/
-webapp/pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project/
-service/pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug/
-service/pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project/
-pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Bug/
-pl.edu.pw.ii.pik01.seeknresolve.domain.entity.Project/
+webapp/org.seeknresolve.domain.entity.Bug/
+webapp/org.seeknresolve.domain.entity.Project/
+service/org.seeknresolve.domain.entity.Bug/
+service/org.seeknresolve.domain.entity.Project/
+org.seeknresolve.domain.entity.Bug/
+org.seeknresolve.domain.entity.Project/
 gradle.properties
 *.*~
