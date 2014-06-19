@@ -29,7 +29,7 @@ For example using command:
 Then you can log to DB using command:
     psql
 
-In postgres console you can eiter paste necessary sql statements from create_*_db.sql files or
+In postgres console you can either paste necessary sql statements from create_*_db.sql files or
 run them directly using psql instruction:
     \i fileName
 
