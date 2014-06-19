@@ -20,10 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.persistence.EntityNotFoundException;
-
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -40,15 +37,6 @@ public class UserControllerTest {
     public void setUp() {
         UserController userController = new UserController(userService);
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-    }
-
-    @Test
-    public void shouldReturn404ForNonExistingUser() throws Exception {
-        when(userService.findByLogin(anyString())).thenThrow(EntityNotFoundException.class);
-
-        mockMvc.perform(get("/user/details/NonExistingUser")).
-                andExpect(status().isNotFound()).
-                andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test

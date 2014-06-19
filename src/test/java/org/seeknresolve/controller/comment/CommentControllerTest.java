@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.seeknresolve.controller.comment.CommentController;
 import org.seeknresolve.domain.repository.BugRepository;
 import org.seeknresolve.domain.repository.CommentRepository;
 import org.seeknresolve.domain.repository.UserRepository;

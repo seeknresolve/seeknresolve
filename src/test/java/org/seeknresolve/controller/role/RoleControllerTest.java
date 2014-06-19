@@ -14,9 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.persistence.EntityNotFoundException;
-
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,16 +31,6 @@ public class RoleControllerTest {
     public void setUp() {
         RoleController roleController = new RoleController(roleService);
         mockMvc = MockMvcBuilders.standaloneSetup(roleController).build();
-    }
-
-    @Test
-    public void shouldReturn404ForNonExistingRole() throws Exception {
-        when(roleService.getRole(anyString())).thenThrow(new EntityNotFoundException("Role not founds"));
-
-        mockMvc.perform(get("/role/details/NonExistingRole")).
-                andExpect(status().isNotFound()).
-                andExpect(content().contentType(MediaType.APPLICATION_JSON)).
-                andExpect(jsonPath("$.error").exists());
     }
 
     @Test
