@@ -7,7 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seeknresolve.TestAppContext;
+import org.seeknresolve.controller.common.ControllerIntegrationTest;
 import org.seeknresolve.domain.dto.BugDTO;
 import org.seeknresolve.domain.entity.Bug;
 import org.seeknresolve.domain.entity.Project;
@@ -19,17 +19,11 @@ import org.seeknresolve.service.common.RolesConstants;
 import org.seeknresolve.service.security.ContextUser;
 import org.seeknresolve.test.TestEntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -38,13 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@SpringApplicationConfiguration(classes = TestAppContext.class)
-@ActiveProfiles("test")
-public class BugControllerIntegrationTest {
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
+public class BugControllerIntegrationTest extends ControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -54,16 +42,14 @@ public class BugControllerIntegrationTest {
     @Autowired
     private ProjectRepository projectRepository;
 
-    private MockMvc mockMvc;
-
     @Before
     public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        super.setup();
     }
 
     @Test
     public void shouldReturn404ForNotExistingBugWithErrorMessageInResponse() throws Exception {
-        mockMvc.perform(get("/bug/details/TotallyNotExistingBug")).
+        getMockMvc().perform(get("/bug/details/TotallyNotExistingBug")).
                 andExpect(status().isNotFound()).
                 andExpect(contentIsJson()).
                 andExpect(jsonPath("$.error").exists());
@@ -75,7 +61,7 @@ public class BugControllerIntegrationTest {
 
     @Test
     public void shouldReturn404AndErrorWhenTryingToDeleteNotExistingBug() throws Exception {
-        mockMvc.perform(delete("/bug/NotExistingBug")).
+        getMockMvc().perform(delete("/bug/NotExistingBug")).
                 andExpect(status().isNotFound()).
                 andExpect(contentIsJson()).
                 andExpect(jsonPath("$.error").exists());
@@ -87,7 +73,7 @@ public class BugControllerIntegrationTest {
         Project project = testEntityFactory.createAndSaveProject("projectTest" + System.currentTimeMillis(), "TEST1");
         String bugAsJson = createBugDTOForSave("", user, project);
 
-        mockMvc.perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(bugAsJson))
+        getMockMvc().perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(bugAsJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(contentIsJson())
                 .andExpect(jsonPath("$.fieldErrors").exists())
@@ -99,7 +85,7 @@ public class BugControllerIntegrationTest {
     public void shouldReturn400AndFieldErrorsIfBugIsInvalidAndHasManyFieldErrors() throws Exception {
         String bugAsJson = createBugDTOForSave("", null, null);
 
-        mockMvc.perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(bugAsJson))
+        getMockMvc().perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(bugAsJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(contentIsJson())
                 .andExpect(jsonPath("$.fieldErrors").exists())
@@ -117,7 +103,7 @@ public class BugControllerIntegrationTest {
         String newName = "newName";
         String updateBugDTO = createUpdateBugDTO(newName, bug);
 
-        mockMvc.perform(put("/bug").contentType(MediaType.APPLICATION_JSON).content(updateBugDTO))
+        getMockMvc().perform(put("/bug").contentType(MediaType.APPLICATION_JSON).content(updateBugDTO))
                 .andExpect(status().isOk())
                 .andExpect(contentIsJson());
     }
@@ -159,7 +145,7 @@ public class BugControllerIntegrationTest {
         String newName = "";
         String updateBugDTO = createUpdateBugDTO(newName, bug);
 
-        mockMvc.perform(put("/bug").contentType(MediaType.APPLICATION_JSON).content(updateBugDTO))
+        getMockMvc().perform(put("/bug").contentType(MediaType.APPLICATION_JSON).content(updateBugDTO))
                 .andExpect(status().isBadRequest())
                 .andExpect(contentIsJson())
                 .andExpect(jsonPath("$.fieldErrors").exists())
@@ -177,7 +163,7 @@ public class BugControllerIntegrationTest {
         String bugName = "RandomName" + RandomStringUtils.randomAlphabetic(5);
         String createBugDTO = createBugDTOForSave(bugName, user, project);
 
-        mockMvc.perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(createBugDTO))
+        getMockMvc().perform(post("/bug").contentType(MediaType.APPLICATION_JSON).content(createBugDTO))
                 .andExpect(status().isOk())
                 .andExpect(contentIsJson())
                 .andExpect(jsonPath("$.object").exists())
