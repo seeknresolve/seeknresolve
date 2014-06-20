@@ -1,8 +1,8 @@
 package org.seeknresolve.controller.handler;
 
 import org.seeknresolve.service.response.ErrorResponse;
-import org.seeknresolve.validation.errors.ValidationErrors;
-import org.seeknresolve.validation.errors.ValidationErrorsFactory;
+import org.seeknresolve.infrastructure.validation.errors.ValidationErrors;
+import org.seeknresolve.infrastructure.validation.errors.ValidationErrorsFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;

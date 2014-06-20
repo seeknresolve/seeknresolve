@@ -2,7 +2,7 @@ package org.seeknresolve.domain.repository;
 
 import org.seeknresolve.domain.entity.Bug;
 import org.seeknresolve.domain.entity.Project;
-import org.seeknresolve.domain.search.SearchWithAuditRepository;
+import org.seeknresolve.domain.repository.search.SearchWithAuditRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

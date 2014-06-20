@@ -4,7 +4,7 @@ import net.sf.jasperreports.engine.JRException;
 import org.seeknresolve.domain.dto.ProjectDTO;
 import org.seeknresolve.domain.dto.ProjectDetailsDTO;
 import org.seeknresolve.domain.dto.UserDTO;
-import org.seeknresolve.reports.Printer;
+import org.seeknresolve.infrastructure.reports.Printer;
 import org.seeknresolve.service.project.ProjectService;
 import org.seeknresolve.service.response.Response;
 import org.seeknresolve.service.user.UserService;

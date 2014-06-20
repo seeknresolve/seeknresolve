@@ -1,7 +1,7 @@
 package org.seeknresolve.domain.repository;
 
 import org.seeknresolve.domain.entity.User;
-import org.seeknresolve.domain.search.SearchWithAuditRepository;
+import org.seeknresolve.domain.repository.search.SearchWithAuditRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

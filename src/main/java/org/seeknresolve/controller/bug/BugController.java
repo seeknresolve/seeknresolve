@@ -3,7 +3,7 @@ package org.seeknresolve.controller.bug;
 import net.sf.jasperreports.engine.JRException;
 import org.seeknresolve.domain.dto.BugDTO;
 import org.seeknresolve.domain.dto.BugDetailsDTO;
-import org.seeknresolve.reports.Printer;
+import org.seeknresolve.infrastructure.reports.Printer;
 import org.seeknresolve.service.bug.BugService;
 import org.seeknresolve.service.response.Response;
 import org.seeknresolve.service.user.UserService;

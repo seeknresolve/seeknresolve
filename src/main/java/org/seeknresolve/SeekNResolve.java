@@ -1,6 +1,6 @@
 package org.seeknresolve;
 
-import org.seeknresolve.domain.search.impl.hibernate.SearchWithAuditRepositoryFactoryBean;
+import org.seeknresolve.domain.repository.search.impl.hibernate.SearchWithAuditRepositoryFactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;

@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import org.seeknresolve.domain.dto.RevisionDiffDTO;
 import org.seeknresolve.domain.entity.Project;
 import org.seeknresolve.domain.repository.ProjectRepository;
-import org.seeknresolve.envers.ProjectEnversMapper;
+import org.seeknresolve.infrastructure.envers.ProjectEnversMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.history.Revision;
 import org.springframework.stereotype.Service;
