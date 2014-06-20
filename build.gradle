@@ -11,6 +11,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'spring-boot'
+apply plugin: 'war'
 
 configurations.create('jasperreports')
 configurations.jasperreports {
@@ -20,6 +21,15 @@ configurations.jasperreports {
 version = '1.0.0-SNAPSHOT'
 group = 'org.seeknresolve'
 sourceCompatibility = 1.8
+
+war {
+    baseName = 'seeknresolve'
+    version =  '1.0.0-SNAPSHOT'
+}
+
+configurations {
+    providedRuntime
+}
 
 repositories {
     mavenLocal()
@@ -108,6 +118,8 @@ dependencies {
     compile 'org.hibernate:hibernate-validator:5.1.1.Final'
 
     compile 'net.sf.jasperreports:jasperreports:5.5.2'
+
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
     jasperreports 'net.sf.jasperreports:jasperreports:5.5.2'
     jasperreports 'joda-time:joda-time:2.3'
