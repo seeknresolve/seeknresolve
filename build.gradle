@@ -29,6 +29,9 @@ war {
 
 configurations {
     providedRuntime
+    jaspereports {
+        transitive = true
+    }
 }
 
 repositories {
@@ -45,10 +48,10 @@ repositories {
 sourceSets {
     integrationTest {
         java {
-            srcDir file('src/integrationTest/java')
+            srcDirs file('src/integrationTest/java')
         }
         resources {
-            srcDir file('src/integrationTest/resources')
+            srcDirs file('src/integrationTest/resources')
         }
     }
 }
@@ -60,22 +63,18 @@ task integrationTest(type: Test) {
 
 check.dependsOn integrationTest
 
-sourceSets {
-    jasper {
-        srcDir = file(relativePath('src/main/resources/reports'))
-        classesDir = file(relativePath('src/main/resources/compiledReports'))
-    }
-}
-
 task compileJasperJava(overwrite: true) << {
+    def jasperSourceDir = file(relativePath('src/main/resources/reports'))
+    def jasperDestDir = file(relativePath('src/main/resources/compiledReports'))
+
     ant.delete(failonerror: 'false') {
-        fileset(dir: sourceSets.jasper.classesDir)
+        fileset(dir: jasperDestDir)
     }
 
     ant {
         taskdef(name: 'jrc', classname: 'net.sf.jasperreports.ant.JRAntCompileTask', classpath: configurations.jasperreports.asPath)
-        sourceSets.jasper.classesDir.mkdirs()
-        jrc(srcdir: sourceSets.jasper.srcDir, destdir: sourceSets.jasper.classesDir) {
+        jasperDestDir.mkdirs()
+        jrc(srcdir: jasperSourceDir, destdir: jasperDestDir) {
             include(name:'**/*.jrxml')
         }
     }
