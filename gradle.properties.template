@@ -1,3 +1,0 @@
-nexusHost=http://<exampleHost>:<examplePort>/nexus
-nexusUser=<login>
-nexusPassword=<password>

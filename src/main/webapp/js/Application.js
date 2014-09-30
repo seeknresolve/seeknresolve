@@ -109,10 +109,6 @@ seekNResolve.config(['$routeProvider', function($routeProvider) {
             controller: 'PermissionDetailsController'
         }).
 
-        when('/about', {
-            templateUrl: 'templates/about.html'
-        }).
-
         otherwise({
             redirectTo: '/index'
         });
